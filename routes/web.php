@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 //Módulo de Categorias
 Route::resource('categorias', 			'CategoryController');
-Route::put('/categoria/actualizar', 	'CategoryController@update');
+Route::put('/categorias/actualizar', 	'CategoryController@update');
 Route::put('/categoria/desactivar', 	'CategoryController@disable');
 Route::put('/categoria/activar', 		'CategoryController@enable');
 Route::get('/categoria/seleccionar', 	'CategoryController@select_categories');
@@ -28,4 +28,4 @@ Route::put('/producto/activar', 		'ProductController@enable');
 
  //Módulo de Clients
 Route::resource('clientes', 			'ClientController');
-// Route::put('/cliente/actualizar', 		'ClientController@update'); 
+Route::put('/clientes/actualizar', 		'ClientController@update'); 

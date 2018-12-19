@@ -100,7 +100,14 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label">Tipo de Documento</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" placeholder="Ingrese Tipo de Documento" v-model="type_document">
+                                        <select v-model="type_document" class="form-control">
+                                            <option value="">Seleccione un Tipo de Documento</option>
+                                            <option value="V">V</option>
+                                            <option value="E">E</option>
+                                            <option value="J">J</option>
+                                            <option value="G">G</option>
+                                        </select>
+                                        <!-- <input type="text" class="form-control" placeholder="Ingrese Tipo de Documento" v-model="type_document"> -->
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -125,6 +132,14 @@
                                     <label class="col-md-3 form-control-label">Corre Electrónico</label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" placeholder="Ingrese Çorreo Electrónico" v-model="email">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-3"></div>  
+                                    <div class="col col-md-9" v-show="errorProduct">
+                                       <div v-for="error in errorShowProduct" :key="error">
+                                            <strong class="text-danger" v-text="error"></strong>
+                                       </div>
                                     </div>
                                 </div>
                             </form>
@@ -251,7 +266,7 @@
 
                 let me = this;
 
-                axios.put('/clientes',{
+                axios.put('/clientes/actualizar',{
                     'id': this.client_id,
     				'name': this.name,
     				'type_document': this.type_document,
@@ -270,7 +285,7 @@
                 this.errorClient = 0;
                 this.errorShowClient = [];
 
-                if (!this.name) this.errorShowClient.push("El nombre de la Categoría no puede estar vacio.");
+                if (!this.name) this.errorShowClient.push("El nombre del Cliente no puede estar vacio.");
                 if(this.errorShowClient.length) this.errorClient = 1;
 
                 return this.errorClient;

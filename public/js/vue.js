@@ -48151,7 +48151,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var me = this;
 
-            axios.put('/categoria/actualizar', {
+            axios.put('/categorias/actualizar', {
                 'id': this.category_id,
                 'name': this.name,
                 'description': this.description
@@ -48218,7 +48218,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     var me = _this2;
 
-                    axios.put('/categoria/desactivar', {
+                    axios.put('/categorias/desactivar', {
                         'id': id
                     }).then(function (response) {
                         me.lists_category(1, '', 'nombre');
@@ -54072,6 +54072,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -54178,7 +54193,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var me = this;
 
-            axios.put('/clientes', {
+            axios.put('/clientes/actualizar', {
                 'id': this.client_id,
                 'name': this.name,
                 'type_document': this.type_document,
@@ -54197,7 +54212,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.errorClient = 0;
             this.errorShowClient = [];
 
-            if (!this.name) this.errorShowClient.push("El nombre de la Categoría no puede estar vacio.");
+            if (!this.name) this.errorShowClient.push("El nombre del Cliente no puede estar vacio.");
             if (this.errorShowClient.length) this.errorClient = 1;
 
             return this.errorClient;
@@ -54645,30 +54660,56 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-md-9" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.type_document,
-                              expression: "type_document"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Ingrese Tipo de Documento"
-                          },
-                          domProps: { value: _vm.type_document },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.type_document,
+                                expression: "type_document"
                               }
-                              _vm.type_document = $event.target.value
+                            ],
+                            staticClass: "form-control",
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.type_document = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
                             }
-                          }
-                        })
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("Seleccione un Tipo de Documento")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "V" } }, [
+                              _vm._v("V")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "E" } }, [
+                              _vm._v("E")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "J" } }, [
+                              _vm._v("J")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "G" } }, [
+                              _vm._v("G")
+                            ])
+                          ]
+                        )
                       ])
                     ]),
                     _vm._v(" "),
@@ -54810,6 +54851,34 @@ var render = function() {
                           }
                         })
                       ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col col-md-3" }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.errorProduct,
+                              expression: "errorProduct"
+                            }
+                          ],
+                          staticClass: "col col-md-9"
+                        },
+                        _vm._l(_vm.errorShowProduct, function(error) {
+                          return _c("div", { key: error }, [
+                            _c("strong", {
+                              staticClass: "text-danger",
+                              domProps: { textContent: _vm._s(error) }
+                            })
+                          ])
+                        }),
+                        0
+                      )
                     ])
                   ]
                 )

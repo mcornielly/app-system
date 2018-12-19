@@ -234,7 +234,7 @@
 
                 let me = this;
 
-                axios.put('/categoria/actualizar',{
+                axios.put('/categorias/actualizar',{
                     'id': this.category_id,
                     'name': this.name,
                     'description': this.description
@@ -306,7 +306,7 @@
 
                         let me = this;
 
-                        axios.put('/categoria/desactivar',{
+                        axios.put('/categorias/desactivar',{
                             'id': id
                         }).then(function (response){
                             me.lists_category(1,'','nombre');
