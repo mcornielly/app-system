@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Provider extends Model
 {
-    protected $fillable [
-    	'id', 'name', 'num_phone'
+    protected $fillable = [
+    	'id', 'contact_name', 'contact_phone'
     ];
 
-    public $timestamps = false;
+    // public $timestamps = false;
 
     public function client()
     {

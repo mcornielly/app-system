@@ -11,7 +11,7 @@
                 <!-- Ejemplo de tabla Listado -->
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Clientes
+                        <i class="fa fa-align-justify"></i> Proveedores
                         <button type="button" class="btn btn-secondary" @click="openModal('client', 'store')">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
@@ -43,6 +43,8 @@
                                     <th>Dirección</th>
                                     <th>N° Teléfono</th>
                                     <th>Email</th>
+                                    <th>Nombre del Contacto</th>
+                                    <th>N° Teléfono de Contacto</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,6 +60,8 @@
                                     <td v-text="client.address"></td>
                                     <td v-text="client.num_phone"></td>
                                     <td v-text="client.email"></td>
+                                    <td v-text="client.contact_name"></td>
+                                    <td v-text="client.contact_phone"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -131,7 +135,19 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label">Corre Electrónico</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" placeholder="Ingrese Çorreo Electrónico" v-model="email">
+                                        <input type="email" class="form-control" placeholder="Ingrese Correo Electrónico" v-model="email">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">Nombre del Contacto</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" placeholder="Ingrese Nombre de Contacto" v-model="contact_name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">N de Teléfono Contacto</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" placeholder="Ingrese Número de Contacto" v-model="contact_phone">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -166,11 +182,13 @@
     		return{
                 client_id: 0,
     			name: '',
-    			type_document: '',
+    			type_document: 'J',
     			num_document: '',
     			address: '',
     			num_phone: '',
     			email: '',
+                contact_name: '',
+                contact_phone: '',
     			clients: [],
     			modal: 0,
     			titleModal: '',
@@ -223,7 +241,7 @@
     	methods : {
     		lists_clients(page,search,criteria){
     			let me = this;
-                var url = '/clientes?page=' + page + '&search='+ search + '&criteria='+ criteria;
+                var url = '/proveedores?page=' + page + '&search='+ search + '&criteria='+ criteria;
     			axios.get(url).then(function (response){
 
                     var result = response.data;
@@ -248,13 +266,15 @@
 
     			let me = this;
 
-    			axios.post('clientes',{
+                axios.post('proveedores',{
     				'name': this.name,
     				'type_document': this.type_document,
     				'num_document': this.num_document,
     				'address': this.address,
     				'num_phone': this.num_phone,
-    				'email': this.email
+    				'email': this.email,
+                    'contact_name': this.contact_name,
+                    'contact_phone': this.contact_phone
     			}).then(function (response){
     				me.closeModal();
     				me.lists_clients(1,'','nombre');
@@ -263,17 +283,22 @@
     			});
     		},
             updateClient(){
+                if (this.validateClient()){
+                    return;
+                }
 
                 let me = this;
 
-                axios.put('/clientes/actualizar',{
-                    'id': this.client_id,
-    				'name': this.name,
-    				'type_document': this.type_document,
-    				'num_document': this.num_document,
-    				'address': this.address,
-    				'num_phone': this.num_phone,
-    				'email': this.email
+                axios.put('/proveedor/actualizar',{
+                    'name': this.name,
+                    'type_document': this.type_document,
+                    'num_document': this.num_document,
+                    'address': this.address,
+                    'num_phone': this.num_phone,
+                    'email': this.email,
+                    'contact_name': this.contact_name,
+                    'contact_phone': this.contact_phone, 
+                    'id': this.client_id
                 }).then(function (response){
                     me.closeModal();
                     me.lists_clients(1,'','nombre');
@@ -299,6 +324,8 @@
     			this.address='';
     			this.num_phone='';
     			this.email='';
+                this.contact_name = '';
+                this.contact_phone = '';
     		},	
     		openModal(modelo, action, data = []){
     			switch(modelo){
@@ -310,24 +337,25 @@
                                 this.errorClient = 0;
                                 this.errorShowClient = [];
     							this.modal = 1;
-		    					this.titleModal = 'Registrar Cliente';
+		    					this.titleModal = 'Registrar Proveedor';
                                 this.typeAction = 1;
 				    			this.name = '';
-				    			this.type_document = '';
+				    			this.type_document = 'J';
 				    			this.num_document = '';
 				    			this.address = '';
 				    			this.num_phone = '';
 				    			this.email = '';
+                                this.contact_name = '';
+                                this.contact_phone = '';
 		    					break;
     						}
     						case 'update':
     						{
-                                console.log(data);
-
+                                // console.log(data);
                                 this.errorClient = 0;
                                 this.errorShowClient = [];
 		    				 	this.modal = 1;
-		    					this.titleModal = 'Actualizar Cliente';
+		    					this.titleModal = 'Actualizar Proveedor';
                                 this.typeAction = 2;
                                 this.client_id = data['id'];
                                 this.name = data['name'];
@@ -336,6 +364,8 @@
 				    			this.address = data['address'];
 				    			this.num_phone = data['num_phone'];
 				    			this.email = data['email'];
+                                this.contact_name = data['contact_name'];
+                                this.contact_phone = data['contact_phone'];
 		    					break;	
     						}
     					}

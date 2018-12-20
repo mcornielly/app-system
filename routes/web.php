@@ -29,3 +29,7 @@ Route::put('/producto/activar', 		'ProductController@enable');
  //Módulo de Clients
 Route::resource('clientes', 			'ClientController');
 Route::put('/clientes/actualizar', 		'ClientController@update'); 
+
+ //Módulo de Providers
+Route::resource('proveedores', 			'ProviderController');
+Route::put('/proveedor/actualizar', 	'ProviderController@update');

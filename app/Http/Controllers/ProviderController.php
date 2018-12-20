@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Provider;
+use App\Client;
+
 
 class ProviderController extends Controller
 {
@@ -11,9 +15,41 @@ class ProviderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if(!$request->ajax()) return redirect('/');
+
+        $search = $request->search;
+        $criteria = $request->criteria;
+
+        if($search==''){
+            $clients = Provider::join('clients','providers.id','clients.id')
+                        ->select('clients.*','providers.contact_name', 'providers.contact_phone') 
+                        ->orderBy('clients.id', 'DESC')
+                        ->paginate(3);
+            }
+        else
+        {
+            $clients = Provider::join('clients','providers.id','clients.id')
+                        ->select('clients.*','providers.contact_name', 'providers.contact_phone') 
+                        ->where($criteria, 'like', '%' . $search . '%')
+                        ->orderBy('clients.id', 'DESC')
+                        ->paginate(3);               
+        }    
+
+        
+        return [
+            'pagination' => [
+                'total'         =>  $clients->total(),
+                'current_page'  =>  $clients->currentPage(), 
+                'per_page'      =>  $clients->perPage(), 
+                'last_page'     =>  $clients->lastPage(),
+                'from'          =>  $clients->firstItem(),
+                'to'            =>  $clients->lastItem(), 
+            ],
+
+        'clients' => $clients
+        ];
     }
 
     /**
@@ -34,7 +70,61 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!$request->ajax()) return redirect('/');
+        //Se registra primero el cliente
+        //----------------------------------------
+        // $client = new Client();
+        // $client->name = $request->name;
+        // $client->type_client = $request->type_client;
+        // $client->num_document = $request->num_document;
+        // $client->address = $request->address;
+        // $client->num_phone = $request->num_phone;
+        // $client->email = $request->email;
+        // $client->save();
+
+        //Se guarda el proveedor
+        //-----------------------------------------
+        // $provider = new Provider();
+        // $provider->contact_name     = $request->contact_name;
+        // $provider->contact_phone    = $request->contact_phone;
+        // $provider->id               = $client->id;
+        // $provider->save();
+
+
+        try{
+            //Para el uso de todos sus clases se debe importar
+            //Illuminate\Support\Facades\DB;
+            DB::beginTransaction();
+
+            $client = new Client();
+            $client->name = $request->name;
+            $client->type_document = $request->type_document;
+            $client->num_document = $request->num_document;
+            $client->address = $request->address;
+            $client->num_phone = $request->num_phone;
+            $client->email = $request->email;
+            $client->save();
+
+            //Se guarda el proveedor
+            //-----------------------------------------
+            $provider = new Provider();
+            $provider->id               = $client->id;
+            $provider->contact_name     = $request->contact_name;
+            $provider->contact_phone    = $request->contact_phone;
+            $provider->save();
+
+            // $client = Client::create($request->all());
+            // $client->save();
+
+            // $provider = Provider::create($request->all());
+            // $provider->save();
+
+            DB::commit();
+
+        } catch (Exception $e){
+            DB::rollBack();
+        }
+ 
     }
 
     /**
@@ -66,9 +156,38 @@ class ProviderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if(!$request->ajax()) return redirect('/');
+
+
+        try{
+            //Para el uso de todos sus clases se debe importar
+            //Illuminate\Support\Facades\DB;
+            DB::beginTransaction();
+
+            //Se busca primero el ID del proveedor para modificar.
+            $provider = Provider::findOrFail($request->id);
+
+            $client = Client::findOrFail($provider->id);
+
+            $client->name = $request->name;
+            $client->type_document = $request->type_document;
+            $client->num_document = $request->num_document;
+            $client->address = $request->address;
+            $client->num_phone = $request->num_phone;
+            $client->email = $request->email;
+            $client->save();
+
+            $provider->contact_name = $request->contact_name;
+            $provider->contact_phone = $request->contact_phone;
+            $provider->save();
+
+            DB::commit();
+
+        } catch (Exception $e){
+            DB::rollBack();
+        }
     }
 
     /**

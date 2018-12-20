@@ -15,12 +15,11 @@ class CreateProvidersTable extends Migration
     {
         Schema::create('providers', function (Blueprint $table) {
             $table->integer('id')->unsigned();
-            $table->string('name')->nullable();
-            $table->string('num_phone')->nullable();
-            // $table->timestamps();
+            $table->string('contact_name')->nullable();
+            $table->string('contact_phone')->nullable();
+            $table->timestamps();
 
-            $table->foreign('id')->references('id')->on('clients')
-                                ->onDelete('cascade');
+            $table->foreign('id')->references('id')->on('clients')->onDelete('cascade');
         });
     }
 

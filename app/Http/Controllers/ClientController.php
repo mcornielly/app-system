@@ -14,7 +14,7 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $search = $request->search;
         $criteria = $request->criteria;
@@ -62,6 +62,8 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        if(!$request->ajax()) return redirect('/');
+        
         //Todo el metodo de registro por separado.
         //----------------------------------------
         // $client = new Client();
@@ -73,8 +75,8 @@ class ClientController extends Controller
         // $client->email = $request->email;
         // $client->save();
 
-        $cleint = Client::create($request->all());
-        $cleint->save();
+        $client = Client::create($request->all());
+        $client->save();
 
     }
 
@@ -107,7 +109,7 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
 
