@@ -24,6 +24,8 @@ Vue.component('category-component', require('./components/CategoryComponent.vue'
 Vue.component('product-component', require('./components/ProductComponent.vue'));
 Vue.component('client-component', require('./components/ClientComponent.vue'));
 Vue.component('provider-component', require('./components/ProviderComponent.vue'));
+Vue.component('role-component', require('./components/RoleComponent.vue'));
+Vue.component('user-component', require('./components/UserComponent.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

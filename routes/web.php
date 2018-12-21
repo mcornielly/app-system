@@ -33,3 +33,12 @@ Route::put('/clientes/actualizar', 		'ClientController@update');
  //Módulo de Providers
 Route::resource('proveedores', 			'ProviderController');
 Route::put('/proveedor/actualizar', 	'ProviderController@update');
+//Módulo de Roles
+Route::resource('roles', 				'RoleController');
+Route::get('/rol/seleccionar', 			'RoleController@select_role');
+//Módulo de Usuarios
+Route::resource('usuarios', 			'UserController');
+Route::put('/usuarios/actualizar', 		'UserController@update');
+Route::put('/usuario/desactivar', 		'UserController@disable');
+Route::put('/usuario/activar', 			'UserController@enable');
+Route::get('/usuario/seleccionar', 		'UserController@select_categories');

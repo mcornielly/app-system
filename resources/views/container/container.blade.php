@@ -30,11 +30,11 @@
     </template>
 
     <template v-if="menu==7">
-        <h2>Menu 7</h2>                       
+        <user-component></user-component>                  
     </template>
 
     <template v-if="menu==8">
-        <h2>Menu 8</h2>                  
+         <role-component></role-component>                 
     </template>
 
     <template v-if="menu==9">
