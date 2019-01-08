@@ -31,13 +31,13 @@
                         <span class="invalid-feedback">{{ $errors->first('password') }}</span>
                     @endif --}}
 
-                    <div class="alert alert-success">
+                    @if($errors->any())
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li class="text-danger">{{ $error }}</li>
                             @endforeach
                         </ul>
-                    </div>
+                    @endif
 
                   <div class="row">
                     <div class="col-6">
