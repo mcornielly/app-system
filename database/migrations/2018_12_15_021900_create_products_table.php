@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->boolean('condition')->default(1);
             $table->timestamps();
 
+            //Relations
             $table->foreign('category_id')->references('id')->on('categories');
         });
     }

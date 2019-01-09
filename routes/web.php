@@ -49,6 +49,10 @@ Route::group(['middleware' => ['auth']], function(){
 		//Módulo de Providers
 		Route::resource('proveedores', 			'ProviderController');
 		Route::put('/proveedor/actualizar', 	'ProviderController@update');
+
+		//Módulo de Incomens
+		Route::resource('ingresos', 			'IncomeController');
+		Route::put('/ingresos/actualizar', 		'IncomeController@update');
 		
 	});
 
@@ -93,6 +97,10 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/usuario/desactivar', 		'UserController@disable');
 		Route::put('/usuario/activar', 			'UserController@enable');
 		Route::get('/usuario/seleccionar', 		'UserController@select_categories');
+
+		//Módulo de Incomens
+		Route::resource('ingresos', 			'IncomeController');
+		Route::put('/ingresos/desactivar', 		'IncomeController@disable');
 
 	});
 

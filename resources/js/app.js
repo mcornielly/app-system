@@ -26,6 +26,7 @@ Vue.component('client-component', require('./components/ClientComponent.vue'));
 Vue.component('provider-component', require('./components/ProviderComponent.vue'));
 Vue.component('role-component', require('./components/RoleComponent.vue'));
 Vue.component('user-component', require('./components/UserComponent.vue'));
+Vue.component('income-component', require('./components/IncomeComponent.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
