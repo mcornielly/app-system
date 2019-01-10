@@ -94,6 +94,126 @@
                             </ul>
                         </nav>
                     </div>
+                    <div class="card-body">
+                       <div class="form-group row border">
+                           <div class="col-md-9">
+                               <div class="form-group">
+                                   <label for="">Proveedor(*)</label>
+                                   <select name="" id="" class="form-control"></select>
+                               </div>
+                           </div>
+                           <div class="col-md-3">
+                               <label for="">Impuesto(*)</label>
+                               <input type="text" class="form-control" v-model="tax">
+                           </div>
+                           <div class="col-md-4">
+                               <label for="">Tipo de Comprobante(*)</label>
+                               <select name="" id="" class="form-control" v-model="type_voucher">
+                                   <option value="">Seleccione</option>
+                                   <option value="Boleta">Boleta</option>
+                                   <option value="Factura">Factura</option>
+                                   <option value="Ticket">Ticket</option>
+                               </select>
+                           </div>
+                           <div class="col-md-4">
+                               <div class="form-group">
+                                   <label for="">Serie de Comprobante</label>
+                                   <input type="text" class="form-control" v-model="serie_voucher" placeholder="000x">
+                               </div>
+                           </div>
+                           <div class="col-md-4">
+                               <div class="form-group">
+                                   <label for="">Núemro de Comprobante(*)</label>
+                                   <input type="text" class="form-control" v-model="num_voucher" placeholder="000xx">
+                               </div>
+                           </div>
+                       </div> 
+                       <div class="form-group row border">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Producto</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control" v-model="producto_id" placeholder="Ingresar producto">
+                                        <button class="btn btn-primary">...</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Precio</label>
+                                    <input type="number" step="any" class="form-control" v-model="price">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="">Cantidad</label>
+                                    <input type="number" class="form-control" v-model="quantity">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-comtrol">
+                                    <button class="btn btn-success form-control btnadd">
+                                        <i class="icon-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                       </div> 
+                       <div class="form-group row border">
+                            <div class="table-responsive col-md-12" style="margin-top: 10px;">
+                                <table class="table table-bordered table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Opciones</th>
+                                            <th>Artículo</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm">
+                                                    <i class="icon-close"></i>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                Producto Nombre
+                                            </td>
+                                            <td>
+                                                <input type="number" value="3" class="form-control">
+                                            </td>
+                                            <td>
+                                                <input type="number" value="2" class="form-control">
+                                            </td>
+                                            <td>
+                                                $ 6.00
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm">
+                                                    <i class="icon-close"></i>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                Producto Nombre
+                                            </td>
+                                            <td>
+                                                <input type="number" value="3" class="form-control">
+                                            </td>
+                                            <td>
+                                                <input type="number" value="2" class="form-control">
+                                            </td>
+                                            <td>
+                                                $ 6.00
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                       </div> 
+                    </div>
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
@@ -519,4 +639,18 @@
 		position: adsolute important;
 		background-color: #3c29297a !important;
 	}
+    .div-error{
+        display: flex;
+        justify-content: center;
+    }
+    .text-error{
+        color: red !important;
+        font-weight: bold;
+    }
+    @media (min-width: 600px){
+        .btnadd{
+            margin-top: 2rem;
+            margin-bottom: 10px;
+        }
+    }
 </style>		
