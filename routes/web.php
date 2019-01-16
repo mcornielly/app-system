@@ -45,10 +45,13 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/producto/actualizar', 		'ProductController@update');
 		Route::put('/producto/desactivar', 		'ProductController@disable');
 		Route::put('/producto/activar', 		'ProductController@enable');
+		Route::get('/producto/buscar-producto',	'ProductController@search_product');
+		
 
 		//Módulo de Providers
-		Route::resource('proveedores', 			'ProviderController');
-		Route::put('/proveedor/actualizar', 	'ProviderController@update');
+		Route::resource('proveedores', 				'ProviderController');
+		Route::put('/proveedor/actualizar', 		'ProviderController@update');
+		Route::get('/proveedor/seleccionar-proveedor', 	'ProviderController@select_provider');
 
 		//Módulo de Incomens
 		Route::resource('ingresos', 			'IncomeController');
@@ -82,11 +85,12 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/producto/actualizar', 		'ProductController@update');
 		Route::put('/producto/desactivar', 		'ProductController@disable');
 		Route::put('/producto/activar', 		'ProductController@enable');
+		Route::get('/producto/buscar-producto',	'ProductController@search_product');
 
 		//Módulo de Providers
 		Route::resource('proveedores', 			'ProviderController');
 		Route::put('/proveedor/actualizar', 	'ProviderController@update');	
-
+		Route::get('/proveedor/seleccionar-proveedor', 	'ProviderController@select_provider');
 
 		//Módulo de Roles
 		Route::resource('roles', 				'RoleController');

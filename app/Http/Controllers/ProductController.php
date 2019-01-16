@@ -48,6 +48,19 @@ class ProductController extends Controller
         ];
     }
 
+
+    public function search_product(Request $request)
+    {
+        if(!$request->ajax()) return('/');
+
+        $filter = $request->filter;
+        $product = Product::where('code', $filter)
+            ->select('id', 'name')
+            ->orderBy('name', 'ASC')
+            ->take(1)->get();
+ 
+            return ['product' => $product];
+    }
     /**
      * Show the form for creating a new resource.
      *

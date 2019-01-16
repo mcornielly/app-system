@@ -52,6 +52,23 @@ class ProviderController extends Controller
         ];
     }
 
+    public function select_provider(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $filter = $request->filter;
+
+        $providers = Provider::join('clients', 'providers.id', 'clients.id')
+            ->where('clients.name', 'like', '%' . $filter . '%')
+            ->orWhere('clients.num_document', 'like', '%' . $filter . '%')
+            ->select('clients.id', 'clients.name', 'clients.num_document')
+            ->orderBy('clients.name', 'ASC')
+            ->get();
+
+            return ['providers' => $providers]; 
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *

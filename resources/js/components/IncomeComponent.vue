@@ -12,208 +12,240 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Ingresos
-                        <button type="button" class="btn btn-secondary" @click="openModal('client', 'store')">
+                        <button type="button" class="btn btn-secondary" @click="showFormIncome()">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <select class="form-control col-md-3" v-model="criteria">
-                                      <option value="type_voucher">Tipo de Comprobante</option>
-                                      <option value="num_voucher">Número de Comprobante</option>
-                                      <option value="date_hour">Fecha-Hora</option>
-                                    </select>
-                                    <input type="text" class="form-control" v-model="search" placeholder="Texto a buscar" @keyup.enter="lists_income(1,search,criteria)">
-                                    <button type="submit" class="btn btn-primary" @click="lists_income(1,search,criteria)"><i class="fa fa-search"></i> Buscar</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Opciones</th>
-                                        <th>Usuario</th>
-                                        <th>Proveedor</th>
-                                        <th>Tipo Docuemnto</th>
-                                        <th>N° Docuemnto</th>
-                                        <th>Serie Docuemnto</th>
-                                        <th>Fecha-Hora</th>
-                                        <th>Impuesto</th>
-                                        <th>Total</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="income in incomes" :key="income.id">
-                                        <td>
-                                            <button type="button" @click="openModal('income', 'update', income)" class="btn btn-success btn-sm">
-                                              <i class="icon-eye"></i>
-                                            </button> &nbsp;
-                                            <template v-if="income.state=='Registrado'">
-                                                <button type="button" class="btn btn-danger btn-sm" @click="disableIncome(income.id)">
-                                                  <i class="icon-trash"></i>
-                                                </button>
-                                            </template>    
-                                        </td>
-                                        <td v-text="income.user_name"></td>
-                                        <td v-text="income.name"></td>
-                                        <td v-text="income.type_voucher"></td>
-                                        <td v-text="income.num_voucher"></td>
-                                        <td v-text="income.serie_voucher"></td>
-                                        <td v-text="income.date_hour"></td>
-                                        <td v-text="income.total"></td>
-                                        <td v-text="income.tax"></td>
-                                        <td v-text="income.state"></td>
-                            <!--                                     <td>
-                                            <div v-if="income.state">
-                                                <span class="badge badge-success">Registrado</span>
-                                            </div>
-                                            <div v-else>
-                                                <span class="badge badge-danger">Anulado</span>
-                                            </div>
-                                        </td> -->
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <nav>
-                            <ul class="pagination">
-                                <li class="page-item" v-if="pagination.current_page > 1">
-                                    <a class="page-link" href="#" @click.prevent="nextPage(pagination.current_page - 1, search, criteria)">Ant</a>
-                                </li>
-                                <li class="page-item" v-for="page in pagesNumber" :key="page"
-                                :class="[page == isActived ? 'active' : '']">
-                                    <a class="page-link" href="#" @click.prevent="nextPage(page, search, criteria)" v-text="page"></a>
-                                </li>
-                                <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                    <a class="page-link" href="#" @click.prevent="nextPage(pagination.current_page + 1, search, criteria)">Sig</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="card-body">
-                       <div class="form-group row border">
-                           <div class="col-md-9">
-                               <div class="form-group">
-                                   <label for="">Proveedor(*)</label>
-                                   <select name="" id="" class="form-control"></select>
-                               </div>
-                           </div>
-                           <div class="col-md-3">
-                               <label for="">Impuesto(*)</label>
-                               <input type="text" class="form-control" v-model="tax">
-                           </div>
-                           <div class="col-md-4">
-                               <label for="">Tipo de Comprobante(*)</label>
-                               <select name="" id="" class="form-control" v-model="type_voucher">
-                                   <option value="">Seleccione</option>
-                                   <option value="Boleta">Boleta</option>
-                                   <option value="Factura">Factura</option>
-                                   <option value="Ticket">Ticket</option>
-                               </select>
-                           </div>
-                           <div class="col-md-4">
-                               <div class="form-group">
-                                   <label for="">Serie de Comprobante</label>
-                                   <input type="text" class="form-control" v-model="serie_voucher" placeholder="000x">
-                               </div>
-                           </div>
-                           <div class="col-md-4">
-                               <div class="form-group">
-                                   <label for="">Núemro de Comprobante(*)</label>
-                                   <input type="text" class="form-control" v-model="num_voucher" placeholder="000xx">
-                               </div>
-                           </div>
-                       </div> 
-                       <div class="form-group row border">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="">Producto</label>
-                                    <div class="form-inline">
-                                        <input type="text" class="form-control" v-model="producto_id" placeholder="Ingresar producto">
-                                        <button class="btn btn-primary">...</button>
+                    <!-- Lista de Ingresos -->
+                    <template v-if="list">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <select class="form-control col-md-3" v-model="criteria">
+                                          <option value="type_voucher">Tipo de Comprobante</option>
+                                          <option value="num_voucher">Número de Comprobante</option>
+                                          <option value="date_hour">Fecha-Hora</option>
+                                        </select>
+                                        <input type="text" class="form-control" v-model="search" placeholder="Texto a buscar" @keyup.enter="lists_income(1,search,criteria)">
+                                        <button type="submit" class="btn btn-primary" @click="lists_income(1,search,criteria)"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="">Precio</label>
-                                    <input type="number" step="any" class="form-control" v-model="price">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="">Cantidad</label>
-                                    <input type="number" class="form-control" v-model="quantity">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-comtrol">
-                                    <button class="btn btn-success form-control btnadd">
-                                        <i class="icon-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                       </div> 
-                       <div class="form-group row border">
-                            <div class="table-responsive col-md-12" style="margin-top: 10px;">
+                            <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-sm">
                                     <thead>
                                         <tr>
                                             <th>Opciones</th>
-                                            <th>Artículo</th>
-                                            <th>Precio</th>
-                                            <th>Cantidad</th>
-                                            <th>Subtotal</th>
+                                            <th>Usuario</th>
+                                            <th>Proveedor</th>
+                                            <th>Tipo Docuemnto</th>
+                                            <th>N° Docuemnto</th>
+                                            <th>Serie Docuemnto</th>
+                                            <th>Fecha-Hora</th>
+                                            <th>Impuesto</th>
+                                            <th>Total</th>
+                                            <th>Estado</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr v-for="income in incomes" :key="income.id">
                                             <td>
-                                                <button type="button" class="btn btn-danger btn-sm">
-                                                    <i class="icon-close"></i>
-                                                </button>
+                                                <button type="button" @click="openModal('income', 'update', income)" class="btn btn-success btn-sm">
+                                                  <i class="icon-eye"></i>
+                                                </button> &nbsp;
+                                                <template v-if="income.state=='Registrado'">
+                                                    <button type="button" class="btn btn-danger btn-sm" @click="disableIncome(income.id)">
+                                                      <i class="icon-trash"></i>
+                                                    </button>
+                                                </template>    
                                             </td>
-                                            <td>
-                                                Producto Nombre
-                                            </td>
-                                            <td>
-                                                <input type="number" value="3" class="form-control">
-                                            </td>
-                                            <td>
-                                                <input type="number" value="2" class="form-control">
-                                            </td>
-                                            <td>
-                                                $ 6.00
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm">
-                                                    <i class="icon-close"></i>
-                                                </button>
-                                            </td>
-                                            <td>
-                                                Producto Nombre
-                                            </td>
-                                            <td>
-                                                <input type="number" value="3" class="form-control">
-                                            </td>
-                                            <td>
-                                                <input type="number" value="2" class="form-control">
-                                            </td>
-                                            <td>
-                                                $ 6.00
-                                            </td>
+                                            <td v-text="income.user_name"></td>
+                                            <td v-text="income.name"></td>
+                                            <td v-text="income.type_voucher"></td>
+                                            <td v-text="income.num_voucher"></td>
+                                            <td v-text="income.serie_voucher"></td>
+                                            <td v-text="income.date_hour"></td>
+                                            <td v-text="income.total"></td>
+                                            <td v-text="income.tax"></td>
+                                            <td v-text="income.state"></td>
+                                <!--                                     <td>
+                                                <div v-if="income.state">
+                                                    <span class="badge badge-success">Registrado</span>
+                                                </div>
+                                                <div v-else>
+                                                    <span class="badge badge-danger">Anulado</span>
+                                                </div>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                       </div> 
-                    </div>
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item" v-if="pagination.current_page > 1">
+                                        <a class="page-link" href="#" @click.prevent="nextPage(pagination.current_page - 1, search, criteria)">Ant</a>
+                                    </li>
+                                    <li class="page-item" v-for="page in pagesNumber" :key="page"
+                                    :class="[page == isActived ? 'active' : '']">
+                                        <a class="page-link" href="#" @click.prevent="nextPage(page, search, criteria)" v-text="page"></a>
+                                    </li>
+                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                        <a class="page-link" href="#" @click.prevent="nextPage(pagination.current_page + 1, search, criteria)">Sig</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </template>
+                    <!-- Fin Lista de Ingresos -->
+                    <!-- Formulario de Detalle de Ingresos -->
+                    <template v-else>
+                        <div class="card-body">
+                           <div class="form-group row border">
+                               <div class="col-md-9">
+                                   <div class="form-group">
+                                       <label for="">Proveedor(*)</label>
+                                       <v-select
+                                            :on-search="selectProvider"
+                                            label="name"
+                                            :options="providers"
+                                            placeholder="Buscar Proveedores"
+                                            :onChange="getDataProviders"></v-select>                                     
+                                   </div>
+                               </div>
+                               <div class="col-md-3">
+                                   <label for="">Impuesto(*)</label>
+                                   <input type="text" class="form-control" v-model="tax">
+                               </div>
+                               <div class="col-md-4">
+                                   <label for="">Tipo de Comprobante(*)</label>
+                                   <select name="" id="" class="form-control" v-model="type_voucher">
+                                       <option value="">Seleccione</option>
+                                       <option value="Boleta">Boleta</option>
+                                       <option value="Factura">Factura</option>
+                                       <option value="Ticket">Ticket</option>
+                                   </select>
+                               </div>
+                               <div class="col-md-4">
+                                   <div class="form-group">
+                                       <label for="">Serie de Comprobante</label>
+                                       <input type="text" class="form-control" v-model="serie_voucher" placeholder="000x">
+                                   </div>
+                               </div>
+                               <div class="col-md-4">
+                                   <div class="form-group">
+                                       <label for="">Núemro de Comprobante(*)</label>
+                                       <input type="text" class="form-control" v-model="num_voucher" placeholder="000xx">
+                                   </div>
+                               </div>
+                           </div> 
+                           <div class="form-group row border">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Producto</label>
+                                        <div class="form-inline">
+                                            <input type="text" class="form-control" v-model="code" @keyup.enter="searchProduct()"placeholder="Ingresar producto">
+                                            <button class="btn btn-primary">...</button>
+                                            <input type="text" readonly="true" class="form-control" v-model="product_name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="">Precio</label>
+                                        <input type="number" step="any" class="form-control" v-model="price">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="">Cantidad</label>
+                                        <input type="number" class="form-control" v-model="quantity">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-comtrol">
+                                        <button class="btn btn-success form-control btnadd">
+                                            <i class="icon-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                           </div> 
+                           <div class="form-group row border">
+                                <div class="table-responsive col-md-12" style="margin-top: 10px;">
+                                    <table class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Opciones</th>
+                                                <th>Artículo</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
+                                                <th>Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm">
+                                                        <i class="icon-close"></i>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    Producto Nombre
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="3" class="form-control">
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="2" class="form-control">
+                                                </td>
+                                                <td>
+                                                    $ 6.00
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm">
+                                                        <i class="icon-close"></i>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    Producto Nombre
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="3" class="form-control">
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="2" class="form-control">
+                                                </td>
+                                                <td>
+                                                    $ 6.00
+                                                </td>
+                                            </tr>
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="4" class="text-right"><strong>Total Parcial</strong></td>
+                                                <td>$ 5</td>
+                                            </tr>
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="4" class="text-right"><strong>Total Impuesto</strong></td>
+                                                <td>$ 1</td>
+                                            </tr>
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="4" class="text-right"><strong>Total Neto</strong></td>
+                                                <td>$ 6</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                           </div> 
+                           <div class="form-group row">
+                               <div class="col-md-12">
+                                   <button type="button" class="btn btn-secondary" @click="closeFormIncome()">Cerrar</button>
+                                   <button type="button" class="btn btn-primary" @click="insertIncome()">Registrar Ingreso</button>
+                               </div>
+                           </div>
+                        </div>
+                    </template>
+                    <!-- Fin Formulario de Detalle de Ingresos -->
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
@@ -320,6 +352,7 @@
 </template>
 
 <script>
+    import vSelect from 'vue-select';
     export default {
     	data() {
     		return{
@@ -332,7 +365,9 @@
                 tax: 0.16,
     			total: 0.00,
                 incomes: [],
+                providers: [],
                 detail_incomes: [],
+                list: 1, 
     			modal: 0,
     			titleModal: '',
     			typeAction: 0,
@@ -349,10 +384,18 @@
 
                 offset: 3,
                 criteria: 'num_voucher',
-                search: ''
-
+                search: '',
+                product: [],
+                product_id: 0,
+                code: '',
+                product_name: '',
+                price: 0,
+                amount: 0
     		}
     	},
+        components:{
+            vSelect
+        },
         computed:{
             isActived: function(){
                 return this.pagination.current_page;
@@ -396,17 +439,48 @@
     				console.log(error);
     			});
     		},
-            selectRole(){
+            selectProvider(search, loading){
                 let me = this;
-                var url = '/rol/seleccionar';
+                loading(true)
+
+                var url = '/proveedor/seleccionar-proveedor?filter='+search;
                 axios.get(url).then(function (response){
 
                     var result = response.data;
-                    me.roles = result.roles;
+                    q: search
+                    me.providers = result.providers;
+                    loading(false)
+
 
                 }).catch(function (error){
                     console.log(error);
                 });
+            },
+            getDataProviders(val1){
+                let me = this;
+                me.loading = true;
+                me.provider_id = val1.id;
+            },
+            searchProduct(){
+                let me = this;
+                var url = '/producto/buscar-producto?filter='+me.code;
+
+                axios.get(url).then(function(response){
+                    var result = response.data;
+                    me.product = result.product;
+
+                    if(me.product.length>0){
+                        me.product_name = me.product[0]['name'];
+                        me.product_id = me.product[0]['id'];
+                    }else{
+                        me.product_name = "No existe producto";
+                        me.product_id = 0;
+                    }
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+
             },
             nextPage(page,search,criteria){
                 let me = this;
@@ -462,6 +536,12 @@
                 }).catch(function (error){
                     console.log(error);
                 });
+            },
+            showFormIncome(){
+                this.list = 0;
+            },
+            closeFormIncome(){
+                this.list = 1;
             },
             enableIncome(id){
 
