@@ -164,7 +164,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-comtrol">
-                                        <button class="btn btn-success form-control btnadd">
+                                        <button @click="addProducts()" class="btn btn-success form-control btnadd">
                                             <i class="icon-plus"></i>
                                         </button>
                                     </div>
@@ -182,45 +182,26 @@
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
+                                        <tbody v-if="detail_incomes.length">
+                                            <tr v-for="detail_income in detail_incomes" :key="detail_income">
                                                 <td>
                                                     <button type="button" class="btn btn-danger btn-sm">
                                                         <i class="icon-close"></i>
                                                     </button>
                                                 </td>
-                                                <td>
-                                                    Producto Nombre
+                                                <td v-text="detail_income.name">
                                                 </td>
                                                 <td>
-                                                    <input type="number" value="3" class="form-control">
+                                                    <input v-model="detail_income.price" type="number" value="3" class="form-control">
                                                 </td>
                                                 <td>
-                                                    <input type="number" value="2" class="form-control">
+                                                    <input v-model="detail_income.quantity" type="number" value="2" class="form-control">
                                                 </td>
                                                 <td>
-                                                    $ 6.00
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger btn-sm">
-                                                        <i class="icon-close"></i>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    Producto Nombre
-                                                </td>
-                                                <td>
-                                                    <input type="number" value="3" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="number" value="2" class="form-control">
-                                                </td>
-                                                <td>
-                                                    $ 6.00
+                                                    {{ detail_income.price*detail_income.quantity }}
                                                 </td>
                                             </tr>
+
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" class="text-right"><strong>Total Parcial</strong></td>
                                                 <td>$ 5</td>
@@ -232,6 +213,13 @@
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" class="text-right"><strong>Total Neto</strong></td>
                                                 <td>$ 6</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr>
+                                                <td colspan="5">
+                                                    No hay productos registrados
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -390,7 +378,7 @@
                 code: '',
                 product_name: '',
                 price: 0,
-                amount: 0
+                quantity: 0
     		}
     	},
         components:{
@@ -481,6 +469,15 @@
                     console.log(error);
                 });
 
+            },
+            addProducts(){
+                let me = this;
+                me.detail_incomes.push({
+                    product_id: me.product_id,
+                    product_name: me.product_name,
+                    quantity: me.quantity,
+                    price: me.price
+                });
             },
             nextPage(page,search,criteria){
                 let me = this;
