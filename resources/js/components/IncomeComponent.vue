@@ -7,7 +7,13 @@
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>
             <div class="container-fluid">
-
+                
+                    <div class="alert alert-danger" role="alert" v-show="errorIncome">
+                       <div v-for="error in errorShowIncome" :key="error">
+                            <strong class="text-danger" v-text="error"></strong>
+                       </div>
+                    </div>
+               
                 <!-- Ejemplo de tabla Listado -->
                 <div class="card">
                     <div class="card-header">
@@ -43,8 +49,8 @@
                                             <th>N° Docuemnto</th>
                                             <th>Serie Docuemnto</th>
                                             <th>Fecha-Hora</th>
-                                            <th>Impuesto</th>
                                             <th>Total</th>
+                                            <th>Impuesto</th>
                                             <th>Estado</th>
                                         </tr>
                                     </thead>
@@ -101,9 +107,9 @@
                     <!-- Formulario de Detalle de Ingresos -->
                     <template v-else>
                         <div class="card-body">
-                           <div class="form-group row border">
-                               <div class="col-md-9">
-                                   <div class="form-group">
+                            <div class="form-group row border">
+                                <div class="col-md-9">
+                                    <div class="form-group">
                                        <label for="">Proveedor(*)</label>
                                        <v-select
                                             :on-search="selectProvider"
@@ -111,54 +117,54 @@
                                             :options="providers"
                                             placeholder="Buscar Proveedores"
                                             :onChange="getDataProviders"></v-select>                                     
-                                   </div>
-                               </div>
-                               <div class="col-md-3">
-                                   <label for="">Impuesto(*)</label>
-                                   <input type="text" class="form-control" v-model="tax">
-                               </div>
-                               <div class="col-md-4">
-                                   <label for="">Tipo de Comprobante(*)</label>
-                                   <select name="" id="" class="form-control" v-model="type_voucher">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Impuesto(*)</label>
+                                    <input type="text" class="form-control" v-model="tax">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Tipo de Comprobante(*)</label>
+                                    <select name="" id="" class="form-control" v-model="type_voucher">
                                        <option value="">Seleccione</option>
                                        <option value="Boleta">Boleta</option>
                                        <option value="Factura">Factura</option>
                                        <option value="Ticket">Ticket</option>
-                                   </select>
-                               </div>
-                               <div class="col-md-4">
-                                   <div class="form-group">
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
                                        <label for="">Serie de Comprobante</label>
                                        <input type="text" class="form-control" v-model="serie_voucher" placeholder="000x">
-                                   </div>
-                               </div>
-                               <div class="col-md-4">
-                                   <div class="form-group">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
                                        <label for="">Núemro de Comprobante(*)</label>
                                        <input type="text" class="form-control" v-model="num_voucher" placeholder="000xx">
-                                   </div>
-                               </div>
+                                    </div>
+                                </div>
                            </div> 
                            <div class="form-group row border">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="">Producto</label>
+                                        <label for="">Producto <span style="color:red;" v-show="product_id==0">(*) Seleccione</span></label>
                                         <div class="form-inline">
                                             <input type="text" class="form-control" v-model="code" @keyup.enter="searchProduct()"placeholder="Ingresar producto">
-                                            <button class="btn btn-primary">...</button>
+                                            <button class="btn btn-primary" @click="openModal()">...</button>
                                             <input type="text" readonly="true" class="form-control" v-model="product_name">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="">Precio</label>
+                                        <label for="">Precio <span style="color:red;" v-show="price==0">(*) Ingrese</span></label>
                                         <input type="number" step="any" class="form-control" v-model="price">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="">Cantidad</label>
+                                        <label for="">Cantidad <span style="color:red;" v-show="quantity==0">(*) Ingrese</span></label>
                                         <input type="number" class="form-control" v-model="quantity">
                                     </div>
                                 </div>
@@ -176,20 +182,20 @@
                                         <thead>
                                             <tr>
                                                 <th>Opciones</th>
-                                                <th>Artículo</th>
+                                                <th>Producto</th>
                                                 <th>Precio</th>
                                                 <th>Cantidad</th>
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>
                                         <tbody v-if="detail_incomes.length">
-                                            <tr v-for="detail_income in detail_incomes" :key="detail_income">
+                                            <tr v-for="(detail_income, index) in detail_incomes" :key="detail_income.id">
                                                 <td>
-                                                    <button type="button" class="btn btn-danger btn-sm">
+                                                    <button @click="deleteProduct(index)" type="button" class="btn btn-danger btn-sm">
                                                         <i class="icon-close"></i>
                                                     </button>
                                                 </td>
-                                                <td v-text="detail_income.name">
+                                                <td v-text="detail_income.product_name">
                                                 </td>
                                                 <td>
                                                     <input v-model="detail_income.price" type="number" value="3" class="form-control">
@@ -204,15 +210,15 @@
 
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" class="text-right"><strong>Total Parcial</strong></td>
-                                                <td>$ 5</td>
+                                                <td>$ {{ total_partial = (total - total_tax).toFixed(2) }}</td>
                                             </tr>
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" class="text-right"><strong>Total Impuesto</strong></td>
-                                                <td>$ 1</td>
+                                                <td>$ {{ total_tax = ((total*tax)).toFixed(2) }}</td>
                                             </tr>
                                             <tr style="background-color: #CEECF5;">
                                                 <td colspan="4" class="text-right"><strong>Total Neto</strong></td>
-                                                <td>$ 6</td>
+                                                <td>$ {{ total=calculateTotal }}</td>
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
@@ -228,7 +234,7 @@
                            <div class="form-group row">
                                <div class="col-md-12">
                                    <button type="button" class="btn btn-secondary" @click="closeFormIncome()">Cerrar</button>
-                                   <button type="button" class="btn btn-primary" @click="insertIncome()">Registrar Ingreso</button>
+                                   <button type="button" class="btn btn-primary" @click="createIncome()">Registrar Ingreso</button>
                                </div>
                            </div>
                         </div>
@@ -248,86 +254,62 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" placeholder="Nombre del Cliente" v-model="name">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">Tipo de Documento</label>
-                                    <div class="col-md-9">
-                                        <select v-model="type_document" class="form-control">
-                                            <option value="">Seleccione un Tipo de Documento</option>
-                                            <option value="V">V</option>
-                                            <option value="E">E</option>
-                                            <option value="J">J</option>
-                                            <option value="G">G</option>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <select class="form-control col-md-3" v-model="criteria_p">
+                                          <option value="name">Nombre</option>
+                                          <option value="description">Descripción</option>
+                                          <option value="code">Código</option>
                                         </select>
-                                        <!-- <input type="text" class="form-control" placeholder="Ingrese Tipo de Documento" v-model="type_document"> -->
+                                        <input type="text" class="form-control" v-model="search_p" placeholder="Texto a buscar" @keyup.enter="lists_products(search_p,criteria_p)">
+                                        <button t_pe="submit" class="btn btn-primary" @click="lists_products(search_p,criteria_p)"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">N Documento</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" placeholder="Ingrese número de documento" v-model="num_document">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">Dirección</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" placeholder="Ingrese Dirección" v-model="address">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">N de Teléfono</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" placeholder="Ingrese número de teléfono" v-model="num_phone">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">Corre Electrónico</label>
-                                    <div class="col-md-9">
-                                        <input type="email" class="form-control" placeholder="Ingrese Correo Electrónico" v-model="email">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">Rol (*)</label>
-                                    <div class="col-md-9">
-                                        <select v-model="role_id" class="form-control">
-                                            <option value="0">Seleccione un Rol</option>
-                                            <option v-for="role in roles" :key="role.id" :value="role.id" v-text="role.name"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">Nombre de Usuario (*)</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" placeholder="Ingrese Nombre de Usuario" v-model="user_name">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">Password (*)</label>
-                                    <div class="col-md-9">
-                                        <input type="password" class="form-control" placeholder="Ingrese el Password" v-model="password">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col col-md-3"></div>  
-                                    <div class="col col-md-9" v-show="errorClient">
-                                       <div v-for="error in errorShowClient" :key="error">
-                                            <strong class="text-danger" v-text="error"></strong>
-                                       </div>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
+                            <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Opciones</th>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>Categoría</th>
+                                        <th>Precio</th>
+                                        <th>Stock</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="product in products" :key="product.id">
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm" @click="addProductsModal(product)">
+                                              <i class="icon-check"></i>
+                                            </button> &nbsp;
+                                        </td>
+                                        <td v-text="product.code"></td>
+                                        <td v-text="product.name"></td>
+                                        <td v-text="product.category_name"></td>
+                                        <td v-text="product.price"></td>
+                                        <td v-text="product.stock"></td>
+                                        <td>
+                                            <div v-if="product.condition">
+                                                <span class="badge badge-success">Activo</span>
+                                            </div>
+                                            <div v-else>
+                                                <span class="badge badge-danger">Desactivado</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==1" 
+<!--                             <button type="button" class="btn btn-primary" v-if="typeAction==1" 
                             @click="createClient()">Guardar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()">Actualizar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()">Actualizar</button> -->
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -352,6 +334,8 @@
                 num_voucher: '',
                 tax: 0.16,
     			total: 0.00,
+                total_tax: 0.0,
+                total_partial: 0.0,
                 incomes: [],
                 providers: [],
                 detail_incomes: [],
@@ -373,7 +357,9 @@
                 offset: 3,
                 criteria: 'num_voucher',
                 search: '',
-                product: [],
+                criteria_p: 'name',
+                search_p: '',
+                products: [],
                 product_id: 0,
                 code: '',
                 product_name: '',
@@ -410,6 +396,13 @@
                     from++; 
                 }
                 return pagesArray;
+            },
+            calculateTotal: function(){
+                var result = 0.0;
+                for(var i=0; i<this.detail_incomes.length; i++){
+                    result = result+(this.detail_incomes[i].price*this.detail_incomes[i].quantity)
+                }
+                return result;
             }
         },
     	methods : {
@@ -470,14 +463,78 @@
                 });
 
             },
+            findProduct(id){
+                var sw=0;
+
+                for(var i=0; i<this.detail_incomes.length; i++){
+                    if(this.detail_incomes[i].product_id==id){
+                        sw=true;
+                    }
+                }
+                return sw;
+            },
             addProducts(){
                 let me = this;
-                me.detail_incomes.push({
-                    product_id: me.product_id,
-                    product_name: me.product_name,
-                    quantity: me.quantity,
-                    price: me.price
+
+                if(me.product_id==0 || me.quantity==0 || me.price==0){
+
+                }
+                else{
+                    if(me.findProduct(me.product_id)){
+                        swal({
+                            type: 'error',
+                            title: 'Error...',
+                            text: 'Este articulo se encuentra registrado..!'
+                        })
+                    }else{
+                        me.detail_incomes.push({
+                            product_id: me.product_id,
+                            product_name: me.product_name,
+                            quantity: me.quantity,
+                            price: me.price
+                        });
+                        me.code = '';
+                        me.product_name = '';
+                        me.product_id = 0;
+                        me.product_id = '';
+                        me.quantity = 0;
+                        me.price = 0;
+                    }
+                }
+            },
+            addProductsModal(data = []){
+                let me = this;
+
+                if(me.findProduct(data['id'])){
+                        swal({
+                            type: 'error',
+                            title: 'Error...',
+                            text: 'Este producto se encuentra registrado..!'
+                        })
+                }else{
+                    me.detail_incomes.push({
+                        product_id: data['id'],
+                        product_name: data['name'],
+                        quantity: 1,
+                        price: 1
+                    });
+                }
+            },
+            lists_products(search,criteria){
+                let me = this;
+                var url = '/producto/listar-productos?search='+ search + '&criteria='+ criteria;
+                axios.get(url).then(function (response){
+
+                    var result = response.data;
+                    me.products = result.products.data;
+
+                }).catch(function (error){
+                    console.log(error);
                 });
+            },
+            deleteProduct(index){
+                let me = this;
+                me.detail_incomes.splice(index,1);
             },
             nextPage(page,search,criteria){
                 let me = this;
@@ -485,57 +542,70 @@
                 me.pagination.current_page = page;
                 me.lists_income(page,search,criteria);
             },
-    		createClient(){
-                if (this.validateClient()){
+    		createIncome(){
+                if (this.validateIncome()){
                     return;
                 }
 
     			let me = this;
 
-                axios.post('usuarios',{
-    			    'name': this.name,
-                    'type_document': this.type_document,
-                    'num_document': this.num_document,
-                    'address': this.address,
-                    'num_phone': this.num_phone,
-                    'email': this.email,
-                    'user_name': this.user_name,
-                    'password': this.password, 
-                    'role_id': this.role_id
-    			}).then(function (response){
-    				me.closeModal();
-    				me.lists_clients(1,'','nombre');
+                axios.post('ingresos',{
+                    'provider_id': this.provider_id,
+                    'type_voucher': this.type_voucher,
+                    'num_voucher': this.num_voucher,
+                    'serie_voucher': this.serie_voucher,
+                    'tax': this.tax,
+                    'total': this.total,
+                    'data': this.detail_incomes
+
+                }).then(function (response){
+    				me.list = 1;
+    				me.lists_income(1,'','num_voucher');
+                    me.provider_id = 0;
+                    me.type_voucher = 'Boleta';
+                    me.serie_voucher = '';
+                    me.num_voucher = '';
+                    me.tax = 0.16;
+                    me.total = 0;
+                    me.product_id = 0;
+                    me.producto = '';
+                    me.quantity = 0;
+                    me.price = 0;
+                    me.detail_incomes = [];
+
     			}).catch(function (error){
     				console.log(error);
-    			});
-    		},
-            updateClient(){
-                console.log(this.role_id, this.client_id);
-                if (this.validateClient()){
-                    return;
-                }
-
-                let me = this;
-                axios.put('/usuarios/actualizar',{
-                    'id': this.client_id,
-                    'role_id': this.role_id,
-                    'name': this.name,
-                    'type_document': this.type_document,
-                    'num_document': this.num_document,
-                    'address': this.address,
-                    'num_phone': this.num_phone,
-                    'email': this.email,
-                    'user_name': this.user_name,
-                    'password': this.password 
-                }).then(function (response){
-                    me.closeModal();
-                    me.lists_clients(1,'','nombre');
-                }).catch(function (error){
-                    console.log(error);
                 });
             },
+            validateIncome(){
+                this.errorIncome = 0;
+                this.errorShowIncome = [];
+
+                if(this.provider_id==0) this.errorShowIncome.push("Seleccione un Proveedor");
+                if(this.type_document==0) this.errorShowIncome.push("Seleccione el Comprobante");
+                if(!this.num_voucher) this.errorShowIncome.push("Ingrese el número de Comprobante");
+                if(!this.tax) this.errorShowIncome.push("Ingrese el Impuesto de Compra");
+                if(this.detail_incomes.length<=0) this.errorShowIncome.push("Ingrese Detalle");
+
+                if(this.errorShowIncome.length) this.errorIncome = 1;
+
+                return this.errorIncome;
+            },
             showFormIncome(){
+                let me = this;
                 this.list = 0;
+                //clear form
+                me.provider_id = 0;
+                me.type_voucher = 'Boleta';
+                me.serie_voucher = '';
+                me.num_voucher = '';
+                me.tax = 0.16;
+                me.total = 0;
+                me.product_id = 0;
+                me.producto = '';
+                me.quantity = 0;
+                me.price = 0;
+                me.detail_incomes = [];
             },
             closeFormIncome(){
                 this.list = 1;
@@ -622,79 +692,15 @@
                   }
               })
             },
-            validateClient(){
-                this.errorIncome = 0;
-                this.errorShowIncome = [];
-
-                if (!this.name) this.errorShowIncome.push("El nombre del usuario no puede estar vacio.");
-                if (!this.user_name) this.errorShowIncome.push("El Username no puede estar vacio.");
-                if (!this.password) this.errorShowIncome.push("El Password no puede estar vacio.");
-                if (this.role_id == 0) this.errorShowIncome.push("Debe Seleccionar un rol.");
-                if(this.errorShowIncome.length) this.errorIncome = 1;
-
-                return this.errorIncome;
-            },
     		closeModal(){;
     			this.modal=0;
                 this.titleModal='';
-                this.name='';
-                this.type_document='V';
-                this.num_document='';
-                this.address='';
-                this.num_phone='';
-                this.email='';
-                this.role_id= 0;
-                this.role_name = '';
-                this.password = '';
-                this.errorClient = 0;
     		},	
-    		openModal(modelo, action, data = []){
-                this.selectRole();
-    			switch(modelo){
-    				case 'client':
-    				{
-    					switch(action){
-    						case 'store':
-    						{
-                                this.errorClient = 0;
-                                this.errorShowClient = [];
-    							this.modal = 1;
-		    					this.titleModal = 'Registrar Usuario';
-                                this.typeAction = 1;
-				    			this.name = '';
-				    			this.type_document = 'V';
-				    			this.num_document = '';
-				    			this.address = '';
-				    			this.num_phone = '';
-				    			this.email = '';
-                                this.role_id = 0;
-                                this.user_name = '';
-                                this.password = '';
-		    					break;
-    						}
-    						case 'update':
-    						{
-                                // console.log(data);
-                                this.errorClient = 0;
-                                this.errorShowClient = [];
-		    				 	this.modal = 1;
-		    					this.titleModal = 'Actualizar Actualizar';
-                                this.typeAction = 2;
-                                this.client_id = data['id'];
-                                this.name = data['name'];
-                                this.type_document = data['type_document'];
-                                this.num_document = data['num_document'];
-                                this.address = data['address'];
-                                this.num_phone = data['num_phone'];
-                                this.email = data['email'];
-                                this.role_id = data['role_id'];
-                                this.user_name = data['user_name'];
-                                this.password = data['password'];
-		    					break;	
-    						}
-    					}
-    				}
-    			}
+    		openModal(){
+                this.search_p = '';
+                this.products = [];
+                this.modal = 1;
+				this.titleModal = 'Seleccione uno o varios productos';
     		}
     	},
         mounted() {

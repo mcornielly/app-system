@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Income;
 use App\DetailIncome;
+// use App\User;
 
 class IncomeController extends Controller
 {
@@ -72,7 +73,7 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $mytime = Carbon::now('America/Caracas');
 
@@ -85,7 +86,7 @@ class IncomeController extends Controller
             //Se registra los ingresos
             $income = new Income();
             $income->provider_id = $request->provider_id;
-            $income->user_id = \Auth::user()->id();
+            $income->user_id = \Auth::user()->id;
             $income->type_voucher = $request->type_voucher;
             $income->serie_voucher = $request->serie_voucher;
             $income->num_voucher = $request->num_voucher;
@@ -97,15 +98,16 @@ class IncomeController extends Controller
 
             //Detalle del Ingresdo
 
-            $detail_incomes = $request->data;        
+            $detail_incomes = $request->data;
+       
 
             //Recoremos los elementos
-            foreach ($detail_incomes as $key => $detail_income) {
+            foreach ($detail_incomes as $key => $detail) {
                 $detail_income = new DetailIncome();
-                $detail_income = $income->id;
-                $detail_income->product_id = $detail_income['product_id'];
-                $detail_income->quantity = $detail_income['quantity'];
-                $detail_income->price = $detail_income['price'];
+                $detail_income->income_id = $income->id;
+                $detail_income->product_id = $detail['product_id'];
+                $detail_income->quantity = $detail['quantity'];
+                $detail_income->price = $detail['price'];
                 $detail_income->save();
             }
 

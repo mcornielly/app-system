@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/producto/desactivar', 		'ProductController@disable');
 		Route::put('/producto/activar', 		'ProductController@enable');
 		Route::get('/producto/buscar-producto',	'ProductController@search_product');
+		Route::get('/producto/listar-productos','ProductController@list_product');
 		
 
 		//Módulo de Providers
@@ -86,6 +87,8 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/producto/desactivar', 		'ProductController@disable');
 		Route::put('/producto/activar', 		'ProductController@enable');
 		Route::get('/producto/buscar-producto',	'ProductController@search_product');
+		Route::get('/producto/listar-productos','ProductController@list_product');
+
 
 		//Módulo de Providers
 		Route::resource('proveedores', 			'ProviderController');

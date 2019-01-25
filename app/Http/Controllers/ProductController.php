@@ -48,6 +48,31 @@ class ProductController extends Controller
         ];
     }
 
+    public function list_product(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+
+        $search = $request->search;
+        $criteria = $request->criteria;
+
+        if($search==''){
+            $products = Product::join('categories','products.category_id','categories.id')
+                ->select('products.*','categories.name as category_name')
+                ->orderBy('products.id', 'DESC')->paginate(10);
+        }
+        else
+        {
+
+            $products = Product::join('categories','products.category_id','categories.id')
+                ->select('products.*','categories.name as category_name')
+                ->where('products.'.$criteria, 'like', '%' . $search . '%')
+                ->orderBy('products.id', 'DESC')->paginate(10);              
+        }    
+
+        
+        return ['products' => $products];
+    }
+
 
     public function search_product(Request $request)
     {
