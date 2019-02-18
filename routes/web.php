@@ -56,7 +56,11 @@ Route::group(['middleware' => ['auth']], function(){
 
 		//Módulo de Incomens
 		Route::resource('ingresos', 			'IncomeController');
-		Route::put('/ingresos/actualizar', 		'IncomeController@update');
+		Route::put('/ingreso/desactivar', 		'IncomeController@disable');
+		Route::get('/ingreso/detalle_ingreso', 'IncomeController@get_header');
+		Route::get('/ingreso/detalle_producto', 'IncomeController@get_detail');
+
+
 		
 	});
 
@@ -107,7 +111,9 @@ Route::group(['middleware' => ['auth']], function(){
 
 		//Módulo de Incomens
 		Route::resource('ingresos', 			'IncomeController');
-		Route::put('/ingresos/desactivar', 		'IncomeController@disable');
+		Route::put('/ingreso/desactivar', 		'IncomeController@disable');
+		Route::get('/ingresos/detalle_ingreso', 	'IncomeController@get_header');
+		Route::get('/ingresos/detalle_producto', 'IncomeController@get_detail');
 
 	});
 

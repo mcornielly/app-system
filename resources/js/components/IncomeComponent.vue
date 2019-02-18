@@ -23,7 +23,7 @@
                         </button>
                     </div>
                     <!-- Lista de Ingresos -->
-                    <template v-if="list">
+                    <template v-if="list==1">
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-6">
@@ -57,11 +57,11 @@
                                     <tbody>
                                         <tr v-for="income in incomes" :key="income.id">
                                             <td>
-                                                <button type="button" @click="openModal('income', 'update', income)" class="btn btn-success btn-sm">
+                                                <button type="button" @click="showIncome(income.id)" class="btn btn-success btn-sm" title="Ver">
                                                   <i class="icon-eye"></i>
                                                 </button> &nbsp;
                                                 <template v-if="income.state=='Registrado'">
-                                                    <button type="button" class="btn btn-danger btn-sm" @click="disableIncome(income.id)">
+                                                    <button type="button" class="btn btn-danger btn-sm" @click="disableIncome(income.id)" title="Anular">
                                                       <i class="icon-trash"></i>
                                                     </button>
                                                 </template>    
@@ -105,7 +105,7 @@
                     </template>
                     <!-- Fin Lista de Ingresos -->
                     <!-- Formulario de Detalle de Ingresos -->
-                    <template v-else>
+                    <template v-else-if="list==0">
                         <div class="card-body">
                             <div class="form-group row border">
                                 <div class="col-md-9">
@@ -240,6 +240,92 @@
                         </div>
                     </template>
                     <!-- Fin Formulario de Detalle de Ingresos -->
+                    <!-- Mostrar Ingresos -->
+                    <template v-else="list==2">
+                        <div class="card-body">
+                            <div class="form-group row border">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                       <label for="">Proveedor</label>
+                                       <p v-text="name"></p>                                     
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Impuesto</label>
+                                    <p v-text="tax"></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Tipo de Comprobante</label>
+                                    <p v-text="type_voucher"></p>    
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                       <label for="">Serie de Comprobante</label>
+                                       <p v-text="serie_voucher"></p> 
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                       <label for="">Núemro de Comprobante</label>
+                                       <p v-text="num_voucher"></p>     
+                                    </div>
+                                </div>
+                           </div> 
+                           <div class="form-group row border">
+                                <div class="table-responsive col-md-12" style="margin-top: 10px;">
+                                    <table class="table table-bordered table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
+                                                <th>Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-if="detail_incomes.length">
+                                            <tr v-for="detail_income in detail_incomes" :key="detail_income.id">
+                                                <td v-text="detail_income.product_name">
+                                                </td>
+                                                <td v-text="detail_income.price">
+                                                </td>
+                                                <td v-text="detail_income.quantity">
+                                                </td>
+                                                <td>
+                                                    {{ (detail_income.price*detail_income.quantity).toFixed(2) }}
+                                                </td>
+                                            </tr>
+
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="3" class="text-right"><strong>Total Parcial</strong></td>
+                                                <td>$ {{ total_partial = (total - total_tax).toFixed(2) }}</td>
+                                            </tr>
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="3" class="text-right"><strong>Total Impuesto</strong></td>
+                                                <td>$ {{ total_tax = ((total*tax)).toFixed(2) }}</td>
+                                            </tr>
+                                            <tr style="background-color: #CEECF5;">
+                                                <td colspan="3" class="text-right"><strong>Total Neto</strong></td>
+                                                <td>$ {{ total }}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr>
+                                                <td colspan="4">
+                                                    No hay productos registrados
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                           </div> 
+                           <div class="form-group row">
+                               <div class="col-md-12">
+                                   <button type="button" class="btn btn-secondary" @click="closeFormIncome()">Cerrar</button>
+                               </div>
+                           </div>
+                        </div>
+                    </template>
+                    <!-- Fin Mostrar Ingresos -->
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
@@ -328,6 +414,7 @@
     		return{
                 income_id: 0,
                 provider_id: 0,
+                provider_name: '',
     			name: '',
     			type_voucher: 'Boleta',
                 serie_voucher: '',
@@ -610,45 +697,42 @@
             closeFormIncome(){
                 this.list = 1;
             },
-            enableIncome(id){
+            showIncome(id){
+                let me=this;
+                me.list = 2;
 
-                const swalWithBootstrapButtons = Swal.mixin({
-                  confirmButtonClass: 'btn btn-success',
-                  cancelButtonClass: 'btn btn-danger',
-                  buttonsStyling: false,
-                })
+                //obtener los datos del ingreso
+                var arrayincomeT = [];
 
-                swalWithBootstrapButtons({
-                  title: 'Esta seguro que desea Activar el Usuario?',
-                  type: 'warning',
-                  showCancelButton: true,
-                  confirmButtonText: 'Si, Activar!',
-                  cancelButtonText: 'No, Cancelar!',
-                  reverseButtons: true
-                }).then((result) => {
-                  if (result.value) {
-                        console.log(id);
+                var url = '/ingreso/detalle_ingreso?id=' + id;
 
-                        let me = this;
+                axios.get(url).then(function (response){
 
-                        axios.put('/usuario/activar',{
-                            'id': id,
-                        }).then(function (response){
-                            me.lists_clients(1,'','nombre');
-                            swalWithBootstrapButtons(
-                              'Activada!',
-                              'La Usuario fue Activado..!',
-                              'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error);
-                        });
-                  } else if (
-                    // Read more about handling dismissals
-                    result.dismiss === Swal.DismissReason.cancel
-                  ) {
-                  }
-                })
+                    var result = response.data;
+                    arrayincomeT = result.incomes;
+
+                    me.name = arrayincomeT[0]['name'];
+                    me.type_voucher = arrayincomeT[0]['type_voucher'];
+                    me.serie_voucher = arrayincomeT[0]['serie_voucher'];
+                    me.num_voucher = arrayincomeT[0]['num_voucher'];
+                    me.tax = arrayincomeT[0]['tax'];
+                    me.total = arrayincomeT[0]['total'];
+
+                }).catch(function (error){
+                    console.log(error);
+                });    
+
+                //obtener los datos del detalle
+                var urld = '/ingreso/detalle_producto?id=' + id;
+
+                axios.get(urld).then(function (response){
+
+                    var result = response.data;
+                    me.detail_incomes = result.detailincomes;
+
+                }).catch(function (error){
+                    console.log(error);
+                });     
 
             },
             disableIncome(id){
@@ -660,10 +744,10 @@
                 })
 
                 swalWithBootstrapButtons({
-                  title: 'Esta seguro que desea desactivar el Usuario?',
+                  title: 'Esta seguro que desea anular este Ingreso?',
                   type: 'warning',
                   showCancelButton: true,
-                  confirmButtonText: 'Si, Desactivar!',
+                  confirmButtonText: 'Si, Anular!',
                   cancelButtonText: 'No, Cancelar!',
                   reverseButtons: true
                 }).then((result) => {
@@ -671,14 +755,14 @@
 
                         let me = this;
 
-                        axios.put('/usuario/desactivar',{
+                        axios.put('/ingreso/desactivar',{
                             'id': id
                         }).then(function (response){
-                            me.lists_clients(1,'','nombre');
+                            me.lists_income(1,'','num_voucher');
 
                             swalWithBootstrapButtons(
                               'Desactivado!',
-                              'El Usuario fue Desactivado..!',
+                              'El Ingreso fue Anulado con éxito}..!',
                               'success'
                             )
                         }).catch(function (error){

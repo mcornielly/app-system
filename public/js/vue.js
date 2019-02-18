@@ -58708,6 +58708,92 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -58715,6 +58801,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             income_id: 0,
             provider_id: 0,
+            provider_name: '',
             name: '',
             type_voucher: 'Boleta',
             serie_voucher: '',
@@ -58990,7 +59077,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         closeFormIncome: function closeFormIncome() {
             this.list = 1;
         },
-        enableIncome: function enableIncome(id) {
+        showIncome: function showIncome(id) {
+            var me = this;
+            me.list = 2;
+
+            //obtener los datos del ingreso
+            var arrayincomeT = [];
+
+            var url = '/ingreso/detalle_ingreso?id=' + id;
+
+            axios.get(url).then(function (response) {
+
+                var result = response.data;
+                arrayincomeT = result.incomes;
+
+                me.name = arrayincomeT[0]['name'];
+                me.type_voucher = arrayincomeT[0]['type_voucher'];
+                me.serie_voucher = arrayincomeT[0]['serie_voucher'];
+                me.num_voucher = arrayincomeT[0]['num_voucher'];
+                me.tax = arrayincomeT[0]['tax'];
+                me.total = arrayincomeT[0]['total'];
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            //obtener los datos del detalle
+            var urld = '/ingreso/detalle_producto?id=' + id;
+
+            axios.get(urld).then(function (response) {
+
+                var result = response.data;
+                me.detail_incomes = result.detailincomes;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        disableIncome: function disableIncome(id) {
             var _this = this;
 
             var swalWithBootstrapButtons = Swal.mixin({
@@ -59000,58 +59122,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             swalWithBootstrapButtons({
-                title: 'Esta seguro que desea Activar el Usuario?',
+                title: 'Esta seguro que desea anular este Ingreso?',
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Si, Activar!',
+                confirmButtonText: 'Si, Anular!',
                 cancelButtonText: 'No, Cancelar!',
                 reverseButtons: true
             }).then(function (result) {
                 if (result.value) {
-                    console.log(id);
 
                     var me = _this;
 
-                    axios.put('/usuario/activar', {
+                    axios.put('/ingreso/desactivar', {
                         'id': id
                     }).then(function (response) {
-                        me.lists_clients(1, '', 'nombre');
-                        swalWithBootstrapButtons('Activada!', 'La Usuario fue Activado..!', 'success');
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === Swal.DismissReason.cancel) {}
-            });
-        },
-        disableIncome: function disableIncome(id) {
-            var _this2 = this;
+                        me.lists_income(1, '', 'num_voucher');
 
-            var swalWithBootstrapButtons = Swal.mixin({
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false
-            });
-
-            swalWithBootstrapButtons({
-                title: 'Esta seguro que desea desactivar el Usuario?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Si, Desactivar!',
-                cancelButtonText: 'No, Cancelar!',
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-
-                    var me = _this2;
-
-                    axios.put('/usuario/desactivar', {
-                        'id': id
-                    }).then(function (response) {
-                        me.lists_clients(1, '', 'nombre');
-
-                        swalWithBootstrapButtons('Desactivado!', 'El Usuario fue Desactivado..!', 'success');
+                        swalWithBootstrapButtons('Desactivado!', 'El Ingreso fue Anulado con éxito}..!', 'success');
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -59147,7 +59234,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm.list
+          _vm.list == 1
             ? [
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "form-group row" }, [
@@ -59277,14 +59364,10 @@ var render = function() {
                                     "button",
                                     {
                                       staticClass: "btn btn-success btn-sm",
-                                      attrs: { type: "button" },
+                                      attrs: { type: "button", title: "Ver" },
                                       on: {
                                         click: function($event) {
-                                          _vm.openModal(
-                                            "income",
-                                            "update",
-                                            income
-                                          )
+                                          _vm.showIncome(income.id)
                                         }
                                       }
                                     },
@@ -59300,7 +59383,10 @@ var render = function() {
                                           {
                                             staticClass:
                                               "btn btn-danger btn-sm",
-                                            attrs: { type: "button" },
+                                            attrs: {
+                                              type: "button",
+                                              title: "Anular"
+                                            },
                                             on: {
                                               click: function($event) {
                                                 _vm.disableIncome(income.id)
@@ -59452,7 +59538,8 @@ var render = function() {
                   ])
                 ])
               ]
-            : [
+            : _vm.list == 0
+            ? [
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "form-group row border" }, [
                     _c("div", { staticClass: "col-md-9" }, [
@@ -60079,6 +60166,218 @@ var render = function() {
                   ])
                 ])
               ]
+            : [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "col-md-9" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [
+                          _vm._v("Proveedor")
+                        ]),
+                        _vm._v(" "),
+                        _c("p", { domProps: { textContent: _vm._s(_vm.name) } })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-3" }, [
+                      _c("label", { attrs: { for: "" } }, [_vm._v("Impuesto")]),
+                      _vm._v(" "),
+                      _c("p", { domProps: { textContent: _vm._s(_vm.tax) } })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c("label", { attrs: { for: "" } }, [
+                        _vm._v("Tipo de Comprobante")
+                      ]),
+                      _vm._v(" "),
+                      _c("p", {
+                        domProps: { textContent: _vm._s(_vm.type_voucher) }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [
+                          _vm._v("Serie de Comprobante")
+                        ]),
+                        _vm._v(" "),
+                        _c("p", {
+                          domProps: { textContent: _vm._s(_vm.serie_voucher) }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [
+                          _vm._v("Núemro de Comprobante")
+                        ]),
+                        _vm._v(" "),
+                        _c("p", {
+                          domProps: { textContent: _vm._s(_vm.num_voucher) }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "table-responsive col-md-12",
+                        staticStyle: { "margin-top": "10px" }
+                      },
+                      [
+                        _c(
+                          "table",
+                          {
+                            staticClass:
+                              "table table-bordered table-striped table-sm"
+                          },
+                          [
+                            _vm._m(7),
+                            _vm._v(" "),
+                            _vm.detail_incomes.length
+                              ? _c(
+                                  "tbody",
+                                  [
+                                    _vm._l(_vm.detail_incomes, function(
+                                      detail_income
+                                    ) {
+                                      return _c(
+                                        "tr",
+                                        { key: detail_income.id },
+                                        [
+                                          _c("td", {
+                                            domProps: {
+                                              textContent: _vm._s(
+                                                detail_income.product_name
+                                              )
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("td", {
+                                            domProps: {
+                                              textContent: _vm._s(
+                                                detail_income.price
+                                              )
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("td", {
+                                            domProps: {
+                                              textContent: _vm._s(
+                                                detail_income.quantity
+                                              )
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              "\n                                                    " +
+                                                _vm._s(
+                                                  (
+                                                    detail_income.price *
+                                                    detail_income.quantity
+                                                  ).toFixed(2)
+                                                ) +
+                                                "\n                                                "
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "tr",
+                                      {
+                                        staticStyle: {
+                                          "background-color": "#CEECF5"
+                                        }
+                                      },
+                                      [
+                                        _vm._m(8),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(
+                                            "$ " +
+                                              _vm._s(
+                                                (_vm.total_partial = (
+                                                  _vm.total - _vm.total_tax
+                                                ).toFixed(2))
+                                              )
+                                          )
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "tr",
+                                      {
+                                        staticStyle: {
+                                          "background-color": "#CEECF5"
+                                        }
+                                      },
+                                      [
+                                        _vm._m(9),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(
+                                            "$ " +
+                                              _vm._s(
+                                                (_vm.total_tax = (
+                                                  _vm.total * _vm.tax
+                                                ).toFixed(2))
+                                              )
+                                          )
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "tr",
+                                      {
+                                        staticStyle: {
+                                          "background-color": "#CEECF5"
+                                        }
+                                      },
+                                      [
+                                        _vm._m(10),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v("$ " + _vm._s(_vm.total))
+                                        ])
+                                      ]
+                                    )
+                                  ],
+                                  2
+                                )
+                              : _c("tbody", [_vm._m(11)])
+                          ]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.closeFormIncome()
+                            }
+                          }
+                        },
+                        [_vm._v("Cerrar")]
+                      )
+                    ])
+                  ])
+                ])
+              ]
         ],
         2
       )
@@ -60242,7 +60541,7 @@ var render = function() {
                       staticClass: "table table-bordered table-striped table-sm"
                     },
                     [
-                      _vm._m(7),
+                      _vm._m(12),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -60428,6 +60727,58 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", [
       _c("td", { attrs: { colspan: "5" } }, [
+        _vm._v(
+          "\n                                                    No hay productos registrados\n                                                "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Producto")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Precio")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cantidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Subtotal")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "3" } }, [
+      _c("strong", [_vm._v("Total Parcial")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "3" } }, [
+      _c("strong", [_vm._v("Total Impuesto")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "3" } }, [
+      _c("strong", [_vm._v("Total Neto")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "4" } }, [
         _vm._v(
           "\n                                                    No hay productos registrados\n                                                "
         )

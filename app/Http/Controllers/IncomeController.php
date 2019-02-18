@@ -55,6 +55,40 @@ class IncomeController extends Controller
         ];
     }
 
+    public function get_header(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+
+        $id = $request->id;
+
+
+        $incomes = Income::join('clients','incomes.provider_id','clients.id')
+                    ->join('users', 'incomes.user_id', 'users.id')
+                    ->select('incomes.*','clients.name', 'users.user_name')
+                    ->where('incomes.id', $id) 
+                    ->orderBy('incomes.id', 'DESC')
+                    ->take(1)->get();       
+
+        return ['incomes' => $incomes];
+
+
+    }
+
+    public function get_detail(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+
+        $id = $request->id;
+
+        $detailincomes = DetailIncome::join('products','detail_incomes.product_id','products.id')
+                    ->select('detail_incomes.*','products.name as product_name')
+                    ->where('detail_incomes.income_id', $id) 
+                    ->orderBy('detail_incomes.id', 'DESC')
+                    ->take(1)->get();
+        
+        return ['detailincomes' => $detailincomes];
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -163,12 +197,13 @@ class IncomeController extends Controller
         //
     }
 
-    public function enable(Request $request)
+    public function disable(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
 
         $income = Income::findOrFail($request->id);
         $income->state = 'Anulado';
         $income->save();
+
     }
 }
