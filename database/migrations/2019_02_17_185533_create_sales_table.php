@@ -24,7 +24,7 @@ class CreateSalesTable extends Migration
             $table->string('num_voucher', 10);
             $table->dateTime('date_hour');
             $table->decimal('tax', 4, 2);
-            $table->string('status', 20);
+            $table->string('state', 20);
             $table->timestamps();
         });
     }

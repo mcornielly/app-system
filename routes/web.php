@@ -69,6 +69,12 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::resource('clientes', 			'ClientController');
 		Route::put('/clientes/actualizar', 		'ClientController@update');
 
+		//Módulo de Ventas
+		Route::resource('ventas', 				'SaleController');
+		Route::put('/ventas/desactivar', 		'SaleController@disable');
+		Route::get('/ventas/detalle_ventas', 	'SaleController@get_header');
+		Route::get('/ventas/detalle_producto', 	'SaleController@get_detail'); 
+
 	});
 
 
@@ -76,7 +82,13 @@ Route::group(['middleware' => ['auth']], function(){
 
 		//Módulo de Clients
 		Route::resource('clientes', 			'ClientController');
-		Route::put('/clientes/actualizar', 		'ClientController@update'); 
+		Route::put('/clientes/actualizar', 		'ClientController@update');
+
+		//Módulo de Ventas
+		Route::resource('ventas', 				'SaleController');
+		Route::put('/ventas/desactivar', 		'SaleController@disable');
+		Route::get('/ventas/detalle_ventas', 	'SaleController@get_header');
+		Route::get('/ventas/detalle_producto', 	'SaleController@get_detail');  
 
 		//Módulo de Categorias
 		Route::resource('categorias', 			'CategoryController');
@@ -93,7 +105,6 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::get('/producto/buscar-producto',	'ProductController@search_product');
 		Route::get('/producto/listar-productos','ProductController@list_product');
 
-
 		//Módulo de Providers
 		Route::resource('proveedores', 			'ProviderController');
 		Route::put('/proveedor/actualizar', 	'ProviderController@update');	
@@ -102,6 +113,7 @@ Route::group(['middleware' => ['auth']], function(){
 		//Módulo de Roles
 		Route::resource('roles', 				'RoleController');
 		Route::get('/rol/seleccionar', 			'RoleController@select_role');
+
 		//Módulo de Usuarios
 		Route::resource('usuarios', 			'UserController');
 		Route::put('/usuarios/actualizar', 		'UserController@update');
@@ -110,10 +122,10 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::get('/usuario/seleccionar', 		'UserController@select_categories');
 
 		//Módulo de Incomens
-		Route::resource('ingresos', 			'IncomeController');
-		Route::put('/ingreso/desactivar', 		'IncomeController@disable');
+		Route::resource('ingresos', 				'IncomeController');
+		Route::put('/ingreso/desactivar', 			'IncomeController@disable');
 		Route::get('/ingresos/detalle_ingreso', 	'IncomeController@get_header');
-		Route::get('/ingresos/detalle_producto', 'IncomeController@get_detail');
+		Route::get('/ingresos/detalle_producto', 	'IncomeController@get_detail');
 
 	});
 
