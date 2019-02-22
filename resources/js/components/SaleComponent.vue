@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 
                     <div class="alert alert-danger" role="alert" v-show="errorIncome">
-                       <div v-for="error in errorShowIncome" :key="error">
+                       <div v-for="error in errorShowSale" :key="error">
                             <strong class="text-danger" v-text="error"></strong>
                        </div>
                     </div>
@@ -112,11 +112,11 @@
                                     <div class="form-group">
                                        <label for="">`Cliente(*)</label>
                                        <v-select
-                                            :on-search="selectProvider"
+                                            :on-search="selectClients"
                                             label="name"
-                                            :options="providers"
-                                            placeholder="Buscar Proveedores"
-                                            :onChange="getDataProviders"></v-select>                                     
+                                            :options="clients"
+                                            placeholder="Buscar Clientes"
+                                            :onChange="getDataClients"></v-select>                                     
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -146,7 +146,7 @@
                                 </div>
                            </div> 
                            <div class="form-group row border">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="">Producto <span style="color:red;" v-show="product_id==0">(*) Seleccione</span></label>
                                         <div class="form-inline">
@@ -169,8 +169,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="">Descuento</span></label>
+                                        <input type="number" class="form-control" v-model="discount">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
                                     <div class="form-comtrol">
-                                        <button @click="addProducts()" class="btn btn-success form-control btnadd">
+                                        <button @click="addClients()" class="btn btn-success form-control btnadd">
                                             <i class="icon-plus"></i>
                                         </button>
                                     </div>
@@ -185,26 +191,30 @@
                                                 <th>Producto</th>
                                                 <th>Precio</th>
                                                 <th>Cantidad</th>
+                                                <th>Descuento</th>
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-if="detail_incomes.length">
-                                            <tr v-for="(detail_income, index) in detail_incomes" :key="detail_income.id">
+                                        <tbody v-if="detail_sales.length">
+                                            <tr v-for="(detail, index) in detail_sales" :key="detail.id">
                                                 <td>
                                                     <button @click="deleteProduct(index)" type="button" class="btn btn-danger btn-sm">
                                                         <i class="icon-close"></i>
                                                     </button>
                                                 </td>
-                                                <td v-text="detail_income.product_name">
+                                                <td v-text="detail.product_name">
                                                 </td>
                                                 <td>
-                                                    <input v-model="detail_income.price" type="number" value="3" class="form-control">
+                                                    <input v-model="detail.price" type="number" value="3" class="form-control">
                                                 </td>
                                                 <td>
-                                                    <input v-model="detail_income.quantity" type="number" value="2" class="form-control">
+                                                    <input v-model="detail.quantity" type="number" value="2" class="form-control">
                                                 </td>
                                                 <td>
-                                                    {{ detail_income.price*detail_income.quantity }}
+                                                    <input v-model="detail.discount" type="number" value="2" class="form-control">
+                                                </td>
+                                                <td>
+                                                    {{ detail.price*detail.quantity }}
                                                 </td>
                                             </tr>
 
@@ -223,7 +233,7 @@
                                         </tbody>
                                         <tbody v-else>
                                             <tr>
-                                                <td colspan="5">
+                                                <td colspan="6">
                                                     No hay productos registrados
                                                 </td>
                                             </tr>
@@ -233,8 +243,8 @@
                            </div> 
                            <div class="form-group row">
                                <div class="col-md-12">
-                                   <button type="button" class="btn btn-secondary" @click="closeFormIncome()">Cerrar</button>
-                                   <button type="button" class="btn btn-primary" @click="createIncome()">Registrar Ingreso</button>
+                                   <button type="button" class="btn btn-secondary" @click="closeFormSale()">Cerrar</button>
+                                   <button type="button" class="btn btn-primary" @click="createSale()">Registrar Venta</button>
                                </div>
                            </div>
                         </div>
@@ -450,7 +460,8 @@
                 code: '',
                 product_name: '',
                 price: 0,
-                quantity: 0
+                quantity: 0,
+                discount: 0
     		}
     	},
         components:{

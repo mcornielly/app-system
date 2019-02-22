@@ -61326,6 +61326,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -61369,7 +61379,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             code: '',
             product_name: '',
             price: 0,
-            quantity: 0
+            quantity: 0,
+            discount: 0
         };
     },
 
@@ -61721,7 +61732,7 @@ var render = function() {
           staticClass: "alert alert-danger",
           attrs: { role: "alert" }
         },
-        _vm._l(_vm.errorShowIncome, function(error) {
+        _vm._l(_vm.errorShowSale, function(error) {
           return _c("div", { key: error }, [
             _c("strong", {
               staticClass: "text-danger",
@@ -62076,11 +62087,11 @@ var render = function() {
                           _vm._v(" "),
                           _c("v-select", {
                             attrs: {
-                              "on-search": _vm.selectProvider,
+                              "on-search": _vm.selectClients,
                               label: "name",
-                              options: _vm.providers,
-                              placeholder: "Buscar Proveedores",
-                              onChange: _vm.getDataProviders
+                              options: _vm.clients,
+                              placeholder: "Buscar Clientes",
+                              onChange: _vm.getDataClients
                             }
                           })
                         ],
@@ -62232,7 +62243,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row border" }, [
-                    _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", { attrs: { for: "" } }, [
                           _vm._v("Producto "),
@@ -62423,6 +62434,36 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [
+                          _vm._v("Descuento")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.discount,
+                              expression: "discount"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number" },
+                          domProps: { value: _vm.discount },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.discount = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
                       _c("div", { staticClass: "form-comtrol" }, [
                         _c(
                           "button",
@@ -62430,7 +62471,7 @@ var render = function() {
                             staticClass: "btn btn-success form-control btnadd",
                             on: {
                               click: function($event) {
-                                _vm.addProducts()
+                                _vm.addClients()
                               }
                             }
                           },
@@ -62457,127 +62498,151 @@ var render = function() {
                           [
                             _vm._m(2),
                             _vm._v(" "),
-                            _vm.detail_incomes.length
+                            _vm.detail_sales.length
                               ? _c(
                                   "tbody",
                                   [
-                                    _vm._l(_vm.detail_incomes, function(
-                                      detail_income,
+                                    _vm._l(_vm.detail_sales, function(
+                                      detail,
                                       index
                                     ) {
-                                      return _c(
-                                        "tr",
-                                        { key: detail_income.id },
-                                        [
-                                          _c("td", [
-                                            _c(
-                                              "button",
+                                      return _c("tr", { key: detail.id }, [
+                                        _c("td", [
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass:
+                                                "btn btn-danger btn-sm",
+                                              attrs: { type: "button" },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.deleteProduct(index)
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c("i", {
+                                                staticClass: "icon-close"
+                                              })
+                                            ]
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              detail.product_name
+                                            )
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            directives: [
                                               {
-                                                staticClass:
-                                                  "btn btn-danger btn-sm",
-                                                attrs: { type: "button" },
-                                                on: {
-                                                  click: function($event) {
-                                                    _vm.deleteProduct(index)
-                                                  }
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: detail.price,
+                                                expression: "detail.price"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              value: "3"
+                                            },
+                                            domProps: { value: detail.price },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
                                                 }
-                                              },
-                                              [
-                                                _c("i", {
-                                                  staticClass: "icon-close"
-                                                })
-                                              ]
-                                            )
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("td", {
-                                            domProps: {
-                                              textContent: _vm._s(
-                                                detail_income.product_name
-                                              )
+                                                _vm.$set(
+                                                  detail,
+                                                  "price",
+                                                  $event.target.value
+                                                )
+                                              }
                                             }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("td", [
-                                            _c("input", {
-                                              directives: [
-                                                {
-                                                  name: "model",
-                                                  rawName: "v-model",
-                                                  value: detail_income.price,
-                                                  expression:
-                                                    "detail_income.price"
-                                                }
-                                              ],
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                type: "number",
-                                                value: "3"
-                                              },
-                                              domProps: {
-                                                value: detail_income.price
-                                              },
-                                              on: {
-                                                input: function($event) {
-                                                  if ($event.target.composing) {
-                                                    return
-                                                  }
-                                                  _vm.$set(
-                                                    detail_income,
-                                                    "price",
-                                                    $event.target.value
-                                                  )
-                                                }
+                                          })
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: detail.quantity,
+                                                expression: "detail.quantity"
                                               }
-                                            })
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("td", [
-                                            _c("input", {
-                                              directives: [
-                                                {
-                                                  name: "model",
-                                                  rawName: "v-model",
-                                                  value: detail_income.quantity,
-                                                  expression:
-                                                    "detail_income.quantity"
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              value: "2"
+                                            },
+                                            domProps: {
+                                              value: detail.quantity
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
                                                 }
-                                              ],
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                type: "number",
-                                                value: "2"
-                                              },
-                                              domProps: {
-                                                value: detail_income.quantity
-                                              },
-                                              on: {
-                                                input: function($event) {
-                                                  if ($event.target.composing) {
-                                                    return
-                                                  }
-                                                  _vm.$set(
-                                                    detail_income,
-                                                    "quantity",
-                                                    $event.target.value
-                                                  )
-                                                }
+                                                _vm.$set(
+                                                  detail,
+                                                  "quantity",
+                                                  $event.target.value
+                                                )
                                               }
-                                            })
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("td", [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(
-                                                  detail_income.price *
-                                                    detail_income.quantity
-                                                ) +
-                                                "\n                                                "
-                                            )
-                                          ])
-                                        ]
-                                      )
+                                            }
+                                          })
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: detail.discount,
+                                                expression: "detail.discount"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              value: "2"
+                                            },
+                                            domProps: {
+                                              value: detail.discount
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  detail,
+                                                  "discount",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(
+                                            "\n                                                    " +
+                                              _vm._s(
+                                                detail.price * detail.quantity
+                                              ) +
+                                              "\n                                                "
+                                          )
+                                        ])
+                                      ])
                                     }),
                                     _vm._v(" "),
                                     _c(
@@ -62665,7 +62730,7 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              _vm.closeFormIncome()
+                              _vm.closeFormSale()
                             }
                           }
                         },
@@ -62679,11 +62744,11 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              _vm.createIncome()
+                              _vm.createSale()
                             }
                           }
                         },
-                        [_vm._v("Registrar Ingreso")]
+                        [_vm._v("Registrar Venta")]
                       )
                     ])
                   ])
@@ -63216,6 +63281,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Cantidad")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Descuento")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Subtotal")])
       ])
     ])
@@ -63249,7 +63316,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("td", { attrs: { colspan: "5" } }, [
+      _c("td", { attrs: { colspan: "6" } }, [
         _vm._v(
           "\n                                                    No hay productos registrados\n                                                "
         )

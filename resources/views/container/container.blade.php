@@ -56,6 +56,7 @@
             <template v-if="menu==12">
                 <h2>Acerca de</h2>                  
             </template>
+            
         @elseif (Auth::user()->role_id == 2)
             <template v-if="menu==5">
                 <sale-component></sale-component>                     
@@ -74,7 +75,8 @@
 
             <template v-if="menu==12">
                 <h2>Acerca de</h2>                  
-            </template>   
+            </template> 
+
         @elseif (Auth::user()->role_id == 3)
             <template v-if="menu==1">
                <category-component></category-component>                  
