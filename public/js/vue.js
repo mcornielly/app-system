@@ -61436,25 +61436,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
-        selectProvider: function selectProvider(search, loading) {
+        selectClients: function selectClients(search, loading) {
             var me = this;
             loading(true);
 
-            var url = '/proveedor/seleccionar-proveedor?filter=' + search;
+            var url = '/cliente/seleccionar-cliente?filter=' + search;
             axios.get(url).then(function (response) {
 
                 var result = response.data;
                 q: search;
-                me.providers = result.providers;
+                me.clients = result.clients;
                 loading(false);
             }).catch(function (error) {
                 console.log(error);
             });
         },
-        getDataProviders: function getDataProviders(val1) {
+        getDataClients: function getDataClients(val1) {
             var me = this;
             me.loading = true;
-            me.provider_id = val1.id;
+            me.client_id = val1.id;
         },
         searchProduct: function searchProduct() {
             var me = this;

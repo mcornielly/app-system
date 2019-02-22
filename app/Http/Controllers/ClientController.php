@@ -44,6 +44,22 @@ class ClientController extends Controller
         ];
     }
 
+    public function select_client(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $filter = $request->filter;
+
+        $clients = Client::where('name', 'like', '%' . $filter . '%')
+            ->orWhere('num_document', 'like', '%' . $filter . '%')
+            ->select('clients.*')
+            ->orderBy('name', 'ASC')
+            ->get();
+
+            return ['clients' => $clients];
+
+            dd($clients); 
+    }
     /**
      * Show the form for creating a new resource.
      *

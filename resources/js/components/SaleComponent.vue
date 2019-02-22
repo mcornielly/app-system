@@ -517,16 +517,16 @@
     				console.log(error);
     			});
     		},
-            selectProvider(search, loading){
+            selectClients(search, loading){
                 let me = this;
                 loading(true)
 
-                var url = '/proveedor/seleccionar-proveedor?filter='+search;
+                var url = '/cliente/seleccionar-cliente?filter='+search;
                 axios.get(url).then(function (response){
 
                     var result = response.data;
                     q: search
-                    me.providers = result.providers;
+                    me.clients = result.clients;
                     loading(false)
 
 
@@ -534,10 +534,10 @@
                     console.log(error);
                 });
             },
-            getDataProviders(val1){
+            getDataClients(val1){
                 let me = this;
                 me.loading = true;
-                me.provider_id = val1.id;
+                me.client_id = val1.id;
             },
             searchProduct(){
                 let me = this;

@@ -66,8 +66,10 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::group(['middleware' => ['seller']], function(){
 		//Módulo de Clients
-		Route::resource('clientes', 			'ClientController');
-		Route::put('/clientes/actualizar', 		'ClientController@update');
+		Route::resource('clientes', 					'ClientController');
+		Route::put('/clientes/actualizar', 				'ClientController@update');
+		Route::get('/cliente/seleccionar-cliente', 	'ClientController@select_client');
+
 
 		//Módulo de Ventas
 		Route::resource('ventas', 				'SaleController');
@@ -81,8 +83,11 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::group(['middleware' => ['admin']], function(){
 
 		//Módulo de Clients
-		Route::resource('clientes', 			'ClientController');
-		Route::put('/clientes/actualizar', 		'ClientController@update');
+		Route::resource('clientes', 					'ClientController');
+		Route::put('/clientes/actualizar', 				'ClientController@update');
+		Route::get('/cliente/seleccionar-cliente', 	'ClientController@select_client');
+
+
 
 		//Módulo de Ventas
 		Route::resource('ventas', 				'SaleController');

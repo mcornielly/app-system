@@ -54,7 +54,7 @@ class ProviderController extends Controller
 
     public function select_provider(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $filter = $request->filter;
 
@@ -66,7 +66,6 @@ class ProviderController extends Controller
             ->get();
 
             return ['providers' => $providers]; 
-
     }
 
     /**
