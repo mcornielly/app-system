@@ -176,7 +176,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-comtrol">
-                                        <button @click="addClients()" class="btn btn-success form-control btnadd">
+                                        <button @click="addProducts()" class="btn btn-success form-control btnadd">
                                             <i class="icon-plus"></i>
                                         </button>
                                     </div>
@@ -191,7 +191,7 @@
                                                 <th>Producto</th>
                                                 <th>Precio</th>
                                                 <th>Cantidad</th>
-                                                <th>Descuento</th>
+                                                <th>Descuento(%)</th>
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>
@@ -208,26 +208,31 @@
                                                     <input v-model="detail.price" type="number" value="3" class="form-control">
                                                 </td>
                                                 <td>
+                                                    <span style="color:red;" v-if="detail.quantity>detail.stock">Stock: {{ detail.stock }}</span>
                                                     <input v-model="detail.quantity" type="number" value="2" class="form-control">
                                                 </td>
                                                 <td>
+                                                    <!-- <span style="color:red;" v-if="detail.discount>(detail.price*detail.quantity)">Descuento no ermitido</span> -->
                                                     <input v-model="detail.discount" type="number" value="2" class="form-control">
                                                 </td>
-                                                <td>
-                                                    {{ detail.price*detail.quantity }}
+                                                <td v-if="detail.discount==0">
+                                                    {{ (detail.price*detail.quantity-detail.discount).toFixed(2) }}
+                                                </td>
+                                                <td v-else>
+                                                    {{ (detail.price*detail.quantity-calculateDiscount).toFixed(2) }}
                                                 </td>
                                             </tr>
 
                                             <tr style="background-color: #CEECF5;">
-                                                <td colspan="4" class="text-right"><strong>Total Parcial</strong></td>
+                                                <td colspan="5" class="text-right"><strong>Total Parcial</strong></td>
                                                 <td>$ {{ total_partial = (total - total_tax).toFixed(2) }}</td>
                                             </tr>
                                             <tr style="background-color: #CEECF5;">
-                                                <td colspan="4" class="text-right"><strong>Total Impuesto</strong></td>
+                                                <td colspan="5" class="text-right"><strong>Total Impuesto</strong></td>
                                                 <td>$ {{ total_tax = ((total*tax)).toFixed(2) }}</td>
                                             </tr>
                                             <tr style="background-color: #CEECF5;">
-                                                <td colspan="4" class="text-right"><strong>Total Neto</strong></td>
+                                                <td colspan="5" class="text-right"><strong>Total Neto</strong></td>
                                                 <td>$ {{ total=calculateTotal }}</td>
                                             </tr>
                                         </tbody>
@@ -495,10 +500,17 @@
                 }
                 return pagesArray;
             },
+            calculateDiscount: function(){
+                var total_discount = 0.0;
+                // var i = 0;
+                    total_discount = this.detail_sales[0].price*this.detail_sales[0].quantity*(this.detail_sales[0].discount/100);
+
+                return total_discount;
+            },
             calculateTotal: function(){
                 var result = 0.0;
-                for(var i=0; i<this.detail_incomes.length; i++){
-                    result = result+(this.detail_incomes[i].price*this.detail_incomes[i].quantity)
+                for(var i=0; i<this.detail_sales.length; i++){
+                    result = result+(this.detail_sales[i].price*this.detail_sales[i].quantity-(this.detail_sales[i].price*this.detail_sales[i].quantity*(this.detail_sales[i].discount/100)))
                 }
                 return result;
             }
@@ -586,18 +598,30 @@
                             text: 'Este articulo se encuentra registrado..!'
                         })
                     }else{
-                        me.detail_incomes.push({
-                            product_id: me.product_id,
-                            product_name: me.product_name,
-                            quantity: me.quantity,
-                            price: me.price
-                        });
-                        me.code = '';
-                        me.product_name = '';
-                        me.product_id = 0;
-                        me.product_id = '';
-                        me.quantity = 0;
-                        me.price = 0;
+                        if(me.findProduct(me.quantity>me.stock)){
+                            swal({
+                                type: 'error',
+                                title: 'Error...',
+                                text: 'La cantidad no esta disponible..!'
+                            })
+                        }else{
+                            me.detail_sales.push({
+                                product_id: me.product_id,
+                                product_name: me.product_name,
+                                quantity: me.quantity,
+                                price: me.price,
+                                discount: me.discount,
+                                stock: me.stock
+                            });
+                            me.code = '';
+                            me.product_name = '';
+                            me.product_id = 0;
+                            me.product_id = '';
+                            me.quantity = 0;
+                            me.price = 0;
+                            me.discount = 0;
+                            me.stock = 0;
+                        }
                     }
                 }
             },
@@ -611,11 +635,14 @@
                             text: 'Este producto se encuentra registrado..!'
                         })
                 }else{
-                    me.detail_incomes.push({
+                    me.detail_sales.push({
                         product_id: data['id'],
                         product_name: data['name'],
                         quantity: 1,
-                        price: 1
+                        price: data['price'],
+                        discount: 0,
+                        stock: data['stock']
+
                     });
                 }
             },

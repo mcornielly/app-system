@@ -61336,6 +61336,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -61415,10 +61420,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             return pagesArray;
         },
+        calculateDiscount: function calculateDiscount() {
+            var total_discount = 0.0;
+            // var i = 0;
+            total_discount = this.detail_sales[0].price * this.detail_sales[0].quantity * (this.detail_sales[0].discount / 100);
+
+            return total_discount;
+        },
         calculateTotal: function calculateTotal() {
             var result = 0.0;
-            for (var i = 0; i < this.detail_incomes.length; i++) {
-                result = result + this.detail_incomes[i].price * this.detail_incomes[i].quantity;
+            for (var i = 0; i < this.detail_sales.length; i++) {
+                result = result + (this.detail_sales[i].price * this.detail_sales[i].quantity - this.detail_sales[i].price * this.detail_sales[i].quantity * (this.detail_sales[i].discount / 100));
             }
             return result;
         }
@@ -61499,18 +61511,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         text: 'Este articulo se encuentra registrado..!'
                     });
                 } else {
-                    me.detail_incomes.push({
-                        product_id: me.product_id,
-                        product_name: me.product_name,
-                        quantity: me.quantity,
-                        price: me.price
-                    });
-                    me.code = '';
-                    me.product_name = '';
-                    me.product_id = 0;
-                    me.product_id = '';
-                    me.quantity = 0;
-                    me.price = 0;
+                    if (me.findProduct(me.quantity > me.stock)) {
+                        swal({
+                            type: 'error',
+                            title: 'Error...',
+                            text: 'La cantidad no esta disponible..!'
+                        });
+                    } else {
+                        me.detail_sales.push({
+                            product_id: me.product_id,
+                            product_name: me.product_name,
+                            quantity: me.quantity,
+                            price: me.price,
+                            discount: me.discount,
+                            stock: me.stock
+                        });
+                        me.code = '';
+                        me.product_name = '';
+                        me.product_id = 0;
+                        me.product_id = '';
+                        me.quantity = 0;
+                        me.price = 0;
+                        me.discount = 0;
+                        me.stock = 0;
+                    }
                 }
             }
         },
@@ -61526,11 +61550,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     text: 'Este producto se encuentra registrado..!'
                 });
             } else {
-                me.detail_incomes.push({
+                me.detail_sales.push({
                     product_id: data['id'],
                     product_name: data['name'],
                     quantity: 1,
-                    price: 1
+                    price: data['price'],
+                    discount: 0,
+                    stock: data['stock']
+
                 });
             }
         },
@@ -62474,7 +62501,7 @@ var render = function() {
                             staticClass: "btn btn-success form-control btnadd",
                             on: {
                               click: function($event) {
-                                _vm.addClients()
+                                _vm.addProducts()
                               }
                             }
                           },
@@ -62571,6 +62598,21 @@ var render = function() {
                                         ]),
                                         _vm._v(" "),
                                         _c("td", [
+                                          detail.quantity > detail.stock
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticStyle: { color: "red" }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "Stock: " +
+                                                      _vm._s(detail.stock)
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e(),
+                                          _vm._v(" "),
                                           _c("input", {
                                             directives: [
                                               {
@@ -62636,15 +62678,33 @@ var render = function() {
                                           })
                                         ]),
                                         _vm._v(" "),
-                                        _c("td", [
-                                          _vm._v(
-                                            "\n                                                    " +
-                                              _vm._s(
-                                                detail.price * detail.quantity
-                                              ) +
-                                              "\n                                                "
-                                          )
-                                        ])
+                                        detail.discount == 0
+                                          ? _c("td", [
+                                              _vm._v(
+                                                "\n                                                    " +
+                                                  _vm._s(
+                                                    (
+                                                      detail.price *
+                                                        detail.quantity -
+                                                      detail.discount
+                                                    ).toFixed(2)
+                                                  ) +
+                                                  "\n                                                "
+                                              )
+                                            ])
+                                          : _c("td", [
+                                              _vm._v(
+                                                "\n                                                    " +
+                                                  _vm._s(
+                                                    (
+                                                      detail.price *
+                                                        detail.quantity -
+                                                      _vm.calculateDiscount
+                                                    ).toFixed(2)
+                                                  ) +
+                                                  "\n                                                "
+                                              )
+                                            ])
                                       ])
                                     }),
                                     _vm._v(" "),
@@ -63284,7 +63344,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Cantidad")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Descuento")]),
+        _c("th", [_vm._v("Descuento(%)")]),
         _vm._v(" "),
         _c("th", [_vm._v("Subtotal")])
       ])
@@ -63294,7 +63354,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right", attrs: { colspan: "4" } }, [
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "5" } }, [
       _c("strong", [_vm._v("Total Parcial")])
     ])
   },
@@ -63302,7 +63362,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right", attrs: { colspan: "4" } }, [
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "5" } }, [
       _c("strong", [_vm._v("Total Impuesto")])
     ])
   },
@@ -63310,7 +63370,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right", attrs: { colspan: "4" } }, [
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "5" } }, [
       _c("strong", [_vm._v("Total Neto")])
     ])
   },
