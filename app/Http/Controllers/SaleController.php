@@ -106,7 +106,7 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $mytime = Carbon::now('America/Caracas');
 
@@ -118,7 +118,7 @@ class SaleController extends Controller
 
             //Se registra los ingresos
             $sale = new Sale();
-            $sale->provider_id = $request->provider_id;
+            $sale->client_id = $request->client_id;
             $sale->user_id = \Auth::user()->id;
             $sale->type_voucher = $request->type_voucher;
             $sale->serie_voucher = $request->serie_voucher;

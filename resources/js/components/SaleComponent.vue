@@ -212,7 +212,7 @@
                                                     <input v-model="detail.quantity" type="number" value="2" class="form-control">
                                                 </td>
                                                 <td>
-                                                    <!-- <span style="color:red;" v-if="detail.discount>(detail.price*detail.quantity)">Descuento no ermitido</span> -->
+                                                    <span style="color:red;" v-if="detail.discount>(detail.price*detail.quantity)">Descuento no ermitido</span>
                                                     <input v-model="detail.discount" type="number" value="2" class="form-control">
                                                 </td>
                                                 <td v-if="detail.discount==0">
@@ -668,26 +668,26 @@
                 me.pagination.current_page = page;
                 me.lists_sale(page,search,criteria);
             },
-    		createIncome(){
-                if (this.validateIncome()){
+    		createSale(){
+                if (this.validateSale()){
                     return;
                 }
 
     			let me = this;
 
-                axios.post('ingresos',{
-                    'provider_id': this.provider_id,
+                axios.post('ventas',{
+                    'client_id': this.client_id,
                     'type_voucher': this.type_voucher,
                     'num_voucher': this.num_voucher,
                     'serie_voucher': this.serie_voucher,
                     'tax': this.tax,
                     'total': this.total,
-                    'data': this.detail_incomes
+                    'data': this.detail_sales
 
                 }).then(function (response){
     				me.list = 1;
-    				me.lists_income(1,'','num_voucher');
-                    me.provider_id = 0;
+    				me.lists_sale(1,'','num_voucher');
+                    me.client_id = 0;
                     me.type_voucher = 'Boleta';
                     me.serie_voucher = '';
                     me.num_voucher = '';
@@ -697,25 +697,36 @@
                     me.producto = '';
                     me.quantity = 0;
                     me.price = 0;
-                    me.detail_incomes = [];
+                    me.stock = 0;
+                    me.code = '';   
+                    me.detail_sales = [];
 
     			}).catch(function (error){
     				console.log(error);
                 });
             },
-            validateIncome(){
-                this.errorSale = 0;
-                this.errorShowSale = [];
+            validateSale(){
+                let me=this;
+                me.errorSale = 0;
+                me.errorShowSale = [];
+                var prod_error;
 
-                if(this.provider_id==0) this.errorShowIncome.push("Seleccione un Proveedor");
-                if(this.type_document==0) this.errorShowIncome.push("Seleccione el Comprobante");
-                if(!this.num_voucher) this.errorShowIncome.push("Ingrese el número de Comprobante");
-                if(!this.tax) this.errorShowIncome.push("Ingrese el Impuesto de Compra");
-                if(this.detail_incomes.length<=0) this.errorShowIncome.push("Ingrese Detalle");
+                me.detail_sales.map(function(x){
+                    if(x.quantity>x.stock){
+                        prod_error = x.product_name + " con stock insuficiente.";
+                        me.errorShowSale.push(prod_error);    
+                    }
+                });
 
-                if(this.errorShowIncome.length) this.errorSale = 1;
+                if(me.client_id==0) me.errorShowSale.push("Seleccione un Cliente");
+                if(me.type_document==0) me.errorShowSale.push("Seleccione el Comprobante");
+                if(!me.num_voucher) me.errorShowSale.push("Ingrese el número de Comprobante");
+                if(!me.tax) me.errorShowSale.push("Ingrese el Impuesto de Compra");
+                if(me.detail_sales.length<=0) me.errorShowSale.push("Ingrese Detalle");
 
-                return this.errorSale;
+                if(me.errorShowSale.length) me.errorSale = 1;
+
+                return me.errorSale;
             },
             showFormSale(){
                 let me = this;
