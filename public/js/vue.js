@@ -61380,7 +61380,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             product_name: '',
             price: 0,
             quantity: 0,
-            discount: 0
+            discount: 0,
+            stock: 0
         };
     },
 
@@ -61458,7 +61459,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         searchProduct: function searchProduct() {
             var me = this;
-            var url = '/producto/buscar-producto?filter=' + me.code;
+            var url = '/producto/buscar-producto-venta?filter=' + me.code;
 
             axios.get(url).then(function (response) {
                 var result = response.data;
@@ -61467,6 +61468,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (me.product.length > 0) {
                     me.product_name = me.product[0]['name'];
                     me.product_id = me.product[0]['id'];
+                    me.price = me.product[0]['price'];
+                    me.stock = me.product[0]['stock'];
                 } else {
                     me.product_name = "No existe producto";
                     me.product_id = 0;
@@ -61533,7 +61536,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         lists_products: function lists_products(search, criteria) {
             var me = this;
-            var url = '/producto/listar-productos?search=' + search + '&criteria=' + criteria;
+            var url = '/producto/listar-productos-venta?search=' + search + '&criteria=' + criteria;
             axios.get(url).then(function (response) {
 
                 var result = response.data;
@@ -61587,8 +61590,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         validateIncome: function validateIncome() {
-            this.errorIncome = 0;
-            this.errorShowIncome = [];
+            this.errorSale = 0;
+            this.errorShowSale = [];
 
             if (this.provider_id == 0) this.errorShowIncome.push("Seleccione un Proveedor");
             if (this.type_document == 0) this.errorShowIncome.push("Seleccione el Comprobante");
@@ -61596,9 +61599,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.tax) this.errorShowIncome.push("Ingrese el Impuesto de Compra");
             if (this.detail_incomes.length <= 0) this.errorShowIncome.push("Ingrese Detalle");
 
-            if (this.errorShowIncome.length) this.errorIncome = 1;
+            if (this.errorShowIncome.length) this.errorSale = 1;
 
-            return this.errorIncome;
+            return this.errorSale;
         },
         showFormSale: function showFormSale() {
             var me = this;
@@ -61725,8 +61728,8 @@ var render = function() {
             {
               name: "show",
               rawName: "v-show",
-              value: _vm.errorIncome,
-              expression: "errorIncome"
+              value: _vm.errorSale,
+              expression: "errorSale"
             }
           ],
           staticClass: "alert alert-danger",

@@ -73,6 +73,32 @@ class ProductController extends Controller
         return ['products' => $products];
     }
 
+    public function list_product_sale(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+
+        $search = $request->search;
+        $criteria = $request->criteria;
+
+        if($search==''){
+            $products = Product::join('categories','products.category_id','categories.id')
+                ->select('products.*','categories.name as category_name')
+                ->where('stock', '>', '0')
+                ->orderBy('products.id', 'DESC')->paginate(10);
+        }
+        else
+        {
+
+            $products = Product::join('categories','products.category_id','categories.id')
+                ->select('products.*','categories.name as category_name')
+                ->where('products.'.$criteria, 'like', '%' . $search . '%')
+                ->where('stock', '>', '0')
+                ->orderBy('products.id', 'DESC')->paginate(10);              
+        }    
+
+        
+        return ['products' => $products];
+    }
 
     public function search_product(Request $request)
     {
@@ -86,6 +112,21 @@ class ProductController extends Controller
  
             return ['product' => $product];
     }
+
+    public function search_product_sale(Request $request)
+    {
+        if(!$request->ajax()) return('/');
+
+        $filter = $request->filter;
+        $product = Product::where('code', $filter)
+            ->select('id', 'name', 'stock', 'price')
+            ->where('stock', '>', '0')
+            ->orderBy('name', 'ASC')
+            ->take(1)->get();
+ 
+            return ['product' => $product];
+    }
+
     /**
      * Show the form for creating a new resource.
      *

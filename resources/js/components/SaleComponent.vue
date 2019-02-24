@@ -8,7 +8,7 @@
             </ol>
             <div class="container-fluid">
                 
-                    <div class="alert alert-danger" role="alert" v-show="errorIncome">
+                    <div class="alert alert-danger" role="alert" v-show="errorSale">
                        <div v-for="error in errorShowSale" :key="error">
                             <strong class="text-danger" v-text="error"></strong>
                        </div>
@@ -461,7 +461,8 @@
                 product_name: '',
                 price: 0,
                 quantity: 0,
-                discount: 0
+                discount: 0, 
+                stock: 0
     		}
     	},
         components:{
@@ -541,7 +542,7 @@
             },
             searchProduct(){
                 let me = this;
-                var url = '/producto/buscar-producto?filter='+me.code;
+                var url = '/producto/buscar-producto-venta?filter='+me.code;
 
                 axios.get(url).then(function(response){
                     var result = response.data;
@@ -550,6 +551,8 @@
                     if(me.product.length>0){
                         me.product_name = me.product[0]['name'];
                         me.product_id = me.product[0]['id'];
+                        me.price = me.product[0]['price'];
+                        me.stock = me.product[0]['stock'];
                     }else{
                         me.product_name = "No existe producto";
                         me.product_id = 0;
@@ -618,7 +621,7 @@
             },
             lists_products(search,criteria){
                 let me = this;
-                var url = '/producto/listar-productos?search='+ search + '&criteria='+ criteria;
+                var url = '/producto/listar-productos-venta?search='+ search + '&criteria='+ criteria;
                 axios.get(url).then(function (response){
 
                     var result = response.data;
@@ -674,8 +677,8 @@
                 });
             },
             validateIncome(){
-                this.errorIncome = 0;
-                this.errorShowIncome = [];
+                this.errorSale = 0;
+                this.errorShowSale = [];
 
                 if(this.provider_id==0) this.errorShowIncome.push("Seleccione un Proveedor");
                 if(this.type_document==0) this.errorShowIncome.push("Seleccione el Comprobante");
@@ -683,9 +686,9 @@
                 if(!this.tax) this.errorShowIncome.push("Ingrese el Impuesto de Compra");
                 if(this.detail_incomes.length<=0) this.errorShowIncome.push("Ingrese Detalle");
 
-                if(this.errorShowIncome.length) this.errorIncome = 1;
+                if(this.errorShowIncome.length) this.errorSale = 1;
 
-                return this.errorIncome;
+                return this.errorSale;
             },
             showFormSale(){
                 let me = this;

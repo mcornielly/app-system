@@ -70,6 +70,9 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/clientes/actualizar', 				'ClientController@update');
 		Route::get('/cliente/seleccionar-cliente', 	'ClientController@select_client');
 
+		//Módulo de Ventas, para mostrar los productos.
+		Route::get('/producto/buscar-producto-venta',	'ProductController@search_product_sale');
+		Route::get('/producto/listar-productos-venta','ProductController@list_product_sale');
 
 		//Módulo de Ventas
 		Route::resource('ventas', 				'SaleController');
@@ -86,8 +89,6 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::resource('clientes', 					'ClientController');
 		Route::put('/clientes/actualizar', 				'ClientController@update');
 		Route::get('/cliente/seleccionar-cliente', 	'ClientController@select_client');
-
-
 
 		//Módulo de Ventas
 		Route::resource('ventas', 				'SaleController');
@@ -109,6 +110,9 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/producto/activar', 		'ProductController@enable');
 		Route::get('/producto/buscar-producto',	'ProductController@search_product');
 		Route::get('/producto/listar-productos','ProductController@list_product');
+		Route::get('/producto/buscar-producto-venta',	'ProductController@search_product_sale');
+		Route::get('/producto/listar-productos-venta','ProductController@list_product_sale');
+
 
 		//Módulo de Providers
 		Route::resource('proveedores', 			'ProviderController');
