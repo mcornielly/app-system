@@ -59,18 +59,17 @@ class SaleController extends Controller
     {
         if(!$request->ajax()) return redirect('/');
 
-        $id = $request->id;
+        $id = $request->id;                  
 
-        $sales = Sale::join('clients','sales.clients_id','clients.id')
+        $sale = Sale::join('clients','sales.client_id','clients.id')
                     ->join('users', 'sales.user_id', 'users.id')
                     ->select('sales.*','clients.name', 'users.user_name')
                     ->where('sales.id', $id) 
                     ->orderBy('sales.id', 'DESC')
-                    ->take(1)->get();       
-
-        return ['sales' => $sales];
+                    ->take(1)->get();
 
 
+        return ['sale' => $sale];
     }
 
     public function get_detail(Request $request)
@@ -83,7 +82,7 @@ class SaleController extends Controller
                     ->select('detail_sales.*','products.name as product_name')
                     ->where('detail_sales.sale_id', $id) 
                     ->orderBy('detail_sales.id', 'DESC')
-                    ->take(1)->get();
+                    ->get();
         
         return ['datailsales' => $datailsales];
     }

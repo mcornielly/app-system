@@ -61341,6 +61341,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -61348,7 +61351,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             sale_id: 0,
             client_id: 0,
-            client_name: '',
+            name: '',
             type_voucher: 'Boleta',
             serie_voucher: '',
             num_voucher: '',
@@ -61493,8 +61496,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         findProduct: function findProduct(id) {
             var sw = 0;
 
-            for (var i = 0; i < this.detail_incomes.length; i++) {
-                if (this.detail_incomes[i].product_id == id) {
+            for (var i = 0; i < this.detail_sales.length; i++) {
+                if (this.detail_sales[i].product_id == id) {
                     sw = true;
                 }
             }
@@ -61574,7 +61577,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         deleteProduct: function deleteProduct(index) {
             var me = this;
-            me.detail_incomes.splice(index, 1);
+            me.detail_sales.splice(index, 1);
         },
         nextPage: function nextPage(page, search, criteria) {
             var me = this;
@@ -61655,9 +61658,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             me.producto = '';
             me.quantity = 0;
             me.price = 0;
-            me.detail_incomes = [];
+            me.detail_sales = [];
         },
         closeFormSale: function closeFormSale() {
+            var me = this;
             this.list = 1;
         },
         showSale: function showSale(id) {
@@ -61665,32 +61669,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             me.list = 2;
 
             //obtener los datos del ingreso
-            var arrayincomeT = [];
+            var arraysaleT = [];
 
-            var url = '/ingreso/detalle_ingreso?id=' + id;
+            var url = '/venta/detalle_venta?id=' + id;
 
             axios.get(url).then(function (response) {
 
                 var result = response.data;
-                arrayincomeT = result.incomes;
 
-                me.name = arrayincomeT[0]['name'];
-                me.type_voucher = arrayincomeT[0]['type_voucher'];
-                me.serie_voucher = arrayincomeT[0]['serie_voucher'];
-                me.num_voucher = arrayincomeT[0]['num_voucher'];
-                me.tax = arrayincomeT[0]['tax'];
-                me.total = arrayincomeT[0]['total'];
+                arraysaleT = result.sale;
+
+                me.name = arraysaleT[0]['name'];
+                me.type_voucher = arraysaleT[0]['type_voucher'];
+                me.serie_voucher = arraysaleT[0]['serie_voucher'];
+                me.num_voucher = arraysaleT[0]['num_voucher'];
+                me.tax = arraysaleT[0]['tax'];
+                me.total = arraysaleT[0]['total'];
             }).catch(function (error) {
                 console.log(error);
             });
 
-            //obtener los datos del detalle
-            var urld = '/ingreso/detalle_producto?id=' + id;
+            // //obtener los datos del detalle
+            var urld = '/venta/detalle_producto?id=' + id;
 
             axios.get(urld).then(function (response) {
 
                 var result = response.data;
-                me.detail_incomes = result.detailincomes;
+                me.detail_sales = result.datailsales;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -62849,7 +62854,7 @@ var render = function() {
                     _c("div", { staticClass: "col-md-9" }, [
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", { attrs: { for: "" } }, [
-                          _vm._v("Proveedor")
+                          _vm._v("Cliente")
                         ]),
                         _vm._v(" "),
                         _c("p", { domProps: { textContent: _vm._s(_vm.name) } })
@@ -62914,55 +62919,50 @@ var render = function() {
                           [
                             _vm._m(7),
                             _vm._v(" "),
-                            _vm.detail_incomes.length
+                            _vm.detail_sales.length
                               ? _c(
                                   "tbody",
                                   [
-                                    _vm._l(_vm.detail_incomes, function(
-                                      detail_income
-                                    ) {
-                                      return _c(
-                                        "tr",
-                                        { key: detail_income.id },
-                                        [
-                                          _c("td", {
-                                            domProps: {
-                                              textContent: _vm._s(
-                                                detail_income.product_name
-                                              )
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("td", {
-                                            domProps: {
-                                              textContent: _vm._s(
-                                                detail_income.price
-                                              )
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("td", {
-                                            domProps: {
-                                              textContent: _vm._s(
-                                                detail_income.quantity
-                                              )
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("td", [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(
-                                                  (
-                                                    detail_income.price *
-                                                    detail_income.quantity
-                                                  ).toFixed(2)
-                                                ) +
-                                                "\n                                                "
+                                    _vm._l(_vm.detail_sales, function(detail) {
+                                      return _c("tr", { key: detail.id }, [
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              detail.product_name
                                             )
-                                          ])
-                                        ]
-                                      )
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(detail.price)
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(detail.discount)
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(detail.quantity)
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(
+                                            "\n                                                    " +
+                                              _vm._s(
+                                                (
+                                                  detail.price * detail.quantity
+                                                ).toFixed(2)
+                                              ) +
+                                              "\n                                                "
+                                          )
+                                        ])
+                                      ])
                                     }),
                                     _vm._v(" "),
                                     _c(
@@ -63424,6 +63424,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Cantidad")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Descuento")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Subtotal")])
       ])
     ])
@@ -63432,7 +63434,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right", attrs: { colspan: "3" } }, [
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "4" } }, [
       _c("strong", [_vm._v("Total Parcial")])
     ])
   },
@@ -63440,7 +63442,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right", attrs: { colspan: "3" } }, [
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "4" } }, [
       _c("strong", [_vm._v("Total Impuesto")])
     ])
   },
@@ -63448,7 +63450,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right", attrs: { colspan: "3" } }, [
+    return _c("td", { staticClass: "text-right", attrs: { colspan: "4" } }, [
       _c("strong", [_vm._v("Total Neto")])
     ])
   },
@@ -63457,7 +63459,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("td", { attrs: { colspan: "4" } }, [
+      _c("td", { attrs: { colspan: "5" } }, [
         _vm._v(
           "\n                                                    No hay productos registrados\n                                                "
         )

@@ -22,7 +22,7 @@
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
-                    <!-- Lista de Ingresos -->
+                    <!-- Lista de Ventas -->
                     <template v-if="list==1">
                         <div class="card-body">
                             <div class="form-group row">
@@ -103,8 +103,8 @@
                             </nav>
                         </div>
                     </template>
-                    <!-- Fin Lista de Ingresos -->
-                    <!-- Formulario de Detalle de Ingresos -->
+                    <!-- Fin Lista de Ventas -->
+                    <!-- Formulario de Detalle de Ventas -->
                     <template v-else-if="list==0">
                         <div class="card-body">
                             <div class="form-group row border">
@@ -254,14 +254,14 @@
                            </div>
                         </div>
                     </template>
-                    <!-- Fin Formulario de Detalle de Ingresos -->
-                    <!-- Mostrar Ingresos -->
+                    <!-- Fin Formulario de Detalle de Ventas -->
+                    <!-- Mostrar Ventas -->
                     <template v-else="list==2">
                         <div class="card-body">
                             <div class="form-group row border">
                                 <div class="col-md-9">
                                     <div class="form-group">
-                                       <label for="">Proveedor</label>
+                                       <label for="">Cliente</label>
                                        <p v-text="name"></p>                                     
                                     </div>
                                 </div>
@@ -294,38 +294,41 @@
                                                 <th>Producto</th>
                                                 <th>Precio</th>
                                                 <th>Cantidad</th>
+                                                <th>Descuento</th>
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-if="detail_incomes.length">
-                                            <tr v-for="detail_income in detail_incomes" :key="detail_income.id">
-                                                <td v-text="detail_income.product_name">
+                                        <tbody v-if="detail_sales.length">
+                                            <tr v-for="detail in detail_sales" :key="detail.id">
+                                                <td v-text="detail.product_name">
                                                 </td>
-                                                <td v-text="detail_income.price">
+                                                <td v-text="detail.price">
                                                 </td>
-                                                <td v-text="detail_income.quantity">
+                                                <td v-text="detail.discount">
+                                                </td>
+                                                <td v-text="detail.quantity">
                                                 </td>
                                                 <td>
-                                                    {{ (detail_income.price*detail_income.quantity).toFixed(2) }}
+                                                    {{ (detail.price*detail.quantity).toFixed(2) }}
                                                 </td>
                                             </tr>
 
                                             <tr style="background-color: #CEECF5;">
-                                                <td colspan="3" class="text-right"><strong>Total Parcial</strong></td>
+                                                <td colspan="4" class="text-right"><strong>Total Parcial</strong></td>
                                                 <td>$ {{ total_partial = (total - total_tax).toFixed(2) }}</td>
                                             </tr>
                                             <tr style="background-color: #CEECF5;">
-                                                <td colspan="3" class="text-right"><strong>Total Impuesto</strong></td>
+                                                <td colspan="4" class="text-right"><strong>Total Impuesto</strong></td>
                                                 <td>$ {{ total_tax = ((total*tax)).toFixed(2) }}</td>
                                             </tr>
                                             <tr style="background-color: #CEECF5;">
-                                                <td colspan="3" class="text-right"><strong>Total Neto</strong></td>
+                                                <td colspan="4" class="text-right"><strong>Total Neto</strong></td>
                                                 <td>$ {{ total }}</td>
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
                                             <tr>
-                                                <td colspan="4">
+                                                <td colspan="5">
                                                     No hay productos registrados
                                                 </td>
                                             </tr>
@@ -340,7 +343,7 @@
                            </div>
                         </div>
                     </template>
-                    <!-- Fin Mostrar Ingresos -->
+                    <!-- Fin Mostrar Ventas -->
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
@@ -429,7 +432,7 @@
     		return{
                 sale_id: 0,
                 client_id: 0,
-                client_name: '',
+                name: '',
     			type_voucher: 'Boleta',
                 serie_voucher: '',
                 num_voucher: '',
@@ -577,8 +580,8 @@
             findProduct(id){
                 var sw=0;
 
-                for(var i=0; i<this.detail_incomes.length; i++){
-                    if(this.detail_incomes[i].product_id==id){
+                for(var i=0; i<this.detail_sales.length; i++){
+                    if(this.detail_sales[i].product_id==id){
                         sw=true;
                     }
                 }
@@ -660,7 +663,7 @@
             },
             deleteProduct(index){
                 let me = this;
-                me.detail_incomes.splice(index,1);
+                me.detail_sales.splice(index,1);
             },
             nextPage(page,search,criteria){
                 let me = this;
@@ -742,48 +745,49 @@
                 me.producto = '';
                 me.quantity = 0;
                 me.price = 0;
-                me.detail_incomes = [];
+                me.detail_sales = [];
             },
             closeFormSale(){
-                this.list = 1;
+                let me = this;
+                this.list = 1;               
             },
             showSale(id){
                 let me=this;
                 me.list = 2;
 
                 //obtener los datos del ingreso
-                var arrayincomeT = [];
+                var arraysaleT = [];
 
-                var url = '/ingreso/detalle_ingreso?id=' + id;
+                var url = '/venta/detalle_venta?id=' + id;
 
                 axios.get(url).then(function (response){
 
                     var result = response.data;
-                    arrayincomeT = result.incomes;
 
-                    me.name = arrayincomeT[0]['name'];
-                    me.type_voucher = arrayincomeT[0]['type_voucher'];
-                    me.serie_voucher = arrayincomeT[0]['serie_voucher'];
-                    me.num_voucher = arrayincomeT[0]['num_voucher'];
-                    me.tax = arrayincomeT[0]['tax'];
-                    me.total = arrayincomeT[0]['total'];
+                    arraysaleT = result.sale;
+                    
+                    me.name = arraysaleT[0]['name'];
+                    me.type_voucher = arraysaleT[0]['type_voucher'];
+                    me.serie_voucher = arraysaleT[0]['serie_voucher'];
+                    me.num_voucher = arraysaleT[0]['num_voucher'];
+                    me.tax = arraysaleT[0]['tax'];
+                    me.total = arraysaleT[0]['total'];
 
                 }).catch(function (error){
                     console.log(error);
                 });    
 
-                //obtener los datos del detalle
-                var urld = '/ingreso/detalle_producto?id=' + id;
+                // //obtener los datos del detalle
+                var urld = '/venta/detalle_producto?id=' + id;
 
                 axios.get(urld).then(function (response){
 
                     var result = response.data;
-                    me.detail_incomes = result.detailincomes;
+                    me.detail_sales = result.datailsales;
 
                 }).catch(function (error){
                     console.log(error);
                 });     
-
             },
             disableSale(id){
 
