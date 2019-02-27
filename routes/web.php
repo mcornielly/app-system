@@ -20,8 +20,6 @@ Route::group(['middleware' => ['guest']], function(){
 
 });
 
-
-
 Route::group(['middleware' => ['auth']], function(){
 
 	Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
@@ -47,6 +45,7 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/producto/activar', 		'ProductController@enable');
 		Route::get('/producto/buscar-producto',	'ProductController@search_product');
 		Route::get('/producto/listar-productos','ProductController@list_product');
+		Route::get('/producto/listar-pdf',		'ProductController@list_pdf')->name('products_pdf');
 		
 
 		//Módulo de Providers
@@ -92,7 +91,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 		//Módulo de Ventas
 		Route::resource('ventas', 				'SaleController');
-		Route::put('/ventas/desactivar', 		'SaleController@disable');
+		Route::put('/venta/desactivar', 		'SaleController@disable');
 		Route::get('/venta/detalle_venta', 		'SaleController@get_header');
 		Route::get('/venta/detalle_producto', 	'SaleController@get_detail');  
 
@@ -111,7 +110,8 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::get('/producto/buscar-producto',	'ProductController@search_product');
 		Route::get('/producto/listar-productos','ProductController@list_product');
 		Route::get('/producto/buscar-producto-venta',	'ProductController@search_product_sale');
-		Route::get('/producto/listar-productos-venta','ProductController@list_product_sale');
+		Route::get('/producto/listar-productos-venta',	'ProductController@list_product_sale');
+		Route::get('/producto/listar-pdf',				'ProductController@list_pdf')->name('products_pdf');
 
 
 		//Módulo de Providers

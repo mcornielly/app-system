@@ -50169,6 +50169,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -50449,6 +50452,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         this.selectCategory();
                     }
             }
+        },
+        loadpdf: function loadpdf() {
+            window.open('http://localhost:8000/producto/listar-pdf', '_blank');
         }
     },
     mounted: function mounted() {
@@ -53109,6 +53115,23 @@ var render = function() {
             [
               _c("i", { staticClass: "icon-plus" }),
               _vm._v(" Nuevo\n                ")
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-info",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  _vm.loadpdf()
+                }
+              }
+            },
+            [
+              _c("i", { staticClass: "icon-doc" }),
+              _vm._v(" Reporte\n                ")
             ]
           )
         ]),
@@ -61710,7 +61733,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             swalWithBootstrapButtons({
-                title: 'Esta seguro que desea anular este Ingreso?',
+                title: 'Esta seguro que desea anular esta venta?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si, Anular!',
@@ -61721,12 +61744,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     var me = _this;
 
-                    axios.put('/ingreso/desactivar', {
+                    axios.put('/venta/desactivar', {
                         'id': id
                     }).then(function (response) {
-                        me.lists_income(1, '', 'num_voucher');
+                        me.lists_sale(1, '', 'num_voucher');
 
-                        swalWithBootstrapButtons('Desactivado!', 'El Ingreso fue Anulado con éxito}..!', 'success');
+                        swalWithBootstrapButtons('Desactivado!', 'La Venta fue anulada con éxito}..!', 'success');
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -63045,7 +63068,7 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              _vm.closeFormIncome()
+                              _vm.closeFormSale()
                             }
                           }
                         },

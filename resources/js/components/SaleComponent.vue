@@ -338,7 +338,7 @@
                            </div> 
                            <div class="form-group row">
                                <div class="col-md-12">
-                                   <button type="button" class="btn btn-secondary" @click="closeFormIncome()">Cerrar</button>
+                                   <button type="button" class="btn btn-secondary" @click="closeFormSale()">Cerrar</button>
                                </div>
                            </div>
                         </div>
@@ -798,7 +798,7 @@
                 })
 
                 swalWithBootstrapButtons({
-                  title: 'Esta seguro que desea anular este Ingreso?',
+                  title: 'Esta seguro que desea anular esta venta?',
                   type: 'warning',
                   showCancelButton: true,
                   confirmButtonText: 'Si, Anular!',
@@ -809,14 +809,14 @@
 
                         let me = this;
 
-                        axios.put('/ingreso/desactivar',{
+                        axios.put('/venta/desactivar',{
                             'id': id
                         }).then(function (response){
-                            me.lists_income(1,'','num_voucher');
+                            me.lists_sale(1,'','num_voucher');
 
                             swalWithBootstrapButtons(
                               'Desactivado!',
-                              'El Ingreso fue Anulado con éxito}..!',
+                              'La Venta fue anulada con éxito}..!',
                               'success'
                             )
                         }).catch(function (error){

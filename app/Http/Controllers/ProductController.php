@@ -73,6 +73,27 @@ class ProductController extends Controller
         return ['products' => $products];
     }
 
+    public function list_pdf()
+    {
+        $products = Product::join('categories','products.category_id','categories.id')
+                ->select('products.*','categories.name as category_name')
+                ->orderBy('products.name', 'DESC')
+                ->get();
+
+        $count_products = Product::count();
+        
+        //Vista en el explorador 
+        $view = \View::make('pdf.productspdf', compact('products', 'count_products'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
+        return $pdf->stream('productspdf');
+
+        //Vista del pdf descargada.
+        // $pdf = \PDF::loadView('pdf.productspdf', ['products' => $products, 'count_products' => $count_products]);
+        // return $pdf->download('products.pdf');         
+
+    }
+
     public function list_product_sale(Request $request)
     {
         if(!$request->ajax()) return redirect('/');

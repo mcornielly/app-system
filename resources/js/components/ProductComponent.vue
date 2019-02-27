@@ -13,6 +13,9 @@
                         <button type="button" class="btn btn-secondary" @click="openModal('product', 'store')">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
+                        <button type="button" class="btn btn-info" @click="loadpdf()">
+                            <i class="icon-doc"></i>&nbsp;Reporte
+                        </button>
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
@@ -358,7 +361,6 @@ import VueBarcode from 'vue-barcode';
                   ) {
                   }
                 })
-
             },
             disableProduct(id){
 
@@ -468,7 +470,10 @@ import VueBarcode from 'vue-barcode';
     					this.selectCategory();
     				}
     			}
-    		}
+    		},
+            loadpdf(){
+                window.open('/producto/listar-pdf', '_blank');
+            }
     	},
         mounted() {
             this.lists_products(1,this.search,this.criteria);
