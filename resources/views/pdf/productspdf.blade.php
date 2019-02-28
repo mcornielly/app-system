@@ -5,9 +5,9 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">  
 	<title>Reporte de Productos</title>
 	<!-- Main styles for this application -->
-    <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/pdf.css') }}" rel="stylesheet"> --}}
     {{-- {!! Html::style('css/pdf.css') !!} --}}
-{{-- 	<style>
+	<style>
 		body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -81,7 +81,7 @@
         .derecha{
             float:right;
         }
-	</style> --}}
+	</style>
 </head>
 <body>
 	<div>

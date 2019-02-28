@@ -50454,7 +50454,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         loadpdf: function loadpdf() {
-            window.open('http://localhost:8000/producto/listar-pdf', '_blank');
+            window.open('/producto/listar-pdf', '_blank');
         }
     },
     mounted: function mounted() {
@@ -61367,6 +61367,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -61516,6 +61519,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
+        pdfSale: function pdfSale(id) {
+            window.open('/venta/pdf/' + id + ',' + '_blank');
+        },
         findProduct: function findProduct(id) {
             var sw = 0;
 
@@ -61640,6 +61646,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 me.stock = 0;
                 me.code = '';
                 me.detail_sales = [];
+                window.open('/venta/pdf/' + response.data.id + ',' + '_blank');
             }).catch(function (error) {
                 console.log(error);
             });
@@ -61975,6 +61982,22 @@ var render = function() {
                                       }
                                     },
                                     [_c("i", { staticClass: "icon-eye" })]
+                                  ),
+                                  _vm._v(
+                                    "  \n                                                "
+                                  ),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-info btn-sm",
+                                      attrs: { type: "button", title: "PDF" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.pdfSale(sale.id)
+                                        }
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "icon-doc" })]
                                   ),
                                   _vm._v(
                                     "  \n                                                "

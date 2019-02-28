@@ -87,6 +87,29 @@ class SaleController extends Controller
         return ['datailsales' => $datailsales];
     }
 
+    public function invoice_pdf(Request $request, $id)
+    {
+        $sale = Sale::join('clients', 'sales.client_id', 'clients.id')
+                ->join('users', 'sales.user_id', 'users.id')
+                ->select('sales.*', 'clients.name', 'clients.type_document', 'clients.num_document', 'clients.address', 'clients.email', 'clients.num_phone', 'users.user_name')
+                ->where('sales.id', $id)
+                ->orderBy('sales.id', 'DESC')
+                ->take(1)->get();       
+
+        $detail_sale = DetailSale::join('products', 'detail_sales.product_id', 'products.id')
+                ->SELECT('detail_sales.*', 'products.name as product_name')
+                ->where('detail_sales.sale_id', $id)
+                ->orderBy('detail_sales.id', 'DESC')
+                ->get();
+
+
+        $num_sale = Sale::select('num_voucher')->where('id', $id)->get();
+        
+        $pdf = \PDF::loadView('pdf.salespdf', compact('sale', 'detail_sale', 'num_document'));
+
+        return $pdf->download('venta - '.$num_sale[0]->num_voucher.'.pdf');               
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -145,6 +168,10 @@ class SaleController extends Controller
             }
 
             DB::commit();
+
+            return [
+                'id' => $sale->id
+            ];
 
         } catch (Exception $e){
             DB::rollBack();

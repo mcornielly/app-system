@@ -60,6 +60,9 @@
                                                 <button type="button" @click="showSale(sale.id)" class="btn btn-success btn-sm" title="Ver">
                                                   <i class="icon-eye"></i>
                                                 </button> &nbsp;
+                                                <button type="button" @click="pdfSale(sale.id)" class="btn btn-info btn-sm" title="PDF">
+                                                  <i class="icon-doc"></i>
+                                                </button> &nbsp;
                                                 <template v-if="sale.state=='Registrado'">
                                                     <button type="button" class="btn btn-danger btn-sm" @click="disableSale(sale.id)" title="Anular">
                                                       <i class="icon-trash"></i>
@@ -577,6 +580,9 @@
                     console.log(error);
                 });
             },
+            pdfSale(id){
+                window.open('/venta/pdf/' + id + ',' + '_blank');
+            },
             findProduct(id){
                 var sw=0;
 
@@ -703,6 +709,7 @@
                     me.stock = 0;
                     me.code = '';   
                     me.detail_sales = [];
+                    window.open('/venta/pdf/' + response.data.id + ',' + '_blank');
 
     			}).catch(function (error){
     				console.log(error);

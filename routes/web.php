@@ -76,8 +76,9 @@ Route::group(['middleware' => ['auth']], function(){
 		//Módulo de Ventas
 		Route::resource('ventas', 				'SaleController');
 		Route::put('/ventas/desactivar', 		'SaleController@disable');
-		Route::get('/venta/detalle_venta', 	'SaleController@get_header');
+		Route::get('/venta/detalle_venta', 		'SaleController@get_header');
 		Route::get('/venta/detalle_producto', 	'SaleController@get_detail'); 
+		Route::get('/venta/pdf/{id}', 			'SaleController@invoice_pdf')->name('sale_pdf');
 
 	});
 
@@ -93,7 +94,9 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::resource('ventas', 				'SaleController');
 		Route::put('/venta/desactivar', 		'SaleController@disable');
 		Route::get('/venta/detalle_venta', 		'SaleController@get_header');
-		Route::get('/venta/detalle_producto', 	'SaleController@get_detail');  
+		Route::get('/venta/detalle_producto', 	'SaleController@get_detail');
+		Route::get('/venta/pdf/{id}', 			'SaleController@invoice_pdf')->name('sale_pdf');
+
 
 		//Módulo de Categorias
 		Route::resource('categorias', 			'CategoryController');
