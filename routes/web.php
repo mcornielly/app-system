@@ -18,6 +18,9 @@ Route::group(['middleware' => ['guest']], function(){
 	Route::get('/', 'Auth\LoginController@showLoginForm');
 	Route::post('/login', 'Auth\LoginController@login')->name('login');
 
+	//Dashboard
+	Route::get('/dashboard', 'DashboardController');
+
 });
 
 Route::group(['middleware' => ['auth']], function(){
@@ -59,6 +62,9 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::get('/ingreso/detalle_ingreso', 'IncomeController@get_header');
 		Route::get('/ingreso/detalle_producto', 'IncomeController@get_detail');
 
+		//Dashboard
+		Route::get('/dashboard', 'DashboardController');
+
 
 		
 	});
@@ -79,6 +85,10 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::get('/venta/detalle_venta', 		'SaleController@get_header');
 		Route::get('/venta/detalle_producto', 	'SaleController@get_detail'); 
 		Route::get('/venta/pdf/{id}', 			'SaleController@invoice_pdf')->name('sale_pdf');
+
+		//Dashboard
+		Route::get('/dashboard', 'DashboardController');
+
 
 	});
 
@@ -138,6 +148,10 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::put('/ingreso/desactivar', 			'IncomeController@disable');
 		Route::get('/ingresos/detalle_ingreso', 	'IncomeController@get_header');
 		Route::get('/ingresos/detalle_producto', 	'IncomeController@get_detail');
+
+		//Dashboard
+		Route::get('/dashboard', 'DashboardController');
+
 
 	});
 
