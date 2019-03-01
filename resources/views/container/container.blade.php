@@ -47,7 +47,7 @@
             </template>
 
             <template v-if="menu==10">
-                <h2>Reporte de Ventas</h2>                   
+                <consultsale-component></consultsale-component>                   
             </template>
 
             <template v-if="menu==11">
@@ -71,7 +71,7 @@
                  <client-component></client-component>                 
             </template>
                 <template v-if="menu==10">
-                <h2>Reporte de Ventas</h2>                   
+                <consultsale-component></consultsale-component>                   
             </template>
 
             <template v-if="menu==11">

@@ -30,6 +30,7 @@ Vue.component('income-component', require('./components/IncomeComponent.vue'));
 Vue.component('sale-component', require('./components/SaleComponent.vue'));
 Vue.component('dashboard-component', require('./components/DashboardComponent.vue'));
 Vue.component('consultincome-component', require('./components/ConsultIncomeComponent.vue'));
+Vue.component('consultsale-component', require('./components/ConsultSaleComponent.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
