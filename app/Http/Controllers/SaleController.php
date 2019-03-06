@@ -104,12 +104,17 @@ class SaleController extends Controller
                 ->orderBy('detail_sales.id', 'DESC')
                 ->get();
 
+        //Vista del reporte PDF en el explorador 
+        $num_sale = Sale::select('num_voucher')->where('id', $id)->get();        
+        $view = \View::make('pdf.salespdf', compact('sale', 'detail_sale', 'num_document'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
+        return $pdf->stream('venta - '.$num_sale[0]->num_voucher.'.pdf');
 
-        $num_sale = Sale::select('num_voucher')->where('id', $id)->get();
-        
-        $pdf = \PDF::loadView('pdf.salespdf', compact('sale', 'detail_sale', 'num_document'));
-
-        return $pdf->download('venta - '.$num_sale[0]->num_voucher.'.pdf');               
+        //Reporte de PDF download -------------------------------------------           
+        // $num_sale = Sale::select('num_voucher')->where('id', $id)->get();
+        // $pdf = \PDF::loadView('pdf.salespdf', compact('sale', 'detail_sale', 'num_document'));
+        // return $pdf->download('venta - '.$num_sale[0]->num_voucher.'.pdf');               
     }
 
     /**

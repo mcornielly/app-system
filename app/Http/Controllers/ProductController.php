@@ -88,7 +88,7 @@ class ProductController extends Controller
         $pdf->loadHTML($view);
         return $pdf->stream('productspdf');
 
-        //Vista del pdf descargada.
+        //Vista del pdf descargada.-----------------------------------------------
         // $pdf = \PDF::loadView('pdf.productspdf', ['products' => $products, 'count_products' => $count_products]);
         // return $pdf->download('products.pdf');         
 
