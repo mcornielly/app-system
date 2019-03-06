@@ -31,6 +31,7 @@ Vue.component('sale-component', require('./components/SaleComponent.vue'));
 Vue.component('dashboard-component', require('./components/DashboardComponent.vue'));
 Vue.component('consultincome-component', require('./components/ConsultIncomeComponent.vue'));
 Vue.component('consultsale-component', require('./components/ConsultSaleComponent.vue'));
+Vue.component('notification-component', require('./components/NotificationComponent.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -41,6 +42,22 @@ Vue.component('consultsale-component', require('./components/ConsultSaleComponen
 const app = new Vue({
     el: '#app',
     data:{
-    	menu: 0
+    	menu: 0, 
+    	notifications: []
+    },
+    created() {
+    	let me = this;
+    	axios.post('notification/get').then(function(response){
+    		// console.log(response.data);
+    		me.notifications = response.data;
+    	}).catch(function(error){
+    		console.log(error);
+    	});
+
+    	var userId = $('meta[name="userId"]').attr('content');
+
+    	Echo.private('App.User.' + userId).notification((notification) => {
+    		me.notifications.unshift(notification);
+    	});
     }
 });
