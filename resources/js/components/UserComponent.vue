@@ -33,58 +33,60 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-bordered table-striped table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Opciones</th>
-                                    <th>Nombre</th>
-                                    <th>Tipo de Documento</th>
-                                    <th>N° Docuemnto</th>
-                                    <th>Dirección</th>
-                                    <th>N° Teléfono</th>
-                                    <th>Email</th>
-                                    <th>Usuario</th>
-                                    <th>Rol</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="client in clients" :key="client.id">
-                                    <td>
-                                        <button type="button" @click="openModal('client', 'update', client)" class="btn btn-warning btn-sm">
-                                          <i class="icon-pencil"></i>
-                                        </button> &nbsp;
-                                        <template v-if="client.condition">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="disableUser(client.id)">
-                                              <i class="icon-trash"></i>
-                                            </button>
-                                        </template>    
-                                        
-                                        <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="enableUser(client.id)">
-                                                <i class="icon-check"></i>
-                                            </button>
-                                        </template>
-                                    </td>
-                                    <td v-text="client.name"></td>
-                                    <td v-text="client.type_document"></td>
-                                    <td v-text="client.num_document"></td>
-                                    <td v-text="client.address"></td>
-                                    <td v-text="client.num_phone"></td>
-                                    <td v-text="client.email"></td>
-                                    <td v-text="client.user_name"></td>
-                                    <td v-text="client.role_name"></td>
-                                    <td>
-                                        <div v-if="client.condition">
-                                            <span class="badge badge-success">Activo</span>
-                                        </div>
-                                        <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Opciones</th>
+                                        <th>Nombre</th>
+                                        <th>Tipo de Documento</th>
+                                        <th>N° Docuemnto</th>
+                                        <th>Dirección</th>
+                                        <th>N° Teléfono</th>
+                                        <th>Email</th>
+                                        <th>Usuario</th>
+                                        <th>Rol</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="client in clients" :key="client.id">
+                                        <td>
+                                            <button type="button" @click="openModal('client', 'update', client)" class="btn btn-warning btn-sm">
+                                              <i class="icon-pencil"></i>
+                                            </button> &nbsp;
+                                            <template v-if="client.condition">
+                                                <button type="button" class="btn btn-danger btn-sm" @click="disableUser(client.id)">
+                                                  <i class="icon-trash"></i>
+                                                </button>
+                                            </template>    
+                                            
+                                            <template v-else>
+                                                <button type="button" class="btn btn-success btn-sm" @click="enableUser(client.id)">
+                                                    <i class="icon-check"></i>
+                                                </button>
+                                            </template>
+                                        </td>
+                                        <td v-text="client.name"></td>
+                                        <td v-text="client.type_document"></td>
+                                        <td v-text="client.num_document"></td>
+                                        <td v-text="client.address"></td>
+                                        <td v-text="client.num_phone"></td>
+                                        <td v-text="client.email"></td>
+                                        <td v-text="client.user_name"></td>
+                                        <td v-text="client.role_name"></td>
+                                        <td>
+                                            <div v-if="client.condition">
+                                                <span class="badge badge-success">Activo</span>
+                                            </div>
+                                            <div v-else>
+                                                <span class="badge badge-danger">Desactivado</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <nav>
                             <ul class="pagination">
                                 <li class="page-item" v-if="pagination.current_page > 1">

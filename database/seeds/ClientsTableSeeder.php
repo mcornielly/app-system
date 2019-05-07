@@ -13,30 +13,30 @@ class ClientsTableSeeder extends Seeder
     public function run()
     {
        	Client::create([
-        	'name' => 'Miguel Angel Cornielly',
-        	'type_document' => 'CI',
-        	'num_document' => '11558731',
-        	'address' => 'Santa Fe',
-        	'num_phone' => '04142303956',
-        	'email' => 'mcornielly@gmail.com',
+        	'name' => 'Administrador',
+        	'type_document' => '----------',
+        	'num_document' => '----------',
+        	'address' => '----------',
+        	'num_phone' => '----------',
+        	'email' => 'adminy@----------.com',
         ]);
 
         Client::create([
-        	'name' => 'Joshua Miguel Cornielly',
-        	'type_document' => 'CI',
-        	'num_document' => '27625512',
-        	'address' => 'Santa Fe',
-        	'num_phone' => '04149148169',
-        	'email' => 'jcornielly@gmail.com',
+        	'name' => 'Vendedor',
+        	'type_document' => '----------',
+        	'num_document' => '----------',
+        	'address' => '----------',
+        	'num_phone' => '----------',
+        	'email' => 'vendedor@----------.com',
         ]);
 
         Client::create([
-        	'name' => 'Magdalena Martínez',
-        	'type_document' => 'CI',
-        	'num_document' => '11738218',
-        	'address' => 'Santa Fe',
-        	'num_phone' => '04242535718',
-        	'email' => 'mmartinez@gmail.com',
+        	'name' => 'deposito',
+        	'type_document' => '----------',
+        	'num_document' => '----------',
+        	'address' => '----------',
+        	'num_phone' => '----------',
+        	'email' => 'deposito@----------.com',
         ]);
     }
 }

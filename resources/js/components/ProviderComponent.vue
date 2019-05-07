@@ -33,38 +33,40 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-bordered table-striped table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Opciones</th>
-                                    <th>Nombre</th>
-                                    <th>Tipo de Documento</th>
-                                    <th>N° Docuemnto</th>
-                                    <th>Dirección</th>
-                                    <th>N° Teléfono</th>
-                                    <th>Email</th>
-                                    <th>Nombre del Contacto</th>
-                                    <th>N° Teléfono de Contacto</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="client in clients" :key="client.id">
-                                    <td>
-                                        <button type="button" @click="openModal('client', 'update', client)" class="btn btn-warning btn-sm">
-                                          <i class="icon-pencil"></i>
-                                        </button> &nbsp;
-                                    </td>
-                                    <td v-text="client.name"></td>
-                                    <td v-text="client.type_document"></td>
-                                    <td v-text="client.num_document"></td>
-                                    <td v-text="client.address"></td>
-                                    <td v-text="client.num_phone"></td>
-                                    <td v-text="client.email"></td>
-                                    <td v-text="client.contact_name"></td>
-                                    <td v-text="client.contact_phone"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Opciones</th>
+                                        <th>Nombre</th>
+                                        <th>Tipo de Documento</th>
+                                        <th>N° Docuemnto</th>
+                                        <th>Dirección</th>
+                                        <th>N° Teléfono</th>
+                                        <th>Email</th>
+                                        <th>Nombre del Contacto</th>
+                                        <th>N° Teléfono de Contacto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="client in clients" :key="client.id">
+                                        <td>
+                                            <button type="button" @click="openModal('client', 'update', client)" class="btn btn-warning btn-sm">
+                                              <i class="icon-pencil"></i>
+                                            </button> &nbsp;
+                                        </td>
+                                        <td v-text="client.name"></td>
+                                        <td v-text="client.type_document"></td>
+                                        <td v-text="client.num_document"></td>
+                                        <td v-text="client.address"></td>
+                                        <td v-text="client.num_phone"></td>
+                                        <td v-text="client.email"></td>
+                                        <td v-text="client.contact_name"></td>
+                                        <td v-text="client.contact_phone"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <nav>
                             <ul class="pagination">
                                 <li class="page-item" v-if="pagination.current_page > 1">

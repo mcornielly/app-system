@@ -30,56 +30,58 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-bordered table-striped table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Opciones</th>
-                                    <th>Código</th>
-                                    <th>Nombre</th>
-                                    <th>Categoría</th>
-                                    <th>Precio</th>
-                                    <th>Stock</th>
-                                    <th>Descripción</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="product in products" :key="product.id">
-                                    <td>
-                                        <button type="button" class="btn btn-warning btn-sm" @click="openModal('product', 'update', product)">
-                                          <i class="icon-pencil"></i>
-                                        </button> &nbsp;
-
-                                        <template v-if="product.condition">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="disableProduct(product.id)">
-                                              <i class="icon-trash"></i>
-                                            </button>
-                                        </template>    
-                                        
-                                        <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="enableProduct(product.id)">
-                                                <i class="icon-check"></i>
-                                            </button>
-                                        </template>
-
-                                    </td>
-                                    <td v-text="product.code"></td>
-                                    <td v-text="product.name"></td>
-                                    <td v-text="product.category_name"></td>
-                                    <td v-text="product.price"></td>
-                                    <td v-text="product.stock"></td>
-                                    <td v-text="product.description"></td>
-                                    <td>
-                                        <div v-if="product.condition">
-                                        	<span class="badge badge-success">Activo</span>
-                                        </div>
-                                        <div v-else>
-                                        	<span class="badge badge-danger">Desactivado</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Opciones</th>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>Categoría</th>
+                                        <th>Precio</th>
+                                        <th>Stock</th>
+                                        <th>Descripción</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="product in products" :key="product.id">
+                                        <td>
+                                            <button type="button" class="btn btn-warning btn-sm" @click="openModal('product', 'update', product)">
+                                              <i class="icon-pencil"></i>
+                                            </button> &nbsp;
+                            
+                                            <template v-if="product.condition">
+                                                <button type="button" class="btn btn-danger btn-sm" @click="disableProduct(product.id)">
+                                                  <i class="icon-trash"></i>
+                                                </button>
+                                            </template>    
+                                            
+                                            <template v-else>
+                                                <button type="button" class="btn btn-success btn-sm" @click="enableProduct(product.id)">
+                                                    <i class="icon-check"></i>
+                                                </button>
+                                            </template>
+                            
+                                        </td>
+                                        <td v-text="product.code"></td>
+                                        <td v-text="product.name"></td>
+                                        <td v-text="product.category_name"></td>
+                                        <td v-text="product.price"></td>
+                                        <td v-text="product.stock"></td>
+                                        <td v-text="product.description"></td>
+                                        <td>
+                                            <div v-if="product.condition">
+                                                <span class="badge badge-success">Activo</span>
+                                            </div>
+                                            <div v-else>
+                                                <span class="badge badge-danger">Desactivado</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <nav>
                             <ul class="pagination">
                                 <li class="page-item" v-if="pagination.current_page > 1">
