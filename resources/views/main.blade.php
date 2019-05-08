@@ -13,7 +13,7 @@
     <meta name="userId" content="{{ Auth::check() ? Auth::user()->id : '' }}">
     
     <link rel="shortcut icon" href="img/favicon.png">
-    <title>Sistema Ventas - IncanatoIT</title>
+    <title>Sistema Ventas - MCornielly</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Main styles for this application -->
@@ -26,7 +26,7 @@
         <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#"></a>
+        <a @click="menu=0" class="navbar-brand" href="#"><img class="img-fluid" src="img/logo-sales.jpg" alt=""></a>
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -86,8 +86,8 @@
     
 
     <footer class="app-footer">
-        <span><a href="http://www.incanatoit.com/">IncanatoIT</a> &copy; 2017</span>
-        <span class="ml-auto">Desarrollado por <a href="http://www.incanatoit.com/">IncanatoIT</a></span>
+        <span><a href="http://www.incanatoit.com/">MCornielly</a> &copy; 2019</span>
+        <span class="ml-auto">Desarrollado por <a href="http://www.incanatoit.com/">MCornielly</a></span>
     </footer>
 
     <!-- Bootstrap and necessary plugins -->
