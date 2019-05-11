@@ -89722,15 +89722,15 @@ var render = function() {
                         { staticClass: "form-group" },
                         [
                           _c("label", { attrs: { for: "" } }, [
-                            _vm._v("`Cliente(*)")
+                            _vm._v("Cliente(*)")
                           ]),
                           _vm._v(" "),
                           _c("v-select", {
                             attrs: {
-                              "on-search": _vm.selectClients,
                               label: "name",
+                              placeholder: "Buscar Clientes...",
+                              "on-search": _vm.selectClients,
                               options: _vm.clients,
-                              placeholder: "Buscar Clientes",
                               onChange: _vm.getDataClients
                             }
                           })

@@ -113,12 +113,12 @@
                             <div class="form-group row border">
                                 <div class="col-md-9">
                                     <div class="form-group">
-                                       <label for="">`Cliente(*)</label>
+                                       <label for="">Cliente(*)</label>
                                        <v-select
-                                            :on-search="selectClients"
                                             label="name"
+                                            placeholder="Buscar Clientes..."
+                                            :on-search="selectClients"
                                             :options="clients"
-                                            placeholder="Buscar Clientes"
                                             :onChange="getDataClients"></v-select>                                     
                                     </div>
                                 </div>
