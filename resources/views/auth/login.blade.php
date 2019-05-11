@@ -54,7 +54,7 @@
             <div class="card-body text-center">
               <div>
                 <h2>Sistema de Ventas DEMO</h2>
-                <p>Sistema de compras, Ventas desarrollado PHP, para poder llevar la administración y control de su negocio.</p>
+                <p>Sistema de compras, Ventas desarrollado para llevar control de su negocio.</p>
                <!--  <a href="https://www.udemy.com/user/juan-carlos-arcila-diaz/" target="_blank" class="btn btn-primary active mt-3">Ver el curso!</a> -->
               </div>
             </div>
