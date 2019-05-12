@@ -159,12 +159,13 @@
 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
+        margin-top: 15em; 
 	}
 
-	.show{
+	.show_{
 		display: list-item !important;
 		opacity: 1 !important;
-		position: adsolute important;
+		position: adsolute !important;
 		background-color: #3c29297a !important;
 	}
 </style>		

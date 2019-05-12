@@ -10,10 +10,10 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Productos
-                        <button type="button" class="btn btn-secondary" @click="openModal('product', 'store')">
+                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('product', 'store')">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
-                        <button type="button" class="btn btn-info" @click="loadpdf()">
+                        <button style="margin-right: 5px;" type="button" class="btn btn-info float-sm-right btn-movil" @click="loadpdf()">
                             <i class="icon-doc"></i>&nbsp;Reporte
                         </button>
                     </div>
@@ -101,7 +101,7 @@
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
             <!--Inicio del modal agregar/actualizar-->
-            <div class="modal fade" tabindex="-1" :class="{'show' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal fade" tabindex="-1" :class="{'show_' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -488,12 +488,19 @@ import VueBarcode from 'vue-barcode';
 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
+        margin-top: 15em; 
 	}
 
-	.show{
+	.show_{
 		display: list-item !important;
 		opacity: 1 !important;
-		position: adsolute important;
+		position: adsolute !important;
 		background-color: #3c29297a !important;
 	}
+
+    @media screen and (min-width: 400px) {
+        .btn-movil {
+            float: right;
+        }
+    }
 </style>		

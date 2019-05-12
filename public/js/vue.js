@@ -76428,7 +76428,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n\twidth: 100% !important;\n\tposition: adsolute !important;\n}\n.show{\n\tdisplay: list-item !important;\n\topacity: 1 !important;\n\tposition: adsolute important;\n\tbackground-color: #3c29297a !important;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n    margin-top: 15em;\n}\n.show_{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute !important;\n\t\tbackground-color: #3c29297a !important;\n}\n@media screen and (min-width: 400px) {\n.btn-movil {\n        float: right;\n}\n}\n", ""]);
 
 // exports
 
@@ -76866,7 +76866,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-secondary",
+              staticClass: "btn btn-secondary float-sm-right btn-movil",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -77156,7 +77156,7 @@ var render = function() {
       "div",
       {
         staticClass: "modal fade",
-        class: { show: _vm.modal },
+        class: { show_: _vm.modal },
         staticStyle: { display: "none" },
         attrs: {
           tabindex: "-1",
@@ -77491,7 +77491,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n\twidth: 100% !important;\n\tposition: adsolute !important;\n}\n.show{\n\tdisplay: list-item !important;\n\topacity: 1 !important;\n\tposition: adsolute important;\n\tbackground-color: #3c29297a !important;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n        margin-top: 15em;\n}\n.show_{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute !important;\n\t\tbackground-color: #3c29297a !important;\n}\n@media screen and (min-width: 400px) {\n.btn-movil {\n            float: right;\n}\n}\n", ""]);
 
 // exports
 
@@ -80618,7 +80618,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-secondary",
+              staticClass: "btn btn-secondary float-sm-right btn-movil",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -80635,7 +80635,8 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-info",
+              staticClass: "btn btn-info float-sm-right btn-movil",
+              staticStyle: { "margin-right": "5px" },
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -80941,7 +80942,7 @@ var render = function() {
       "div",
       {
         staticClass: "modal fade",
-        class: { show: _vm.modal },
+        class: { show_: _vm.modal },
         staticStyle: { display: "none" },
         attrs: {
           tabindex: "-1",
@@ -81472,7 +81473,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n\twidth: 100% !important;\n\tposition: adsolute !important;\n}\n.show{\n\tdisplay: list-item !important;\n\topacity: 1 !important;\n\tposition: adsolute important;\n\tbackground-color: #3c29297a !important;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n        margin-top: 15em;\n}\n.show_{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute !important;\n\t\tbackground-color: #3c29297a !important;\n}\n@media screen and (min-width: 400px) {\n.btn-movil {\n            float: right;\n}\n}\n", ""]);
 
 // exports
 
@@ -81856,7 +81857,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-secondary",
+              staticClass: "btn btn-secondary float-sm-right btn-movil",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -82123,7 +82124,7 @@ var render = function() {
       "div",
       {
         staticClass: "modal fade",
-        class: { show: _vm.modal },
+        class: { show_: _vm.modal },
         staticStyle: { display: "none" },
         attrs: {
           tabindex: "-1",
@@ -82635,7 +82636,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n\twidth: 100% !important;\n\tposition: adsolute !important;\n}\n.show{\n\tdisplay: list-item !important;\n\topacity: 1 !important;\n\tposition: adsolute important;\n\tbackground-color: #3c29297a !important;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n        margin-top: 15em;\n}\n.show_{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute !important;\n\t\tbackground-color: #3c29297a !important;\n}\n@media screen and (min-width: 400px) {\n.btn-movil {\n            float: right;\n}\n}\n", ""]);
 
 // exports
 
@@ -83049,7 +83050,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-secondary",
+              staticClass: "btn btn-secondary float-sm-right btn-movil",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -83324,7 +83325,7 @@ var render = function() {
       "div",
       {
         staticClass: "modal fade",
-        class: { show: _vm.modal },
+        class: { show_: _vm.modal },
         staticStyle: { display: "none" },
         attrs: {
           tabindex: "-1",
@@ -83910,7 +83911,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n\twidth: 100% !important;\n\tposition: adsolute !important;\n}\n.show{\n\tdisplay: list-item !important;\n\topacity: 1 !important;\n\tposition: adsolute important;\n\tbackground-color: #3c29297a !important;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n        margin-top: 15em;\n}\n.show_{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute !important;\n\t\tbackground-color: #3c29297a !important;\n}\n", ""]);
 
 // exports
 
@@ -84443,7 +84444,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n\twidth: 100% !important;\n\tposition: adsolute !important;\n}\n.show{\n\tdisplay: list-item !important;\n\topacity: 1 !important;\n\tposition: adsolute important;\n\tbackground-color: #3c29297a !important;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n        margin-top: 15em;\n}\n.show_{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute !important;\n\t\tbackground-color: #3c29297a !important;\n}\n@media screen and (min-width: 400px) {\n.btn-movil {\n            float: right;\n}\n}\n", ""]);
 
 // exports
 
@@ -84980,7 +84981,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-secondary",
+              staticClass: "btn btn-secondary float-sm-right btn-movil",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -85308,7 +85309,7 @@ var render = function() {
       "div",
       {
         staticClass: "modal fade",
-        class: { show: _vm.modal },
+        class: { show_: _vm.modal },
         staticStyle: { display: "none" },
         attrs: {
           tabindex: "-1",
@@ -85952,7 +85953,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n}\n.show{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute important;\n\t\tbackground-color: #3c29297a !important;\n}\n.div-error{\n        display: flex;\n        justify-content: center;\n}\n.text-error{\n        color: red !important;\n        font-weight: bold;\n}\n@media (min-width: 600px){\n.btnadd{\n            margin-top: 2rem;\n            margin-bottom: 10px;\n}\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n        margin-top: 15em;\n}\n.show_{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute !important;\n\t\tbackground-color: #3c29297a !important;\n}\n.div-error{\n        display: flex;\n        justify-content: center;\n}\n.text-error{\n        color: red !important;\n        font-weight: bold;\n}\n@media (min-width: 600px){\n.btnadd{\n            margin-top: 2rem;\n            margin-bottom: 10px;\n}\n}\n@media screen and (min-width: 400px) {\n.btn-movil {\n            float: right;\n}\n}\n", ""]);
 
 // exports
 
@@ -86791,7 +86792,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-secondary",
+                staticClass: "btn btn-secondary float-sm-right btn-movil",
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
@@ -87959,7 +87960,7 @@ var render = function() {
       "div",
       {
         staticClass: "modal fade",
-        class: { show: _vm.modal },
+        class: { show_: _vm.modal },
         staticStyle: { display: "none" },
         attrs: {
           tabindex: "-1",
@@ -88475,7 +88476,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n}\n.show{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute important;\n\t\tbackground-color: #3c29297a !important;\n}\n.div-error{\n        display: flex;\n        justify-content: center;\n}\n.text-error{\n        color: red !important;\n        font-weight: bold;\n}\n@media (min-width: 600px){\n.btnadd{\n            margin-top: 2rem;\n            margin-bottom: 10px;\n}\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\twidth: 100% !important;\n\t\tposition: adsolute !important;\n        margin-top: 15em;\n}\n.show_{\n\t\tdisplay: list-item !important;\n\t\topacity: 1 !important;\n\t\tposition: adsolute !important;\n\t\tbackground-color: #3c29297a !important;\n}\n.div-error{\n        display: flex;\n        justify-content: center;\n}\n.text-error{\n        color: red !important;\n        font-weight: bold;\n}\n@media (min-width: 600px){\n.btnadd{\n            margin-top: 2rem;\n            margin-bottom: 10px;\n}\n}\n@media screen and (min-width: 400px) {\n.btn-movil {\n            float: right;\n}\n}\n", ""]);
 
 // exports
 
@@ -89377,7 +89378,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-secondary",
+                staticClass: "btn btn-secondary float-sm-right btn-movil",
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
@@ -90658,7 +90659,7 @@ var render = function() {
       "div",
       {
         staticClass: "modal fade",
-        class: { show: _vm.modal },
+        class: { show_: _vm.modal },
         staticStyle: { display: "none" },
         attrs: {
           tabindex: "-1",
