@@ -58,7 +58,7 @@ class ProductController extends Controller
         if($search==''){
             $products = Product::join('categories','products.category_id','categories.id')
                 ->select('products.*','categories.name as category_name')
-                ->orderBy('products.id', 'DESC')->paginate(10);
+                ->orderBy('products.id', 'DESC')->paginate(8);
         }
         else
         {
@@ -66,7 +66,7 @@ class ProductController extends Controller
             $products = Product::join('categories','products.category_id','categories.id')
                 ->select('products.*','categories.name as category_name')
                 ->where('products.'.$criteria, 'like', '%' . $search . '%')
-                ->orderBy('products.id', 'DESC')->paginate(10);              
+                ->orderBy('products.id', 'DESC')->paginate(8);              
         }    
 
         
@@ -127,7 +127,7 @@ class ProductController extends Controller
 
         $filter = $request->filter;
         $product = Product::where('code', $filter)
-            ->select('id', 'name')
+            ->select('id', 'name', 'price')
             ->orderBy('name', 'ASC')
             ->take(1)->get();
  

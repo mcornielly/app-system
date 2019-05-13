@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Productos
-                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('product', 'store')">
+                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('product', 'store')" data-toggle="modal" data-target="#modProduct">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                         <button style="margin-right: 5px;" type="button" class="btn btn-info float-sm-right btn-movil" @click="loadpdf()">
@@ -47,19 +47,19 @@
                                 <tbody>
                                     <tr v-for="product in products" :key="product.id">
                                         <td>
-                                            <button type="button" class="btn btn-warning btn-sm" @click="openModal('product', 'update', product)">
+                                            <button type="button" class="btn btn-warning btn-sm" @click="openModal('product', 'update', product)" data-toggle="modal" data-target="#modProduct" title="Editar">
                                               <i class="icon-pencil"></i>
                                             </button> &nbsp;
                             
                                             <template v-if="product.condition">
                                                 <button type="button" class="btn btn-danger btn-sm" @click="disableProduct(product.id)">
-                                                  <i class="icon-trash"></i>
+                                                  <i class="icon-trash" title="Eliminar"></i>
                                                 </button>
                                             </template>    
                                             
                                             <template v-else>
                                                 <button type="button" class="btn btn-success btn-sm" @click="enableProduct(product.id)">
-                                                    <i class="icon-check"></i>
+                                                    <i class="icon-check" title="Restaurar"></i>
                                                 </button>
                                             </template>
                             
@@ -101,7 +101,7 @@
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
             <!--Inicio del modal agregar/actualizar-->
-            <div class="modal fade" tabindex="-1" :class="{'show_' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div id="modProduct" class="modal fade" tabindex="-1" :class="{'show' : modal}" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -165,10 +165,9 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==1" 
-                            @click="createProduct()">Guardar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateProduct()">Actualizar</button>
+                            <button type="button" class="btn btn-secondary" @click="closeModal()" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==1" @click="createProduct()" data-dismiss="modal">Guardar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateProduct()" data-dismiss="modal">Actualizar</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -186,6 +185,9 @@ import VueBarcode from 'vue-barcode';
     export default {
     	data() {
     		return{
+    			modal: '',
+    			titleModal: '',
+    			typeAction: 0,
     			product_id: 0,
                 category_id: 0,
                 category_name: '', 
@@ -195,9 +197,6 @@ import VueBarcode from 'vue-barcode';
     			stock: 0,
     			description: '',
     			products: [],
-    			modal: 0,
-    			titleModal: '',
-    			typeAction: 0,
                 errorProduct: 0,
                 errorShowProduct: [],
                 pagination: {
@@ -419,7 +418,7 @@ import VueBarcode from 'vue-barcode';
                 return this.errorProducto;
             },
     		closeModal(){
-    			this.modal=0;
+    			this.modal='';
     			this.titleModal = '';
                 this.category_id = 0,
                 this.category_name = '';
@@ -437,7 +436,6 @@ import VueBarcode from 'vue-barcode';
     					switch(action){
     						case 'store':
     						{
-    							this.modal = 1;
 		    					this.titleModal = 'Registrar Producto';
                                 this.category_id = 0,
                                 this.category_name = '';
@@ -453,8 +451,6 @@ import VueBarcode from 'vue-barcode';
     						}
     						case 'update':
     						{
-                                // console.log(data);
-                                this.modal = 1;
                                 this.titleModal = 'Actualizar Producto';
                                 this.typeAction = 2;
                                 this.product_id = data['id'];
@@ -485,7 +481,7 @@ import VueBarcode from 'vue-barcode';
 </script>
 
 <style>
-	.modal-content{
+/* 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
         margin-top: 15em; 
@@ -496,7 +492,7 @@ import VueBarcode from 'vue-barcode';
 		opacity: 1 !important;
 		position: adsolute !important;
 		background-color: #3c29297a !important;
-	}
+	} */
 
     @media screen and (min-width: 400px) {
         .btn-movil {

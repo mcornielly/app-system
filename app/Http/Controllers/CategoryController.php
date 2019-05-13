@@ -26,7 +26,7 @@ class CategoryController extends Controller
         {
             $categories = Category::where($criteria, 'like', '%' . $search . '%')
                         ->orderBy('id', 'DESC')
-                        ->paginate(3);               
+                        ->paginate(8);               
         }    
 
         

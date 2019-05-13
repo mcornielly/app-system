@@ -19,7 +19,7 @@ class IncomeController extends Controller
      */
     public function index(Request $request) 
     {
-        if(!$request->ajax()) return redirect('/');
+        // if(!$request->ajax()) return redirect('/');
 
         $search = $request->search;
         $criteria = $request->criteria;
@@ -29,7 +29,7 @@ class IncomeController extends Controller
                         ->join('users', 'incomes.user_id', 'users.id')
                         ->select('incomes.*','clients.name', 'users.user_name') 
                         ->orderBy('id', 'DESC')
-                        ->paginate(3);
+                        ->paginate(8);
             }
         else
         {
@@ -38,8 +38,12 @@ class IncomeController extends Controller
                         ->select('incomes.*','clients.name', 'users.user_name')  
                         ->where($criteria, 'like', '%' . $search . '%')
                         ->orderBy('id', 'DESC')
-                        ->paginate(3);               
-        }    
+                        ->paginate(8);               
+        }
+
+        $counter = Income::all()->count();
+        $counter = $counter + 1;
+        $num_invoice = str_pad($counter,6,"0",STR_PAD_LEFT);    
 
         
         return [
@@ -52,7 +56,8 @@ class IncomeController extends Controller
                 'to'            =>  $incomes->lastItem(), 
             ],
 
-        'incomes' => $incomes
+        'incomes' => $incomes,
+        'num_invoice' => $num_invoice
         ];
     }
 
@@ -123,8 +128,8 @@ class IncomeController extends Controller
             $income->provider_id = $request->provider_id;
             $income->user_id = \Auth::user()->id;
             $income->type_voucher = $request->type_voucher;
-            $income->serie_voucher = $request->serie_voucher;
-            $income->num_voucher = $request->num_voucher;
+            $income->serie_voucher = $request->num_invoice;
+            $income->num_voucher = $request->num_invoice;
             $income->date_hour = $mytime->toDateString();
             $income->tax = $request->tax;
             $income->total = $request->total;

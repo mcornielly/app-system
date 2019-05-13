@@ -26,7 +26,7 @@ class ProviderController extends Controller
             $clients = Provider::join('clients','providers.id','clients.id')
                         ->select('clients.*','providers.contact_name', 'providers.contact_phone') 
                         ->orderBy('clients.id', 'DESC')
-                        ->paginate(3);
+                        ->paginate(8);
             }
         else
         {
@@ -34,7 +34,7 @@ class ProviderController extends Controller
                         ->select('clients.*','providers.contact_name', 'providers.contact_phone') 
                         ->where($criteria, 'like', '%' . $search . '%')
                         ->orderBy('clients.id', 'DESC')
-                        ->paginate(3);               
+                        ->paginate(8);               
         }    
 
         

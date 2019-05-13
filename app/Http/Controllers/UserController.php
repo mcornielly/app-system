@@ -26,7 +26,7 @@ class UserController extends Controller
                         ->join('roles', 'users.role_id', 'roles.id')
                         ->select('clients.*','users.*','roles.name as role_name', 'roles.description') 
                         ->orderBy('clients.id', 'DESC')
-                        ->paginate(3);
+                        ->paginate(8);
             }
         else
         {
@@ -35,7 +35,7 @@ class UserController extends Controller
                         ->select('clients.*','users.*','roles.name as role_name', 'roles.description') 
                         ->where($criteria, 'like', '%' . $search . '%')
                         ->orderBy('clients.id', 'DESC')
-                        ->paginate(3);               
+                        ->paginate(8);               
         }    
 
         

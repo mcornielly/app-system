@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Categorías
-                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('category', 'store')">
+                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('category', 'store')" data-toggle="modal" data-target="#modCategory">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
@@ -42,7 +42,7 @@
                                <tbody>
                                    <tr v-for="category in categories" :key="category.id">
                                        <td>
-                                           <button type="button" @click="openModal('category', 'update', category)" class="btn btn-warning btn-sm">
+                                           <button type="button" @click="openModal('category', 'update', category)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modCategory">
                                              <i class="icon-pencil"></i>
                                            </button> &nbsp;
                            
@@ -92,12 +92,12 @@
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
             <!--Inicio del modal agregar/actualizar-->
-            <div class="modal fade" tabindex="-1" :class="{'show_' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div id="modCategory" class="modal fade" tabindex="-1" :class="{'show' : modal}" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" v-text="titleModal"></h4>
-                            <button type="button" class="close" @click="closeModal()" aria-label="Close">
+                            <button type="button" class="close" @click="closeModal()" aria-label="Close" data-dismiss="modal">
                               <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -123,10 +123,9 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==1" 
-                            @click="createCategory()">Guardar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateCategory()">Actualizar</button>
+                            <button type="button" class="btn btn-secondary" @click="closeModal()" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==1" @click="createCategory()" data-dismiss="modal">Guardar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateCategory()" data-dismiss="modal">Actualizar</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -146,7 +145,7 @@
     			name: '',
     			description: '',
     			categories: [],
-    			modal: 0,
+    			modal: '',
     			titleModal: '',
     			typeAction: 0,
                 errorCategory: 0,
@@ -159,48 +158,46 @@
                     'from': 0,
                     'to': 0,
                 },
-
                 offset: 3,
                 criteria: 'name',
                 search: ''
-
     		}
     	},
-        computed:{
-            isActived: function(){
-                return this.pagination.current_page;
-            },
-            //Calcula los elementos de la paginación.
-            pagesNumber: function(){
-                if(!this.pagination.to){
-                    return[];
-                }
+      computed:{
+          isActived: function(){
+              return this.pagination.current_page;
+          },
+          //Calcula los elementos de la paginación.
+          pagesNumber: function(){
+              if(!this.pagination.to){
+                  return[];
+              }
 
-                var from = this.pagination.current_page - this.offset;
-                if(from < 1){
-                    from = 1;
-                }
+              var from = this.pagination.current_page - this.offset;
+              if(from < 1){
+                  from = 1;
+              }
 
-                var to = from + (this.offset * 2);
-                if(to >= this.pagination.last_page){
-                    to = this.pagination.last_page;
-                }
+              var to = from + (this.offset * 2);
+              if(to >= this.pagination.last_page){
+                  to = this.pagination.last_page;
+              }
 
-                var pagesArray = [];
-                while(from <= to){
-                    pagesArray.push(from);
-                    from++; 
-                }
-                return pagesArray;
-            }
-        },
+              var pagesArray = [];
+              while(from <= to){
+                  pagesArray.push(from);
+                  from++; 
+              }
+              return pagesArray;
+          }
+      },
     	methods : {
     		lists_category(page,search,criteria){
     			let me = this;
                 var url = '/categorias?page=' + page + '&search='+ search + '&criteria='+ criteria;
     			axios.get(url).then(function (response){
 
-                    var result = response.data;
+                var result = response.data;
 
     				me.categories = result.categories.data;
                     me.pagination = result.pagination;
@@ -209,19 +206,17 @@
     				console.log(error);
     			});
     		},
-            nextPage(page,search,criteria){
-                let me = this;
-                //Actualiza la página actual
-                me.pagination.current_page = page;
-                me.lists_category(page,search,criteria);
-            },
+        nextPage(page,search,criteria){
+            let me = this;
+            //Actualiza la página actual
+            me.pagination.current_page = page;
+            me.lists_category(page,search,criteria);
+        },
     		createCategory(){
-                if (this.validateCategory()){
-                    return;
-                }
-
-    			let me = this;
-
+          if (this.validateCategory()){
+                return;
+          }
+          let me = this;
     			axios.post('categorias',{
     				'name': this.name,
     				'description': this.description
@@ -232,117 +227,114 @@
     				console.log(error);
     			});
     		},
-            updateCategory(){
+        updateCategory(){
+            let me = this;
 
-                let me = this;
+            axios.put('/categorias/actualizar',{
+                'id': this.category_id,
+                'name': this.name,
+                'description': this.description
+            }).then(function (response){
+                me.closeModal();
+                me.lists_category(1,'','nombre');
+            }).catch(function (error){
+                console.log(error);
+            });
+        },
+        enableCategory(id){
+          const swalWithBootstrapButtons = Swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+          })
 
-                axios.put('/categorias/actualizar',{
-                    'id': this.category_id,
-                    'name': this.name,
-                    'description': this.description
-                }).then(function (response){
-                    me.closeModal();
-                    me.lists_category(1,'','nombre');
-                }).catch(function (error){
-                    console.log(error);
-                });
-            },
-            enableCategory(id){
+          swalWithBootstrapButtons({
+            title: 'Esta seguro que desea Activar la Categoría?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, Activar!',
+            cancelButtonText: 'No, cancelar!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.value) {
+                  console.log(id);
 
-                const swalWithBootstrapButtons = Swal.mixin({
-                  confirmButtonClass: 'btn btn-success',
-                  cancelButtonClass: 'btn btn-danger',
-                  buttonsStyling: false,
-                })
+                  let me = this;
 
-                swalWithBootstrapButtons({
-                  title: 'Esta seguro que desea Activar la Categoría?',
-                  type: 'warning',
-                  showCancelButton: true,
-                  confirmButtonText: 'Si, Activar!',
-                  cancelButtonText: 'No, cancelar!',
-                  reverseButtons: true
-                }).then((result) => {
-                  if (result.value) {
-                        console.log(id);
+                  axios.put('/categoria/activar',{
+                      'id': id,
+                  }).then(function (response){
+                      me.lists_category(1,'','nombre');
+                      swalWithBootstrapButtons(
+                        'Activada!',
+                        'La Categoria fue Activada..!',
+                        'success'
+                      )
+                  }).catch(function (error){
+                      console.log(error);
+                  });
+            } else if (
+              // Read more about handling dismissals
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+            }
+          })
+        },
+        disableCategory(id){
+          const swalWithBootstrapButtons = Swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+          })
 
-                        let me = this;
+          swalWithBootstrapButtons({
+            title: 'Esta seguro que desea desactivar la Categoría?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, desactivar!',
+            cancelButtonText: 'No, cancelar!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.value) {
 
-                        axios.put('/categoria/activar',{
-                            'id': id,
-                        }).then(function (response){
-                            me.lists_category(1,'','nombre');
-                            swalWithBootstrapButtons(
-                              'Activada!',
-                              'La Categoria fue Activada..!',
-                              'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error);
-                        });
-                  } else if (
-                    // Read more about handling dismissals
-                    result.dismiss === Swal.DismissReason.cancel
-                  ) {
-                  }
-                })
+                  let me = this;
 
-            },
-            disableCategory(id){
+                  axios.put('/categorias/desactivar',{
+                      'id': id
+                  }).then(function (response){
+                      me.lists_category(1,'','nombre');
 
-                const swalWithBootstrapButtons = Swal.mixin({
-                  confirmButtonClass: 'btn btn-success',
-                  cancelButtonClass: 'btn btn-danger',
-                  buttonsStyling: false,
-                })
+                      swalWithBootstrapButtons(
+                        'Desactivado!',
+                        'La Categoria fue Desactivada..!',
+                        'success'
+                      )
+                  }).catch(function (error){
+                      console.log(error);
+                  });
+            } else if (
+              // Read more about handling dismissals
+              result.dismiss === Swal.DismissReason.cancel
+            ){
 
-                swalWithBootstrapButtons({
-                  title: 'Esta seguro que desea desactivar la Categoría?',
-                  type: 'warning',
-                  showCancelButton: true,
-                  confirmButtonText: 'Si, desactivar!',
-                  cancelButtonText: 'No, cancelar!',
-                  reverseButtons: true
-                }).then((result) => {
-                  if (result.value) {
+            }
+          })
+        },
+        validateCategory(){
+            this.errorCategory = 0;
+            this.errorShowCategory = [];
 
-                        let me = this;
+            if (!this.name) this.errorShowCategory.push("El nombre de la Categoría no puede estar vacio.");
+            if(this.errorShowCategory.length) this.errorCategory = 1;
 
-                        axios.put('/categorias/desactivar',{
-                            'id': id
-                        }).then(function (response){
-                            me.lists_category(1,'','nombre');
-
-                            swalWithBootstrapButtons(
-                              'Desactivado!',
-                              'La Categoria fue Desactivada..!',
-                              'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error);
-                        });
-                  } else if (
-                    // Read more about handling dismissals
-                    result.dismiss === Swal.DismissReason.cancel
-                  ){
-
-                  }
-              })
-            },
-            validateCategory(){
-                this.errorCategory = 0;
-                this.errorShowCategory = [];
-
-                if (!this.name) this.errorShowCategory.push("El nombre de la Categoría no puede estar vacio.");
-                if(this.errorShowCategory.length) this.errorCategory = 1;
-
-                return this.errorCategory;
-            },
+            return this.errorCategory;
+        },
     		closeModal(){
-    			this.modal=0;
+    		  this.modal='';
     			this.titleModal="";
     			this.name='';
     			this.description='';
+          // $("#modCategory").modal("hide");
     		},	
     		openModal(modelo, action, data = []){
     			switch(modelo){
@@ -351,26 +343,23 @@
     					switch(action){
     						case 'store':
     						{
-                                this.errorCategory = 0;
-                                this.errorShowCategory = [];
-    							this.modal = 1;
+                  this.errorCategory = 0;
+                  this.errorShowCategory = [];
 		    					this.titleModal = 'Registrar Categoría';
-                                this.typeAction = 1;
+                  this.typeAction = 1;
 		    					this.name = '';
 		    					this.description = '';
 		    					break;
     						}
     						case 'update':
     						{
-                                // console.log(data);
-                                this.errorCategory = 0;
-                                this.errorShowCategory = [];
-		    				 	this.modal = 1;
+                  this.errorCategory = 0;
+                  this.errorShowCategory = [];
 		    					this.titleModal = 'Actualizar Categoría';
-                                this.typeAction = 2;
-                                this.category_id = data['id'];
-                                this.name = data['name'];
-                                this.description = data['description'];
+                  this.typeAction = 2;
+                  this.category_id = data['id'];
+                  this.name = data['name'];
+                  this.description = data['description'];
 		    					break;	
     						}
     					}
@@ -378,26 +367,26 @@
     			}
     		}
     	},
-        mounted() {
-            this.lists_category(1,this.search,this.criteria);
-        }
+      mounted() {
+          this.lists_category(1,this.search,this.criteria);
+      }
     }
 
 </script>
 
 <style>
-	.modal-content{
+/* 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
     margin-top: 15em; 
-	}
+	} */
 
-	.show_{
+/* 	.show_{
 		display: list-item !important;
 		opacity: 1 !important;
 		position: adsolute !important;
 		background-color: #3c29297a !important;
-	}
+	} */
 
   @media screen and (min-width: 400px) {
       .btn-movil {

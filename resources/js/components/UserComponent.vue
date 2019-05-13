@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Usuarios
-                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('client', 'store')">
+                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('client', 'store')" data-toggle="modal" data-target="#modUsers">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
@@ -106,7 +106,7 @@
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
             <!--Inicio del modal agregar/actualizar-->
-            <div class="modal fade" tabindex="-1" :class="{'show_' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div id="modUsers" class="modal fade" tabindex="-1" :class="{'show' : modal}" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -192,10 +192,9 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==1" 
-                            @click="createClient()">Guardar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()">Actualizar</button>
+                            <button type="button" class="btn btn-secondary" @click="closeModal()" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==1" @click="createClient()" data-dismiss="modal">Guardar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()" data-dismiss="modal">Actualizar</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -211,6 +210,9 @@
     export default {
     	data() {
     		return{
+    			modal: 0,
+    			titleModal: '',
+    			typeAction: 0,
                 role_id: 0,
                 client_id: 0,
     			name: '',
@@ -223,9 +225,6 @@
                 password: '',
                 clients: [],
     			roles: [],
-    			modal: 0,
-    			titleModal: '',
-    			typeAction: 0,
                 errorClient: 0,
                 errorShowClient: [],
                 pagination: {
@@ -448,7 +447,7 @@
                 return this.errorClient;
             },
     		closeModal(){;
-    			this.modal=0;
+    			this.modal='';
                 this.titleModal='';
                 this.name='';
                 this.type_document='V';
@@ -469,40 +468,37 @@
     					switch(action){
     						case 'store':
     						{
-                                this.errorClient = 0;
-                                this.errorShowClient = [];
-    							this.modal = 1;
 		    					this.titleModal = 'Registrar Usuario';
                                 this.typeAction = 1;
+                                this.role_id = 0;
 				    			this.name = '';
 				    			this.type_document = 'V';
 				    			this.num_document = '';
 				    			this.address = '';
 				    			this.num_phone = '';
 				    			this.email = '';
-                                this.role_id = 0;
                                 this.user_name = '';
                                 this.password = '';
+                                this.errorClient = 0;
+                                this.errorShowClient = [];
 		    					break;
     						}
     						case 'update':
     						{
-                                // console.log(data);
-                                this.errorClient = 0;
-                                this.errorShowClient = [];
-		    				 	this.modal = 1;
 		    					this.titleModal = 'Actualizar Actualizar';
                                 this.typeAction = 2;
                                 this.client_id = data['id'];
+                                this.role_id = data['role_id'];
                                 this.name = data['name'];
                                 this.type_document = data['type_document'];
                                 this.num_document = data['num_document'];
                                 this.address = data['address'];
                                 this.num_phone = data['num_phone'];
                                 this.email = data['email'];
-                                this.role_id = data['role_id'];
                                 this.user_name = data['user_name'];
                                 this.password = data['password'];
+                                this.errorClient = 0;
+                                this.errorShowClient = [];
 		    					break;	
     						}
     					}
@@ -518,7 +514,7 @@
 </script>
 
 <style>
-	.modal-content{
+/* 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
         margin-top: 15em; 
@@ -529,7 +525,7 @@
 		opacity: 1 !important;
 		position: adsolute !important;
 		background-color: #3c29297a !important;
-	}
+	} */
 
     @media screen and (min-width: 400px) {
         .btn-movil {

@@ -18,5 +18,5 @@ class Income extends Model
     public function provider()
     {
     	return $this->belongsTo('App\Provider');
-    }	
+    }
 }

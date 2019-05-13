@@ -26,7 +26,7 @@ class ClientController extends Controller
         {
             $clients = Client::where($criteria, 'like', '%' . $search . '%')
                         ->orderBy('id', 'DESC')
-                        ->paginate(3);               
+                        ->paginate(8);               
         }    
 
         

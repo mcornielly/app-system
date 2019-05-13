@@ -29,7 +29,7 @@ class SaleController extends Controller
                         ->join('users', 'sales.user_id', 'users.id')
                         ->select('sales.*','clients.name', 'users.user_name') 
                         ->orderBy('sales.id', 'DESC')
-                        ->paginate(3);
+                        ->paginate(8);
             }
         else
         {
@@ -38,7 +38,7 @@ class SaleController extends Controller
                         ->select('sales.*','clients.name', 'users.user_name')   
                         ->where('sales.' . $criteria, 'like', '%' . $search . '%')
                         ->orderBy('sales.id', 'DESC')
-                        ->paginate(3);               
+                        ->paginate(8);               
         }    
 
         

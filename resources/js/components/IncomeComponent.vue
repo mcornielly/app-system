@@ -135,13 +135,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                        <label for="">Serie de Comprobante</label>
-                                       <input type="text" class="form-control" v-model="serie_voucher" placeholder="000x">
+                                       <input type="text" class="form-control" v-model="num_invoice" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                        <label for="">Núemro de Comprobante(*)</label>
-                                       <input type="text" class="form-control" v-model="num_voucher" placeholder="000xx">
+                                       <input type="text" class="form-control" v-model="num_invoice" readonly>
                                     </div>
                                 </div>
                            </div> 
@@ -151,7 +151,7 @@
                                         <label for="">Producto <span style="color:red;" v-show="product_id==0">(*) Seleccione</span></label>
                                         <div class="form-inline">
                                             <input type="text" class="form-control" v-model="code" @keyup.enter="searchProduct()"placeholder="Ingresar producto">
-                                            <button class="btn btn-primary" @click="openModal()">...</button>
+                                            <button class="btn btn-primary" @click="openModal()" data-toggle="modal" data-target="#modIncome">...</button>
                                             <input type="text" readonly="true" class="form-control" v-model="product_name">
                                         </div>
                                     </div>
@@ -330,12 +330,12 @@
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
             <!--Inicio del modal agregar/actualizar-->
-            <div class="modal fade" tabindex="-1" :class="{'show_' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div id="modIncome" class="modal fade" tabindex="-1" :class="{'show' : modal}" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" v-text="titleModal"></h4>
-                            <button type="button" class="close" @click="closeModal()" aria-label="Close">
+                            <button type="button" class="close" @click="closeModal()" aria-label="Close" data-dismiss="modal">
                               <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -392,7 +392,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" @click="closeModal()" data-dismiss="modal">Cerrar</button>
 <!--                             <button type="button" class="btn btn-primary" v-if="typeAction==1" 
                             @click="createClient()">Guardar</button>
                             <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()">Actualizar</button> -->
@@ -412,11 +412,15 @@
     export default {
     	data() {
     		return{
+    			modal: '',
+    			titleModal: '',
+    			typeAction: 0,
                 income_id: 0,
                 provider_id: 0,
                 provider_name: '',
     			name: '',
-    			type_voucher: 'Boleta',
+    			type_voucher: 'Factura',
+                num_invoice: '',
                 serie_voucher: '',
                 num_voucher: '',
                 tax: 0.16,
@@ -427,9 +431,6 @@
                 providers: [],
                 detail_incomes: [],
                 list: 1, 
-    			modal: 0,
-    			titleModal: '',
-    			typeAction: 0,
                 errorIncome: 0,
                 errorShowIncome: [],
                 pagination: {
@@ -450,6 +451,7 @@
                 product_id: 0,
                 code: '',
                 product_name: '',
+                // product_price: 0,
                 price: 0,
                 quantity: 0
     		}
@@ -499,7 +501,7 @@
     			axios.get(url).then(function (response){
 
                     var result = response.data;
-
+                    me.num_invoice = result.num_invoice;
     				me.incomes = result.incomes.data;
                     me.pagination = result.pagination;
 
@@ -535,14 +537,15 @@
 
                 axios.get(url).then(function(response){
                     var result = response.data;
-                    me.product = result.product;
-
+                    me.product = result.product;  
                     if(me.product.length>0){
-                        me.product_name = me.product[0]['name'];
                         me.product_id = me.product[0]['id'];
+                        me.product_name = me.product[0]['name'];
+                        me.price = me.product[0]['price'];
                     }else{
                         me.product_name = "No existe producto";
                         me.product_id = 0;
+                        me.price = 0;
                     }
                 })
                 .catch(function(error){
@@ -603,7 +606,7 @@
                         product_id: data['id'],
                         product_name: data['name'],
                         quantity: 1,
-                        price: 1
+                        price: data['price']
                     });
                 }
             },
@@ -639,17 +642,17 @@
                 axios.post('ingresos',{
                     'provider_id': this.provider_id,
                     'type_voucher': this.type_voucher,
-                    'num_voucher': this.num_voucher,
-                    'serie_voucher': this.serie_voucher,
+                    'num_invoice': this.num_invoice,
+                    // 'serie_voucher': this.num_invoice,
                     'tax': this.tax,
                     'total': this.total,
                     'data': this.detail_incomes
 
                 }).then(function (response){
     				me.list = 1;
-    				me.lists_income(1,'','num_voucher');
+    				me.lists_income(1,'','num_invoice');
                     me.provider_id = 0;
-                    me.type_voucher = 'Boleta';
+                    me.type_voucher = 'Factura';
                     me.serie_voucher = '';
                     me.num_voucher = '';
                     me.tax = 0.16;
@@ -670,7 +673,7 @@
 
                 if(this.provider_id==0) this.errorShowIncome.push("Seleccione un Proveedor");
                 if(this.type_document==0) this.errorShowIncome.push("Seleccione el Comprobante");
-                if(!this.num_voucher) this.errorShowIncome.push("Ingrese el número de Comprobante");
+                if(!this.num_invoice) this.errorShowIncome.push("Ingrese el número de Comprobante");
                 if(!this.tax) this.errorShowIncome.push("Ingrese el Impuesto de Compra");
                 if(this.detail_incomes.length<=0) this.errorShowIncome.push("Ingrese Detalle");
 
@@ -681,9 +684,8 @@
             showFormIncome(){
                 let me = this;
                 this.list = 0;
-                //clear form
                 me.provider_id = 0;
-                me.type_voucher = 'Boleta';
+                me.type_voucher = 'Factura';
                 me.serie_voucher = '';
                 me.num_voucher = '';
                 me.tax = 0.16;
@@ -777,13 +779,12 @@
               })
             },
     		closeModal(){;
-    			this.modal=0;
+    			this.modal='';
                 this.titleModal='';
     		},	
     		openModal(){
                 this.search_p = '';
                 this.products = [];
-                this.modal = 1;
 				this.titleModal = 'Seleccione uno o varios productos';
     		}
     	},
@@ -795,7 +796,7 @@
 </script>
 
 <style>
-	.modal-content{
+/* 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
         margin-top: 15em; 
@@ -806,7 +807,7 @@
 		opacity: 1 !important;
 		position: adsolute !important;
 		background-color: #3c29297a !important;
-	}
+	} */
     .div-error{
         display: flex;
         justify-content: center;

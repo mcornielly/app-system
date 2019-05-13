@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Proveedores
-                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('client', 'store')">
+                        <button type="button" class="btn btn-secondary float-sm-right btn-movil" @click="openModal('client', 'store')" data-toggle="modal" data-target="#modProviders">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
@@ -51,7 +51,7 @@
                                 <tbody>
                                     <tr v-for="client in clients" :key="client.id">
                                         <td>
-                                            <button type="button" @click="openModal('client', 'update', client)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="openModal('client', 'update', client)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modProviders" title="Editar">
                                               <i class="icon-pencil"></i>
                                             </button> &nbsp;
                                         </td>
@@ -86,7 +86,7 @@
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
             <!--Inicio del modal agregar/actualizar-->
-            <div class="modal fade" tabindex="-1" :class="{'show_' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div id="modProviders" class="modal fade" tabindex="-1" :class="{'show' : modal}" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -163,10 +163,9 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==1" 
-                            @click="createClient()">Guardar</button>
-                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()">Actualizar</button>
+                            <button type="button" class="btn btn-secondary" @click="closeModal()" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==1" @click="createClient()" data-dismiss="modal">Guardar</button>
+                            <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()" data-dismiss="modal">Actualizar</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -182,6 +181,9 @@
     export default {
     	data() {
     		return{
+    			modal: '',
+    			titleModal: '',
+    			typeAction: 0,
                 client_id: 0,
     			name: '',
     			type_document: 'J',
@@ -192,9 +194,6 @@
                 contact_name: '',
                 contact_phone: '',
     			clients: [],
-    			modal: 0,
-    			titleModal: '',
-    			typeAction: 0,
                 errorClient: 0,
                 errorShowClient: [],
                 pagination: {
@@ -292,6 +291,7 @@
                 let me = this;
 
                 axios.put('/proveedor/actualizar',{
+                    'id': this.client_id,
                     'name': this.name,
                     'type_document': this.type_document,
                     'num_document': this.num_document,
@@ -299,8 +299,7 @@
                     'num_phone': this.num_phone,
                     'email': this.email,
                     'contact_name': this.contact_name,
-                    'contact_phone': this.contact_phone, 
-                    'id': this.client_id
+                    'contact_phone': this.contact_phone
                 }).then(function (response){
                     me.closeModal();
                     me.lists_clients(1,'','nombre');
@@ -318,7 +317,7 @@
                 return this.errorClient;
             },
     		closeModal(){
-    			this.modal=0;
+    			this.modal='';
     			this.titleModal='';
     			this.name='';
     			this.type_document='';
@@ -336,11 +335,8 @@
     					switch(action){
     						case 'store':
     						{
-                                this.errorClient = 0;
-                                this.errorShowClient = [];
-    							this.modal = 1;
-		    					this.titleModal = 'Registrar Proveedor';
                                 this.typeAction = 1;
+		    					this.titleModal = 'Registrar Proveedor';
 				    			this.name = '';
 				    			this.type_document = 'J';
 				    			this.num_document = '';
@@ -349,16 +345,14 @@
 				    			this.email = '';
                                 this.contact_name = '';
                                 this.contact_phone = '';
+                                this.errorClient = 0;
+                                this.errorShowClient = [];
 		    					break;
     						}
     						case 'update':
     						{
-                                // console.log(data);
-                                this.errorClient = 0;
-                                this.errorShowClient = [];
-		    				 	this.modal = 1;
-		    					this.titleModal = 'Actualizar Proveedor';
                                 this.typeAction = 2;
+		    					this.titleModal = 'Actualizar Proveedor';
                                 this.client_id = data['id'];
                                 this.name = data['name'];
 				    			this.type_document = data['type_document'];
@@ -368,6 +362,8 @@
 				    			this.email = data['email'];
                                 this.contact_name = data['contact_name'];
                                 this.contact_phone = data['contact_phone'];
+                                this.errorClient = 0;
+                                this.errorShowClient = [];
 		    					break;	
     						}
     					}
@@ -383,7 +379,7 @@
 </script>
 
 <style>
-	.modal-content{
+/* 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
         margin-top: 15em; 
@@ -394,7 +390,7 @@
 		opacity: 1 !important;
 		position: adsolute !important;
 		background-color: #3c29297a !important;
-	}
+	} */
 
     @media screen and (min-width: 400px) {
         .btn-movil {

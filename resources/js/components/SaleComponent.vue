@@ -154,7 +154,7 @@
                                         <label for="">Producto <span style="color:red;" v-show="product_id==0">(*) Seleccione</span></label>
                                         <div class="form-inline">
                                             <input type="text" class="form-control" v-model="code" @keyup.enter="searchProduct()"placeholder="Ingresar producto">
-                                            <button class="btn btn-primary" @click="openModal()">...</button>
+                                            <button class="btn btn-primary" @click="openModal()" data-toggle="modal" data-target="#modSales">...</button>
                                             <input type="text" readonly="true" class="form-control" v-model="product_name">
                                         </div>
                                     </div>
@@ -351,12 +351,12 @@
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
             <!--Inicio del modal agregar/actualizar-->
-            <div class="modal fade" tabindex="-1" :class="{'show_' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div id="modSales" class="modal fade" tabindex="-1" :class="{'show' : modal}" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" v-text="titleModal"></h4>
-                            <button type="button" class="close" @click="closeModal()" aria-label="Close">
+                            <button type="button" class="close" @click="closeModal()" aria-label="Close" data-dismiss="modal">
                               <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -413,7 +413,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" @click="closeModal()" data-dismiss="modal">Cerrar</button>
 <!--                             <button type="button" class="btn btn-primary" v-if="typeAction==1" 
                             @click="createClient()">Guardar</button>
                             <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()">Actualizar</button> -->
@@ -433,10 +433,13 @@
     export default {
     	data() {
     		return{
+    			modal: '',
+    			titleModal: '',
+    			typeAction: 0,
                 sale_id: 0,
                 client_id: 0,
                 name: '',
-    			type_voucher: 'Boleta',
+    			type_voucher: 'Factura',
                 serie_voucher: '',
                 num_voucher: '',
                 tax: 0.16,
@@ -447,9 +450,6 @@
                 clients: [],
                 detail_sales: [],
                 list: 1, 
-    			modal: 0,
-    			titleModal: '',
-    			typeAction: 0,
                 errorSale: 0,
                 errorShowSale: [],
                 pagination: {
@@ -838,13 +838,12 @@
               })
             },
     		closeModal(){;
-    			this.modal=0;
-                this.titleModal='';
+    			this.modal= '';
+                this.titleModal= '';
     		},	
     		openModal(){
                 this.search_p = '';
                 this.products = [];
-                this.modal = 1;
 				this.titleModal = 'Seleccione uno o varios productos';
     		}
     	},
@@ -856,7 +855,7 @@
 </script>
 
 <style>
-	.modal-content{
+/* 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
         margin-top: 15em; 
@@ -867,7 +866,7 @@
 		opacity: 1 !important;
 		position: adsolute !important;
 		background-color: #3c29297a !important;
-	}
+	} */
     .div-error{
         display: flex;
         justify-content: center;
