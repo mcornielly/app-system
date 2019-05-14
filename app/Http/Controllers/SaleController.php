@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Sale;
 use App\DetailSale;
 use App\User;
+use App\Client;
 use App\Notifications\NotifyAdmin;
 
 class SaleController extends Controller
@@ -19,7 +20,7 @@ class SaleController extends Controller
      */
     public function index(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $search = $request->search;
         $criteria = $request->criteria;
@@ -39,8 +40,11 @@ class SaleController extends Controller
                         ->where('sales.' . $criteria, 'like', '%' . $search . '%')
                         ->orderBy('sales.id', 'DESC')
                         ->paginate(8);               
-        }    
+        }
 
+        $counter = Sale::all()->count();
+        $counter = $counter + 1;
+        $num_sale = str_pad($counter,6,"0",STR_PAD_LEFT);    
         
         return [
             'pagination' => [
@@ -52,7 +56,8 @@ class SaleController extends Controller
                 'to'            =>  $sales->lastItem(), 
             ],
 
-        'sales' => $sales
+        'sales' => $sales,
+        'num_sale' => $num_sale
         ];
     }
 
@@ -93,19 +98,26 @@ class SaleController extends Controller
     {
         $sale = Sale::join('clients', 'sales.client_id', 'clients.id')
                 ->join('users', 'sales.user_id', 'users.id')
-                ->select('sales.*', 'clients.name', 'clients.type_document', 'clients.num_document', 'clients.address', 'clients.email', 'clients.num_phone', 'users.user_name')
+                ->select('sales.*', 'clients.name', 'clients.type_document', 'clients.num_document as num_document', 'clients.address', 'clients.email', 'clients.num_phone', 'users.user_name')
                 ->where('sales.id', $id)
                 ->orderBy('sales.id', 'DESC')
                 ->take(1)->get();       
 
         $detail_sale = DetailSale::join('products', 'detail_sales.product_id', 'products.id')
-                ->SELECT('detail_sales.*', 'products.name as product_name')
+                ->SELECT('detail_sales.*', 'products.name as product_name', 'products.description')
                 ->where('detail_sales.sale_id', $id)
                 ->orderBy('detail_sales.id', 'DESC')
                 ->get();
 
+        $num_document = Sale::join('clients', 'sales.client_id', 'clients.id')
+                        ->select('clients.num_document')
+                        ->where('sales.id', $id)
+                        ->take(1)
+                        ->get();
+
+        // dd($num_document);                
         //Vista del reporte PDF en el explorador 
-        $num_sale = Sale::select('num_voucher')->where('id', $id)->get();        
+        $num_sale = Sale::select('serie_voucher')->where('id', $id)->get();        
         $view = \View::make('pdf.salespdf', compact('sale', 'detail_sale', 'num_document'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);

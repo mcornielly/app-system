@@ -359,7 +359,7 @@
 </script>
 
 <style>
-	.modal-content{
+/* 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
 	}
@@ -369,7 +369,7 @@
 		opacity: 1 !important;
 		position: adsolute important;
 		background-color: #3c29297a !important;
-	}
+	} */
     .div-error{
         display: flex;
         justify-content: center;

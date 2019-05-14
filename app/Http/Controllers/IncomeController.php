@@ -19,7 +19,7 @@ class IncomeController extends Controller
      */
     public function index(Request $request) 
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $search = $request->search;
         $criteria = $request->criteria;
@@ -113,7 +113,7 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $mytime = Carbon::now('America/Caracas');
 
@@ -128,8 +128,8 @@ class IncomeController extends Controller
             $income->provider_id = $request->provider_id;
             $income->user_id = \Auth::user()->id;
             $income->type_voucher = $request->type_voucher;
-            $income->serie_voucher = $request->num_invoice;
-            $income->num_voucher = $request->num_invoice;
+            $income->serie_voucher = $request->serie_voucher;
+            $income->num_voucher = $request->num_voucher;
             $income->date_hour = $mytime->toDateString();
             $income->tax = $request->tax;
             $income->total = $request->total;

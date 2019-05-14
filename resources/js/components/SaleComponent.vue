@@ -137,14 +137,14 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                       <label for="">Serie de Comprobante</label>
-                                       <input type="text" class="form-control" v-model="serie_voucher" placeholder="000x">
+                                       <label for="">N° de Facturación</label>
+                                       <input type="text" class="form-control" v-model="serie_voucher" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                       <label for="">Núemro de Comprobante(*)</label>
-                                       <input type="text" class="form-control" v-model="num_voucher" placeholder="000xx">
+                                       <label for="">N° de Comprobante(*)</label>
+                                       <input type="text" class="form-control" v-model="num_voucher" placeholder="00000">
                                     </div>
                                 </div>
                            </div> 
@@ -528,7 +528,7 @@
     			axios.get(url).then(function (response){
 
                     var result = response.data;
-
+                    me.serie_voucher = result.num_sale;
     				me.sales = result.sales.data;
                     me.pagination = result.pagination;
 
@@ -687,17 +687,17 @@
                 axios.post('ventas',{
                     'client_id': this.client_id,
                     'type_voucher': this.type_voucher,
-                    'num_voucher': this.num_voucher,
                     'serie_voucher': this.serie_voucher,
+                    'num_voucher': this.num_voucher,
                     'tax': this.tax,
                     'total': this.total,
                     'data': this.detail_sales
 
                 }).then(function (response){
     				me.list = 1;
-    				me.lists_sale(1,'','num_voucher');
+    				me.lists_sale(1,'','serie_voucher');
                     me.client_id = 0;
-                    me.type_voucher = 'Boleta';
+                    me.type_voucher = 'Factura';
                     me.serie_voucher = '';
                     me.num_voucher = '';
                     me.tax = 0.16;
@@ -743,8 +743,8 @@
                 this.list = 0;
                 //clear form
                 me.provider_id = 0;
-                me.type_voucher = 'Boleta';
-                me.serie_voucher = '';
+                me.type_voucher = 'Factura';
+                me.serie_voucher = this.serie_voucher;
                 me.num_voucher = '';
                 me.tax = 0.16;
                 me.total = 0;

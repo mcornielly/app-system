@@ -69,8 +69,8 @@
                                             <td v-text="income.user_name"></td>
                                             <td v-text="income.name"></td>
                                             <td v-text="income.type_voucher"></td>
-                                            <td v-text="income.num_voucher"></td>
                                             <td v-text="income.serie_voucher"></td>
+                                            <td v-text="income.num_voucher"></td>
                                             <td v-text="income.date_hour"></td>
                                             <td v-text="income.total"></td>
                                             <td v-text="income.tax"></td>
@@ -134,14 +134,14 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                       <label for="">Serie de Comprobante</label>
-                                       <input type="text" class="form-control" v-model="num_invoice" readonly>
+                                       <label for="">N° de Factura</label>
+                                       <input type="text" class="form-control" v-model="serie_voucher" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                       <label for="">Núemro de Comprobante(*)</label>
-                                       <input type="text" class="form-control" v-model="num_invoice" readonly>
+                                       <label for="">N° de Comprobante(*)</label>
+                                       <input type="text" class="form-control" v-model="num_voucher" placeholder="00000">
                                     </div>
                                 </div>
                            </div> 
@@ -420,7 +420,6 @@
                 provider_name: '',
     			name: '',
     			type_voucher: 'Factura',
-                num_invoice: '',
                 serie_voucher: '',
                 num_voucher: '',
                 tax: 0.16,
@@ -501,7 +500,7 @@
     			axios.get(url).then(function (response){
 
                     var result = response.data;
-                    me.num_invoice = result.num_invoice;
+                    me.serie_voucher = result.num_invoice;
     				me.incomes = result.incomes.data;
                     me.pagination = result.pagination;
 
@@ -642,8 +641,8 @@
                 axios.post('ingresos',{
                     'provider_id': this.provider_id,
                     'type_voucher': this.type_voucher,
-                    'num_invoice': this.num_invoice,
-                    // 'serie_voucher': this.num_invoice,
+                    'serie_voucher': this.serie_voucher,
+                    'num_voucher': this.num_voucher,
                     'tax': this.tax,
                     'total': this.total,
                     'data': this.detail_incomes
@@ -653,7 +652,7 @@
     				me.lists_income(1,'','num_invoice');
                     me.provider_id = 0;
                     me.type_voucher = 'Factura';
-                    me.serie_voucher = '';
+                    me.num_invoice = '';
                     me.num_voucher = '';
                     me.tax = 0.16;
                     me.total = 0;
@@ -673,7 +672,7 @@
 
                 if(this.provider_id==0) this.errorShowIncome.push("Seleccione un Proveedor");
                 if(this.type_document==0) this.errorShowIncome.push("Seleccione el Comprobante");
-                if(!this.num_invoice) this.errorShowIncome.push("Ingrese el número de Comprobante");
+                if(!this.serie_voucher) this.errorShowIncome.push("Ingrese el número de Facturación");
                 if(!this.tax) this.errorShowIncome.push("Ingrese el Impuesto de Compra");
                 if(this.detail_incomes.length<=0) this.errorShowIncome.push("Ingrese Detalle");
 
@@ -686,7 +685,7 @@
                 this.list = 0;
                 me.provider_id = 0;
                 me.type_voucher = 'Factura';
-                me.serie_voucher = '';
+                me.serie_voucher = this.serie_voucher;
                 me.num_voucher = '';
                 me.tax = 0.16;
                 me.total = 0;

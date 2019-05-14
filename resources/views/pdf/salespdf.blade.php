@@ -3,50 +3,55 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Reporte de Ventas</title>
+     <!-- Fonts -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css"> -->
 </head>
  <style>
         body {
-        /*position: relative;*/
-        /*width: 16cm;  */
-        /*height: 29.7cm; */
-        /*margin: 0 auto; */
-        /*color: #555555;*/
-        /*background: #FFFFFF; */
+        position: relative;
+        width: 16cm;  
+        height: 29.7cm; 
+        margin: 0 auto; 
+        color: #555555;
+        background: #FFFFFF;
         font-family: Arial, sans-serif; 
         font-size: 14px;
-        /*font-family: SourceSansPro;*/
+        /* font-family: SourceSansPro; */
         }
 
         #logo{
-        float: left;
         margin-top: 1%;
         margin-left: 2%;
         margin-right: 2%;
         }
 
         #imagen{
-        width: 100px;
+        width: 130px;
+        height: 130px;
+        padding-top: 80px;
         }
+        
 
         #datos{
-        float: left;
         margin-top: 0%;
         margin-left: 2%;
         margin-right: 2%;
-        /*text-align: justify;*/
+        text-align: justify;
         }
 
         #encabezado{
+        float: none;
+        display: block;    
+        margin: auto;
+        width: 100%;
         text-align: center;
-        margin-left: 10%;
-        margin-right: 35%;
         font-size: 15px;
         }
 
         #fact{
-        /*position: relative;*/
+        position: relative;
         float: right;
-        margin-top: 2%;
+        margin-top: 5%;
         margin-left: 2%;
         margin-right: 2%;
         font-size: 20px;
@@ -114,21 +119,33 @@
     <body>
     	@foreach($sale as $s)
         <header>
-            <div id="logo">
-                <img src="img/img_logo.jpg" alt="incanatoIT" id="imagen">
-            </div>
             <div id="datos">
                 <p id="encabezado">
-                    <b>IncanatoIT</b><br>José Gálvez 1368, Chongoyape - Chiclayo, Perú<br>Telefono:(+51)931742904<br>Email:jcarlos.ad7@gmail.com
+                    <b>Sistema de Ventas</b><br>Miguel Cornielly, Caracas - Venezuela<br>Telefono:(+58)4120272359<br>Email:mcornielly@gmail.com
                 </p>
             </div>
-            <div id="fact">
-                <p>{{ $s->type_voucher }}<br>
-                {{ $s->serie_voucher }} - {{ $s->num_voucher }}</p>
+            <div id="logo">
+                <img src="img/logo_system.jpg" alt="" id="imagen">
             </div>
         </header>
         <br>
-        <section>
+        <section style="margin-top: 50px;">
+            <div style="float: right;">
+                <table id="facliente">
+                    <thead>
+                        <tr>
+                            <th id="fa" colspan="3"><strong>{{ $s->type_voucher }}</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;">{{ $s->serie_voucher }}</td>
+                            <td> | </td>
+                            <td style="text-align: center;">{{ $s->num_voucher }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div>
                 <table id="facliente">
                     <thead>                        
@@ -159,7 +176,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr style="text-align: center;">
                             <td>{{ $s->user_name }}</td>
                             <td>{{ $s->created_at }}</td>
                         </tr>
@@ -183,7 +200,7 @@
                     </thead>
                     <tbody>
                     	@foreach($detail_sale as $detail)
-                        <tr>
+                        <tr  style="text-align: right;">
                             <td>{{ $detail->quantity }}</td>
                             <td>{{ $detail->description }}</td>
                             <td>{{ $detail->price }}</td>
@@ -199,21 +216,21 @@
                             <th></th>
                             <th></th>
                             <th>SUBTOTAL</th>
-                            <td>{{ round($s->total-($s->total*$s->tax),2) }}</td>
+                            <td  style="text-align: right;">{{ round($s->total-($s->total*$s->tax),2) }}</td>
                         </tr>
                         <tr>
                             <th></th>
                             <th></th>
                             <th></th>
                             <th>IVA</th>
-                            <td>{{ round($s->total*$s->tax,2) }}</td>
+                            <td  style="text-align: right;">{{ round($s->total*$s->tax,2) }}</td>
                         </tr>
                         <tr>
                             <th></th>
                             <th></th>
                             <th></th>
                             <th>TOTAL</th>
-                            <td>{{ round($s->total) }}</td>
+                            <td  style="text-align: right;">{{ round($s->total) }}</td>
                         </tr>
                         @endforeach
                     </tfoot>

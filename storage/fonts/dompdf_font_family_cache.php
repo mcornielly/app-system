@@ -83,4 +83,7 @@
   'simple-line-icons' => array(
     'normal' => $fontDir . '\8303f0be721cc0f6b60e5b4ba2e9f029',
   ),
+  'nunito' => array(
+    'normal' => $fontDir . '\07ae4d574f4823210de71b8e6be58d7e',
+  ),
 ) ?>

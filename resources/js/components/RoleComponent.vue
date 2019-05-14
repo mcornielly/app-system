@@ -156,7 +156,7 @@
 </script>
 
 <style>
-	.modal-content{
+/* 	.modal-content{
 		width: 100% !important;
 		position: adsolute !important;
         margin-top: 15em; 
@@ -167,5 +167,5 @@
 		opacity: 1 !important;
 		position: adsolute !important;
 		background-color: #3c29297a !important;
-	}
+	} */
 </style>		
