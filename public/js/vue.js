@@ -80988,7 +80988,11 @@ var render = function() {
                   "button",
                   {
                     staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
+                    attrs: {
+                      type: "button",
+                      "aria-label": "Close",
+                      "data-dismiss": "modal"
+                    },
                     on: {
                       click: function($event) {
                         _vm.closeModal()
@@ -84700,7 +84704,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            modal: 0,
+            modal: '',
             titleModal: '',
             typeAction: 0,
             role_id: 0,
@@ -85154,7 +85158,11 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-warning btn-sm",
-                              attrs: { type: "button" },
+                              attrs: {
+                                type: "button",
+                                "data-toggle": "modal",
+                                "data-target": "#modUsers"
+                              },
                               on: {
                                 click: function($event) {
                                   _vm.openModal("client", "update", client)
@@ -85370,7 +85378,11 @@ var render = function() {
                   "button",
                   {
                     staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
+                    attrs: {
+                      type: "button",
+                      "aria-label": "Close",
+                      "data-dismiss": "modal"
+                    },
                     on: {
                       click: function($event) {
                         _vm.closeModal()

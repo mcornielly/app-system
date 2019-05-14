@@ -106,7 +106,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" v-text="titleModal"></h4>
-                            <button type="button" class="close" @click="closeModal()" aria-label="Close">
+                            <button type="button" class="close" @click="closeModal()" aria-label="Close" data-dismiss="modal">
                               <span aria-hidden="true">×</span>
                             </button>
                         </div>

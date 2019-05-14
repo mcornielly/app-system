@@ -52,7 +52,7 @@
                                 <tbody>
                                     <tr v-for="client in clients" :key="client.id">
                                         <td>
-                                            <button type="button" @click="openModal('client', 'update', client)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="openModal('client', 'update', client)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modUsers">
                                               <i class="icon-pencil"></i>
                                             </button> &nbsp;
                                             <template v-if="client.condition">
@@ -111,7 +111,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" v-text="titleModal"></h4>
-                            <button type="button" class="close" @click="closeModal()" aria-label="Close">
+                            <button type="button" class="close" @click="closeModal()" aria-label="Close" data-dismiss="modal">
                               <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -210,7 +210,7 @@
     export default {
     	data() {
     		return{
-    			modal: 0,
+    			modal: '',
     			titleModal: '',
     			typeAction: 0,
                 role_id: 0,
