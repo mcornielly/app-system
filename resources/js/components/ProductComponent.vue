@@ -137,13 +137,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Precio</label>
-                                    <div class="col-md-9">
-                                        <input type="number" class="form-control" v-model="price">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Stock</label>
+                                    <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" placeholder="" v-model="stock">
                                     </div>
@@ -152,6 +146,33 @@
                                     <label class="col-md-3 form-control-label">Descripción</label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" placeholder="Ingrese Descripción" v-model="description">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                    <div class="col-md-9">
+                                        <input type="number" class="form-control" v-on:keyup.enter="total_gain()" v-model="price">
+                                    </div>
+                                </div>
+                                 <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Rango de Ganancia</label>
+                                    <div class="col-md-6">
+                                        <input type="range" min="0" max="100" step="1" value="50" class="form-control" v-model="margin_gain">
+                                    </div>
+                                    <div class="col-md-3">
+                                       <input type="number" class="form-control" v-model="margin_gain">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Precio de Ganancia</label>
+                                    <div class="col-md-9">
+                                        <input type="number" class="form-control" v-model="margin_amount">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Precio en Divisa</label>
+                                    <div class="col-md-9">
+                                        <input type="number" class="form-control" v-model="price_divisa">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -193,7 +214,8 @@ import VueBarcode from 'vue-barcode';
                 category_name: '', 
                 code: '',
     			name: '',
-    			price: 0,
+                price: 0,
+                margin_gain: 50,
     			stock: 0,
     			description: '',
     			products: [],
@@ -221,6 +243,17 @@ import VueBarcode from 'vue-barcode';
         computed:{
             isActived: function(){
                 return this.pagination.current_page;
+            },
+            margin_amount: function(){
+                var result = 0.00;
+                var mont_percet = 0.00;
+                var price = this.price;
+                var mont_percet = parseInt(price) + parseInt(price * this.margin_gain / 100);
+                result = mont_percet;
+                return result;
+            },    
+            price_divisa: function(){
+                return  (this.price / 190000).toFixed(2) ;
             },
             //Calcula los elementos de la paginación.
             pagesNumber: function(){
@@ -265,8 +298,6 @@ import VueBarcode from 'vue-barcode';
     			let me = this;
                 var url = '/categoria/seleccionar';
     			axios.get(url).then(function (response){
-    				console.log(response);	
-
         			var result = response.data;
     				me.categories = result.categories;
              
@@ -292,6 +323,10 @@ import VueBarcode from 'vue-barcode';
                     'code': this.code,
     				'name': this.name,
                     'price': this.price,
+                    'margin_gain': this.margin_gain,
+                    'margin_amount': this.margin_amount,
+                    'margin_amount': this.margin_amount,
+                    'price_divisa': this.price_divisa,
                     'stock': this.stock,
     				'description': this.description
     			}).then(function (response){
@@ -314,6 +349,10 @@ import VueBarcode from 'vue-barcode';
                     'code': this.code,
                     'name': this.name,
                     'price': this.price,
+                    'margin_gain': this.margin_gain,
+                    'margin_amount': this.margin_amount,
+                    'margin_amount': this.margin_amount,
+                    'price_divisa': this.price_divisa,
                     'stock': this.stock,
                     'description': this.description
                 }).then(function (response){
@@ -324,7 +363,6 @@ import VueBarcode from 'vue-barcode';
                 });
             },
             enableProduct(id){
-
                 const swalWithBootstrapButtons = Swal.mixin({
                   confirmButtonClass: 'btn btn-success',
                   cancelButtonClass: 'btn btn-danger',
@@ -412,9 +450,7 @@ import VueBarcode from 'vue-barcode';
                 if (!this.name) this.errorShowProduct.push("El nombre del Producto no puede estar vacio.");
                 if (!this.price) this.errorShowProduct.push("El campo Precio no puede estar vacio.");
                 if (!this.stock) this.errorShowProduct.push("El campo Stock no puede estar vacio.");
-
                 if(this.errorShowProduct.length) this.errorProduct = 1;
-
                 return this.errorProducto;
             },
     		closeModal(){
@@ -442,6 +478,8 @@ import VueBarcode from 'vue-barcode';
                                 this.code = '';
                                 this.name = '';
                                 this.price = 0;
+                                this.margin_gain = 50;
+                                this.margin_amount = 0;
                                 this.stock = 0;
                                 this.description = '';
                                 this.typeAction = 1;

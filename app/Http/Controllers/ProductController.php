@@ -166,8 +166,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         if(!$request->ajax()) return redirect('/');
-
         // $rules = [
         //     'name' => 'required|string|max:255',
         // ];

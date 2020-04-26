@@ -30,3 +30,9 @@ mix.scripts([
     'resources/layout/js/sweetalert2.all.min.js'
 ], 'public/js/app.js')
 mix.js('resources/js/app.js', 'public/js/vue.js');
+
+// mix.browserSync({
+//     proxy: 'http://app-system.test/',
+//     // browser: 'firefox'
+//     browser: 'C:\\Program Files\\Firefox Developer Edition\\firefox.exe'//Firefox Developer
+//  });

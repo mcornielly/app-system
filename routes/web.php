@@ -91,7 +91,8 @@ Route::group(['middleware' => ['auth']], function(){
 		//Dashboard
 		Route::get('/dashboard', 'DashboardController');
 
-
+		//Módulo de Ventas
+		Route::resource('divisa', 				'DivisaController');
 	});
 
 

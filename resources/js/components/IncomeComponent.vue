@@ -204,7 +204,7 @@
                                                     <input v-model="detail_income.quantity" type="number" value="2" class="form-control">
                                                 </td>
                                                 <td>
-                                                    {{ detail_income.price*detail_income.quantity }}
+                                                    {{ (detail_income.price*detail_income.quantity).toFixed(2) }}
                                                 </td>
                                             </tr>
 
@@ -295,7 +295,7 @@
                                                 </td>
                                             </tr>
 
-                                            <tr style="background-color: #CEECF5;">
+                                            <tr id="txtMonto" style="background-color: #CEECF5;">
                                                 <td colspan="3" class="text-right"><strong>Total Parcial</strong></td>
                                                 <td>$ {{ total_partial = (total - total_tax).toFixed(2) }}</td>
                                             </tr>
@@ -407,6 +407,7 @@
         </main>
 </template>
 
+
 <script>
     import vSelect from 'vue-select';
     export default {
@@ -491,7 +492,14 @@
                     result = result+(this.detail_incomes[i].price*this.detail_incomes[i].quantity)
                 }
                 return result;
-            }
+            },
+            formatterPeso : function(){
+                new Intl.NumberFormat('es-CO', {
+               style: 'currency',
+               currency: 'COP',
+               minimumFractionDigits: 0
+             })
+                }  
         },
     	methods : {
     		lists_income(page,search,criteria){

@@ -19,6 +19,9 @@ class CreateProductsTable extends Migration
             $table->string('code', 50)->nullable();
             $table->string('name')->unique();
             $table->decimal('price', 11, 2);
+            $table->decimal('margin_gain', 4, 0);
+            $table->decimal('margin_amount', 11, 2);
+            $table->decimal('price_divisa', 11, 2);
             $table->integer('stock');
             $table->string('description')->nullable();
             $table->boolean('condition')->default(1);

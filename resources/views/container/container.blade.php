@@ -45,16 +45,20 @@
             <template v-if="menu==9">
                 <consultincome-component></consultincome-component>                  
             </template>
-
+            
             <template v-if="menu==10">
                 <consultsale-component></consultsale-component>                   
             </template>
-
+            
             <template v-if="menu==11">
-                <h2>Ayuda</h2>                  
+                <divisa-component></divisa-component>                 
             </template>
 
             <template v-if="menu==12">
+                <h2>Ayuda</h2>                  
+            </template>
+
+            <template v-if="menu==13">
                 <h2>Acerca de</h2>                  
             </template>
             
